@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>RegValue.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java FatekPLC client library</a> &gt; <a href="index.html" class="el_package">com.github.s4u.jfatek.registers</a> &gt; <span class="el_source">RegValue.java</span></div><h1>RegValue.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Slawomir Jaranowski
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.github.s4u.jfatek.registers;
+
+/**
+ * @author Slawomir Jaranowski.
+ */
+public abstract class RegValue {
+
+    private long value;
+    private final int bits;
+
+
+<span class="fc" id="L28">    protected RegValue(long value, int bits) {</span>
+
+<span class="fc" id="L30">        this.value = value;</span>
+<span class="fc" id="L31">        this.bits = bits;</span>
+<span class="fc bfc" id="L32" title="All 2 branches covered.">        if (this.value &lt; 0) {</span>
+<span class="fc" id="L33">            this.value += 1L &lt;&lt; this.bits;</span>
+        }
+<span class="fc" id="L35">    }</span>
+
+    public int intValueUnsigned() {
+
+<span class="fc" id="L39">        return (int) longValueUnsigned();</span>
+    }
+
+    public int intValue() {
+
+<span class="fc" id="L44">        return (int) longValue();</span>
+    }
+
+    public long longValueUnsigned() {
+
+<span class="fc" id="L49">        return value;</span>
+    }
+
+    @SuppressWarnings(&quot;PMD.UselessParentheses&quot;) // PMD 5.0.2 error
+    public long longValue() {
+
+<span class="fc bfc" id="L55" title="All 2 branches covered.">        if (value &gt;= (1L &lt;&lt; (bits - 1))) {</span>
+<span class="fc" id="L56">            return value - (1L &lt;&lt; bits);</span>
+        }
+<span class="fc" id="L58">        return value;</span>
+    }
+
+    public boolean boolValue() {
+
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">        return value == 1;</span>
+    }
+
+    public boolean is32Bit() {
+
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        return bits == 32;</span>
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+<span class="fc bfc" id="L74" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L75">            return true;</span>
+        }
+
+<span class="fc bfc" id="L78" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L79">            return false;</span>
+        }
+
+<span class="fc" id="L82">        RegValue regValue = (RegValue) o;</span>
+<span class="pc bpc" id="L83" title="2 of 4 branches missed.">        return value == regValue.value &amp;&amp; bits == regValue.bits;</span>
+    }
+
+    @Override
+    public int hashCode() {
+
+<span class="fc" id="L89">        int result = (int) (value ^ (value &gt;&gt;&gt; 32));</span>
+<span class="fc" id="L90">        result = 31 * result + bits;</span>
+<span class="fc" id="L91">        return result;</span>
+    }
+
+    @Override
+    public String toString() {
+
+<span class="fc" id="L97">        return String.valueOf(longValue());</span>
+    }
+
+    public abstract String toFatekString();
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

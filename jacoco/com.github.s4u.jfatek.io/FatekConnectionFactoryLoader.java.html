@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FatekConnectionFactoryLoader.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java FatekPLC client library</a> &gt; <a href="index.html" class="el_package">com.github.s4u.jfatek.io</a> &gt; <span class="el_source">FatekConnectionFactoryLoader.java</span></div><h1>FatekConnectionFactoryLoader.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Slawomir Jaranowski
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.github.s4u.jfatek.io;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Locale;
+import java.util.Map;
+import java.util.WeakHashMap;
+
+/**
+ * @author Slawomir Jaranowski.
+ */
+final class FatekConnectionFactoryLoader {
+
+<span class="fc" id="L32">    private final static Map&lt;String, FatekConnectionFactory&gt; cache = new WeakHashMap&lt;&gt;();</span>
+
+<span class="nc" id="L34">    private FatekConnectionFactoryLoader() {</span>
+        // it is utils class
+<span class="nc" id="L36">    }</span>
+
+    public static FatekConnectionFactory getByScheme(String scheme) throws FatekIOException {
+
+<span class="pc bpc" id="L40" title="1 of 2 branches missed.">        if (scheme == null) {</span>
+<span class="nc" id="L41">            return null;</span>
+        }
+
+<span class="fc" id="L44">        String schemeUp = scheme.toUpperCase(Locale.ENGLISH);</span>
+<span class="fc" id="L45">        synchronized (cache) {</span>
+<span class="fc" id="L46">            FatekConnectionFactory factory = cache.get(schemeUp);</span>
+
+<span class="fc bfc" id="L48" title="All 2 branches covered.">            if (factory != null) {</span>
+<span class="fc" id="L49">                return factory;</span>
+            }
+
+            URL url;
+<span class="fc" id="L53">            String resName = String.format(&quot;jfatek/%sFatekConnectionFactory&quot;, schemeUp);</span>
+
+<span class="fc" id="L55">            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            if (classLoader == null) {</span>
+<span class="nc" id="L57">                url = ClassLoader.getSystemResource(resName);</span>
+            } else {
+<span class="fc" id="L59">                url = classLoader.getResource(resName);</span>
+            }
+
+<span class="fc bfc" id="L62" title="All 2 branches covered.">            if (url == null) {</span>
+<span class="fc" id="L63">                return null;</span>
+            }
+
+            String className;
+            try {
+<span class="fc" id="L68">                className = readClassName(url);</span>
+<span class="pc bpc" id="L69" title="1 of 2 branches missed.">                if (className == null) {</span>
+<span class="nc" id="L70">                    return null;</span>
+                }
+
+<span class="fc" id="L73">                Class&lt;?&gt; aClass = Class.forName(className, false, classLoader);</span>
+
+<span class="fc" id="L75">                factory = FatekConnectionFactory.class.cast(aClass.newInstance());</span>
+<span class="fc" id="L76">                cache.put(schemeUp, factory);</span>
+
+<span class="fc" id="L78">                return factory;</span>
+
+<span class="nc" id="L80">            } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {</span>
+<span class="nc" id="L81">                throw new FatekIOException(e);</span>
+            }
+<span class="nc" id="L83">        }</span>
+    }
+
+    private static String readClassName(URL url) throws IOException {
+
+<span class="pc" id="L88">        try (BufferedReader buf = new BufferedReader(new InputStreamReader(url.openStream()))) {</span>
+            while (true) {
+<span class="fc" id="L90">                String line = buf.readLine();</span>
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">                if (line == null) {</span>
+<span class="nc" id="L92">                    return null;</span>
+                }
+
+<span class="fc" id="L95">                line = line.replaceAll(&quot;#.*$&quot;, &quot;&quot;).trim();</span>
+
+<span class="fc bfc" id="L97" title="All 2 branches covered.">                if (line.length() &gt; 0) {</span>
+<span class="fc" id="L98">                    return line;</span>
+                }
+<span class="fc" id="L100">            }</span>
+<span class="pc bpc" id="L101" title="10 of 12 branches missed.">        }</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

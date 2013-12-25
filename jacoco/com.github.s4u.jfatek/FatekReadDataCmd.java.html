@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FatekReadDataCmd.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java FatekPLC client library</a> &gt; <a href="index.html" class="el_package">com.github.s4u.jfatek</a> &gt; <span class="el_source">FatekReadDataCmd.java</span></div><h1>FatekReadDataCmd.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Slawomir Jaranowski
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.github.s4u.jfatek;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+import com.github.s4u.jfatek.io.FatekIOException;
+import com.github.s4u.jfatek.io.FatekReader;
+import com.github.s4u.jfatek.io.FatekWriter;
+import com.github.s4u.jfatek.registers.DataReg;
+import com.github.s4u.jfatek.registers.RegValue;
+
+/**
+ * &lt;p&gt;Read the data from continuous registers.&lt;/p&gt;
+ *
+ * @author Slawomir Jaranowski.
+ */
+
+public class FatekReadDataCmd extends FatekCommand&lt;List&lt;RegValue&gt;&gt; {
+
+    public static final int CMD_ID = 0x46;
+
+    private final DataReg startReg;
+    private final int number;
+
+    private List&lt;RegValue&gt; result;
+
+    public FatekReadDataCmd(FatekPLC fatekPLC, DataReg startReg, int number) {
+
+<span class="fc" id="L46">        super(fatekPLC);</span>
+<span class="fc" id="L47">        this.startReg = startReg;</span>
+<span class="fc" id="L48">        this.number = number;</span>
+<span class="fc" id="L49">    }</span>
+
+    @Override
+    public int getID() {
+
+<span class="fc" id="L54">        return CMD_ID;</span>
+    }
+
+    @Override
+    public List&lt;RegValue&gt; getResult() throws FatekNotSentException {
+
+<span class="fc" id="L60">        checkSent();</span>
+<span class="fc" id="L61">        return Collections.unmodifiableList(result);</span>
+    }
+
+    // protected methods
+
+    @Override
+    protected void writeData(FatekWriter writer) throws FatekIOException {
+
+<span class="fc" id="L69">        writer.writeByte(number);</span>
+<span class="fc" id="L70">        writer.write(startReg.toString());</span>
+<span class="fc" id="L71">    }</span>
+
+    @Override
+    protected void readData(FatekReader reader) throws FatekIOException {
+
+<span class="fc" id="L76">        result = new ArrayList&lt;&gt;(number);</span>
+
+<span class="fc bfc" id="L78" title="All 2 branches covered.">        for (int i = 0; i &lt; number; i++) {</span>
+
+<span class="fc bfc" id="L80" title="All 2 branches covered.">            if (startReg.is32Bits()) {</span>
+<span class="fc" id="L81">                result.add(reader.readRegVal32());</span>
+            } else {
+<span class="fc" id="L83">                result.add(reader.readRegVal16());</span>
+            }
+        }
+<span class="fc" id="L86">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>

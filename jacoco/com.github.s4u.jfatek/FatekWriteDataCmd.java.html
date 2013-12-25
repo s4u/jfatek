@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../.resources/report.gif" type="image/gif"/><title>FatekWriteDataCmd.java</title><link rel="stylesheet" href="../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="right"><a href="../.sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">Java FatekPLC client library</a> &gt; <a href="index.html" class="el_package">com.github.s4u.jfatek</a> &gt; <span class="el_source">FatekWriteDataCmd.java</span></div><h1>FatekWriteDataCmd.java</h1><pre class="source lang-java linenums">/*
+ * Copyright 2013 Slawomir Jaranowski
+ *
+ * Licensed under the Apache License, Version 2.0 (the &quot;License&quot;);
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an &quot;AS IS&quot; BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+package com.github.s4u.jfatek;
+
+import com.github.s4u.jfatek.io.FatekIOException;
+import com.github.s4u.jfatek.io.FatekWriter;
+import com.github.s4u.jfatek.registers.DataReg;
+import com.github.s4u.jfatek.registers.RegValue;
+
+/**
+ * &lt;p&gt;Write the data to continuous registers.&lt;/p&gt;
+ *
+ * @author Slawomir Jaranowski.
+ */
+public class FatekWriteDataCmd extends FatekCommand {
+
+    public static final int CMD_ID = 0x47;
+    private final DataReg startReg;
+    private final RegValue[] values;
+
+    public FatekWriteDataCmd(FatekPLC fatekPLC, DataReg startReg, RegValue... values) {
+
+<span class="fc" id="L37">        super(fatekPLC);</span>
+<span class="fc" id="L38">        this.startReg = startReg;</span>
+<span class="fc" id="L39">        this.values = values;</span>
+<span class="fc" id="L40">    }</span>
+
+    @Override
+    public int getID() {
+
+<span class="fc" id="L45">        return CMD_ID;</span>
+    }
+
+    @Override
+    protected void writeData(FatekWriter writer) throws FatekIOException, FatekException {
+
+<span class="fc" id="L51">        writer.writeByte(values.length);</span>
+<span class="fc" id="L52">        writer.write(startReg.toString());</span>
+<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (RegValue value : values) {</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">            if (value.is32Bit() != startReg.is32Bits()) {</span>
+<span class="fc" id="L55">                throw new FatekException(&quot;Invalid value length&quot;);</span>
+            }
+<span class="fc" id="L57">            writer.write(value.toFatekString());</span>
+        }
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.3.201306030806</span></div></body></html>
