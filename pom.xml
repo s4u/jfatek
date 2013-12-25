@@ -18,28 +18,20 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.simpligility.maven</groupId>
-        <artifactId>progressive-organization-pom</artifactId>
-        <version>1.1.0</version>
+        <groupId>com.github.s4u</groupId>
+        <artifactId>parent</artifactId>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath />
     </parent>
 
-    <groupId>com.github.s4u</groupId>
     <artifactId>jfatek</artifactId>
     <version>1.0.0-SNAPSHOT</version>
 
-    <name>Java FatekPLC client</name>
+    <name>Java FatekPLC client library</name>
     <description>
         This project implements Fatek protocol to communicate with Fatek PLC (Programmable Logic Controller).
-        http://www.fatek.com/en/prod.php?catId=1
     </description>
-    <url>https://github.com/s4u/jfatek</url>
-    <inceptionYear>2013</inceptionYear>
-
-    <organization>
-        <name>S4U</name>
-        <url>https://github.com/s4u</url>
-    </organization>
+    <url>http://s4u.github.io/jfatek</url>
 
     <licenses>
         <license>
@@ -59,22 +51,18 @@
     </developers>
 
     <scm>
-        <connection>scm:git:ssh://git@github.com:s4u/jfatek.git</connection>
+        <connection>scm:git:git@github.com:s4u/jfatek.git</connection>
         <developerConnection>${project.scm.connection}</developerConnection>
-        <url>${project.url}</url>
+        <url>https://github.com/s4u/jfatek</url>
         <tag>HEAD</tag>
     </scm>
 
-    <issueManagement>
-        <system>github</system>
-        <url>${project.url}/issues</url>
-    </issueManagement>
-
-    <properties>
-        <maven.compiler.source>1.7</maven.compiler.source>
-        <maven.compiler.target>1.7</maven.compiler.target>
-        <sonar.java.source>${maven.compiler.source}</sonar.java.source>
-    </properties>
+    <distributionManagement>
+        <site>
+            <id>github-pages</id>
+            <url>${project.scm.connection}</url>
+        </site>
+    </distributionManagement>
 
     <dependencyManagement>
         <dependencies>
@@ -142,6 +130,7 @@
             <plugin>
                 <groupId>org.jacoco</groupId>
                 <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco.version}</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -163,12 +152,12 @@
                             <report>dependencies</report>
                             <report>dependency-convergence</report>
                             <report>dependency-info</report>
-                            <report>index</report>
                             <report>issue-tracking</report>
                             <report>license</report>
                             <report>plugins</report>
                             <report>project-team</report>
                             <report>scm</report>
+                            <report>summary</report>
                         </reports>
                     </reportSet>
                 </reportSets>
