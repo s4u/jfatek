@@ -1,3 +1,14 @@
+Example of usage
+================
+
+    try (FatekPLC fatekPLC = new FatekPLC("tcp://192.168.9.9?plcId=1")) {
+        List<RegValue> list = new FatekReadDataCmd(fatekPLC, R(100), 3).send();
+
+        System.out.println(list.get(0).intValueUnsigned());
+        System.out.println(list.get(1).intValueUnsigned());
+        System.out.println(list.get(2).intValueUnsigned());
+    }
+
 Fatek URI syntax
 ================
 
