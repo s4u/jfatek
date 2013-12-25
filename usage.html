@@ -3,7 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>Java FatekPLC client library - Fatek URI syntax</title>
+    <title>Java FatekPLC client library - Example of usage</title>
     <style type="text/css" media="all">
       @import url("./css/maven-base.css");
       @import url("./css/maven-theme.css");
@@ -80,7 +80,18 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <h1>Fatek URI syntax</h1>
+        <h1>Example of usage</h1>
+
+<div class="source">
+<pre>try (FatekPLC fatekPLC = new FatekPLC(&quot;tcp://192.168.9.9?plcId=1&quot;)) {
+    List&lt;RegValue&gt; list = new FatekReadDataCmd(fatekPLC, R(100), 3).send();
+
+    System.out.println(list.get(0).intValueUnsigned());
+    System.out.println(list.get(1).intValueUnsigned());
+    System.out.println(list.get(2).intValueUnsigned());
+}
+</pre></div>
+<h1>Fatek URI syntax</h1>
 <p>To connect with Fatek PLC you should prepare URI connection with below format:</p>
 
 <div class="source">
