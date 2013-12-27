@@ -23,6 +23,12 @@ import com.github.s4u.jfatek.io.FatekReader;
 import com.github.s4u.jfatek.io.FatekWriter;
 
 /**
+ * <p>Testing loop back.</p>
+ *
+ * <p>This command makes PLC respond all test data back to Master.
+ * It is only for testing the communication condition between Master and PLC
+ * and it will not influence the PLC function.</p>
+ *
  * @author Slawomir Jaranowski.
  */
 public class FatekLoopCmd extends FatekCommand<Void> {
@@ -30,6 +36,12 @@ public class FatekLoopCmd extends FatekCommand<Void> {
     public static final int CMD_ID = 0x4E;
     private final String message;
 
+    /**
+     * Create loop back command.
+     *
+     * @param fatekPLC connection manager to use
+     * @param message test message
+     */
     FatekLoopCmd(FatekPLC fatekPLC, String message) {
 
         // TODO range check
@@ -37,6 +49,11 @@ public class FatekLoopCmd extends FatekCommand<Void> {
         this.message = message;
     }
 
+    /**
+     * Create loop back command with random message.
+     *
+     * @param fatekPLC connection manager to use
+     */
     public FatekLoopCmd(FatekPLC fatekPLC) {
         super(fatekPLC);
         message = String.format("%X", System.currentTimeMillis());
