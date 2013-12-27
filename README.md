@@ -10,6 +10,7 @@ Features
  * Support TCP and UDP transport protocol
  * Easy expandable transport protocol
  * Poolable connections
+ * Deployed to the Central Repository
 
 
 Project homepage
@@ -18,4 +19,5 @@ Project homepage
 More information you can find on site:
 
 http://s4u.github.io/jfatek/
+
 
