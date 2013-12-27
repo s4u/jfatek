@@ -18,6 +18,7 @@ package com.github.s4u.jfatek;
 
 import java.util.Collections;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.github.s4u.jfatek.io.FatekIOException;
@@ -37,10 +38,28 @@ public class FatekReadMixDataCmd extends FatekCommand<Map<Reg, RegValue>> {
     private final Reg[] regs;
     private Map<Reg, RegValue> result;
 
+    /**
+     * Create new command for mixed read the random discrete status or register data.
+     *
+     * @param fatekPLC connection manager to use
+     * @param regs regs name to read
+     */
     public FatekReadMixDataCmd(FatekPLC fatekPLC, Reg... regs) {
 
         super(fatekPLC);
         this.regs = regs.clone();
+    }
+
+    /**
+     * Create new command for mixed read the random discrete status or register data.
+     *
+     * @param fatekPLC connection manager to use
+     * @param regs list of regs name to read
+     */
+    public FatekReadMixDataCmd(FatekPLC fatekPLC, List<Reg> regs) {
+
+        super(fatekPLC);
+        this.regs = regs.toArray(new Reg[regs.size()]);
     }
 
     @Override
