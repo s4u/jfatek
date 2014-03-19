@@ -19,14 +19,14 @@
     <parent>
         <groupId>com.github.s4u</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2-SNAPSHOT</version>
         <relativePath />
     </parent>
 
     <artifactId>jfatek</artifactId>
     <version>1.0.1-SNAPSHOT</version>
 
-    <name>Java FatekPLC client library</name>
+    <name>Java Fatek PLC client library</name>
     <description>
         This project implements Fatek protocol to communicate with Fatek PLC (Programmable Logic Controller).
     </description>
@@ -101,6 +101,16 @@
     </dependencies>
 
     <build>
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.github.s4u.plugins</groupId>
+                    <artifactId>sitemapxml-maven-plugin</artifactId>
+                    <version>1.0.0</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -110,6 +120,17 @@
                         <id>default-prepare-agent</id>
                         <goals>
                             <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.s4u.plugins</groupId>
+                <artifactId>sitemapxml-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>gen</goal>
                         </goals>
                     </execution>
                 </executions>
