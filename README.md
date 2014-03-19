@@ -1,11 +1,10 @@
-Java Fatek PLC client library
-=============================
+# Java Fatek PLC client library [![Build Status](https://travis-ci.org/s4u/jfatek.png?branch=master)](https://travis-ci.org/s4u/jfatek)
+
 This project implements Fatek protocol to communicate with Fatek PLC (Programmable Logic Controller).
 
 http://www.fatek.com/en/prod.php?catId=1
 
-Features
-========
+# Features
 
  * Support TCP and UDP transport protocol
  * Easy expandable transport protocol
@@ -13,8 +12,7 @@ Features
  * Deployed to the Central Repository
 
 
-Project homepage
-================
+# Project homepage
 
 More information you can find on site:
 
