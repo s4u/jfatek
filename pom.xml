@@ -20,7 +20,7 @@
     <parent>
         <groupId>com.github.s4u</groupId>
         <artifactId>parent</artifactId>
-        <version>1.0.2-SNAPSHOT</version>
+        <version>1.0.3-SNAPSHOT</version>
         <relativePath />
     </parent>
 
@@ -31,7 +31,6 @@
     <description>
         This project implements Fatek protocol to communicate with Fatek PLC (Programmable Logic Controller).
     </description>
-    <url>http://s4u.github.io/jfatek</url>
 
     <licenses>
         <license>
@@ -69,17 +68,17 @@
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-api</artifactId>
-                <version>1.7.5</version>
+                <version>1.7.6</version>
             </dependency>
             <dependency>
                 <groupId>org.slf4j</groupId>
                 <artifactId>slf4j-simple</artifactId>
-                <version>1.7.5</version>
+                <version>1.7.6</version>
             </dependency>
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>6.1.1</version>
+                <version>6.8.8</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -138,6 +137,7 @@
                     </execution>
                 </executions>
                 <configuration>
+                    <linkXRef>false</linkXRef>
                     <targetJdk>${maven.compiler.source}</targetJdk>
                     <rulesets>
                         <ruleset>${project.basedir}/pmd.xml</ruleset>
