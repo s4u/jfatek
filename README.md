@@ -16,6 +16,6 @@ http://www.fatek.com/en/prod.php?catId=1
 
 More information you can find on site:
 
-http://s4u.github.io/jfatek/
+http://www.simplify4u.org/jfatek/
 
 
