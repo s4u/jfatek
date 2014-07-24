@@ -101,15 +101,6 @@
     </dependencies>
 
     <build>
-        <pluginManagement>
-            <plugins>
-                <plugin>
-                    <groupId>com.github.s4u.plugins</groupId>
-                    <artifactId>sitemapxml-maven-plugin</artifactId>
-                    <version>1.0.0</version>
-                </plugin>
-            </plugins>
-        </pluginManagement>
 
         <plugins>
             <plugin>
