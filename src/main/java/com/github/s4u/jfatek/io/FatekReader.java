@@ -43,7 +43,7 @@ public class FatekReader {
         this.msgBuf = new char[0];
     }
 
-    public int read(char[] buf) throws FatekIOException {
+    public int read(char... buf) throws FatekIOException {
 
         int lenToCopy = Math.min(buf.length, msgBuf.length - msgBufOutPos - 3);
         if (lenToCopy <= 0) {

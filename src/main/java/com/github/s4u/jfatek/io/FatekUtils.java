@@ -35,7 +35,7 @@ public final class FatekUtils {
         return crc;
     }
 
-    public static int countCRC(byte[] buf) {
+    public static int countCRC(byte... buf) {
 
         return countCRC(buf, buf.length);
     }
@@ -49,7 +49,7 @@ public final class FatekUtils {
      * @param bytes input array
      * @return string build from input array
      */
-    public static String byteArrayToString(byte[] bytes) {
+    public static String byteArrayToString(byte... bytes) {
 
         StringBuilder ret = new StringBuilder(bytes.length + 8);
         for (byte b : bytes) {

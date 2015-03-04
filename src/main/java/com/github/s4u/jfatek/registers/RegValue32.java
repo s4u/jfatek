@@ -28,7 +28,7 @@ public class RegValue32 extends RegValue {
         super(value, BITS);
     }
 
-    public RegValue32(char[] buf) {
+    public RegValue32(char... buf) {
 
         super(Long.parseLong(new String(buf, 0, 8), 16), BITS);
     }
