@@ -160,11 +160,11 @@ public abstract class FatekConnectionManager implements Closeable {
     @Override
     protected void finalize() throws Throwable {
 
-        super.finalize();
         if (connectionPool != null) {
             close();
             LOG.warn("Please invoke close on Fatek PLC to terminate open connections.", stack);
         }
+        super.finalize();
     }
 
 

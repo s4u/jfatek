@@ -124,7 +124,7 @@ public class FatekConfig {
                     try {
                         val = URLDecoder.decode(val, "ASCII");
                     } catch (UnsupportedEncodingException e) {
-                        // not possible
+                        val = null;
                     }
                     params.put(key, val);
                 }
