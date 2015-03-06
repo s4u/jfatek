@@ -16,6 +16,13 @@
 
 package com.github.s4u.jfatek.registers;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import com.github.s4u.jfatek.FatekException;
 
 /**
@@ -23,10 +30,72 @@ import com.github.s4u.jfatek.FatekException;
  */
 public abstract class Reg implements Cloneable {
 
+    protected static final Map<String, RegDesc> REGS_DESC;
+
     private final String name;
     private int address;
     private final boolean a32bit;
     private final int digitCount;
+
+    static {
+        Map<String, RegDesc> map = new HashMap<>();
+
+        map.put("X", RegDesc.DISC);
+        map.put("Y", RegDesc.DISC);
+        map.put("M", RegDesc.DISC);
+        map.put("S", RegDesc.DISC);
+        map.put("T", RegDesc.DISC);
+        map.put("C", RegDesc.DISC);
+
+        map.put("WX", RegDesc.DATA4_16B);
+        map.put("WY", RegDesc.DATA4_16B);
+        map.put("WM", RegDesc.DATA4_16B);
+        map.put("WS", RegDesc.DATA4_16B);
+        map.put("WT", RegDesc.DATA4_16B);
+        map.put("WC", RegDesc.DATA4_16B);
+        map.put("RT", RegDesc.DATA4_16B);
+        map.put("RC", RegDesc.DATA4_16B);
+
+        map.put("R", RegDesc.DATA5_16B);
+        map.put("D", RegDesc.DATA5_16B);
+        map.put("F", RegDesc.DATA5_16B);
+
+        map.put("DWX", RegDesc.DATA4_32B);
+        map.put("DWY", RegDesc.DATA4_32B);
+        map.put("DWM", RegDesc.DATA4_32B);
+        map.put("DWS", RegDesc.DATA4_32B);
+        map.put("DWT", RegDesc.DATA4_32B);
+        map.put("DWC", RegDesc.DATA4_32B);
+        map.put("DRT", RegDesc.DATA4_32B);
+        map.put("DRC", RegDesc.DATA4_32B);
+
+        map.put("DR", RegDesc.DATA5_32B);
+        map.put("DD", RegDesc.DATA5_32B);
+        map.put("DF", RegDesc.DATA5_32B);
+
+        REGS_DESC = Collections.unmodifiableMap(map);
+    }
+
+    static class RegDesc {
+
+        public boolean isDiscrete;
+        public boolean is32bit;
+        public int digitCount;
+
+        public static final RegDesc DISC = new RegDesc(true, false, 0);
+        public static final RegDesc DATA4_16B = new RegDesc(false, false, 4);
+        public static final RegDesc DATA4_32B = new RegDesc(false, true, 4);
+        public static final RegDesc DATA5_16B = new RegDesc(false, false, 5);
+        public static final RegDesc DATA5_32B = new RegDesc(false, true, 5);
+
+        public RegDesc(boolean isDiscrete, boolean is32bit, int digitCount) {
+
+            this.isDiscrete = isDiscrete;
+            this.is32bit = is32bit;
+            this.digitCount = digitCount;
+        }
+    }
+
 
     protected Reg(String name, int address, boolean a32bit, int digitCount) {
 
@@ -34,6 +103,50 @@ public abstract class Reg implements Cloneable {
         this.address = address;
         this.a32bit = a32bit;
         this.digitCount = digitCount;
+    }
+
+    /**
+     * @param strReg
+     * @return
+     */
+    public static Reg parse(String strReg) throws UnknownRegNameException {
+
+        if (null == strReg) {
+            throw new UnknownRegNameException(strReg);
+        }
+
+        String trimStrReg = strReg.trim().toUpperCase(Locale.US);
+
+        if (trimStrReg.length() == 0) {
+            throw new UnknownRegNameException(strReg);
+        }
+
+        Pattern pattern = Pattern.compile("([A-Z]+)(\\d+)");
+        Matcher matcher = pattern.matcher(trimStrReg);
+        if (!matcher.find()) {
+            throw new UnknownRegNameException(strReg);
+        }
+
+        int regAddress;
+        try {
+            regAddress = Integer.parseInt(matcher.group(2));
+        } catch (NumberFormatException e) {
+            throw new UnknownRegNameException(strReg, e);
+        }
+
+        String regName = matcher.group(1);
+
+        RegDesc regDesc = REGS_DESC.get(regName);
+
+        if (null == regDesc) {
+            throw new UnknownRegNameException(strReg);
+        }
+
+        if (regDesc.isDiscrete) {
+            return new DisReg(regName, regAddress);
+        } else {
+            return new DataReg(regName, regAddress, regDesc.is32bit, regDesc.digitCount);
+        }
     }
 
     public boolean is32Bits() {
