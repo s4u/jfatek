@@ -54,10 +54,10 @@ final class FatekConnectionFactoryLoader {
 
             ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
             if (classLoader == null) {
-                url = ClassLoader.getSystemResource(resName);
-            } else {
-                url = classLoader.getResource(resName);
+                classLoader = ClassLoader.getSystemClassLoader();
             }
+
+            url = classLoader.getResource(resName);
 
             if (url == null) {
                 return null;
@@ -70,8 +70,7 @@ final class FatekConnectionFactoryLoader {
                     return null;
                 }
 
-                Class<?> aClass = Class.forName(className, false, classLoader);
-
+                Class<?> aClass = classLoader.loadClass(className);
                 factory = FatekConnectionFactory.class.cast(aClass.newInstance());
                 cache.put(schemeUp, factory);
 
