@@ -46,12 +46,6 @@ public class RegValue32Test {
     }
 
     @Test
-    public void testBufConstructor() throws Exception {
-
-        assertEquals(new RegValue32(new char[]{'A', 'A', 'A', 'A', 'A', 'A', 'A', 'A'}).longValueUnsigned(), 0xaaaaaaaaL);
-    }
-
-    @Test
     public void testToFatekString() throws Exception {
 
         assertEquals(new RegValue32(0).toFatekString(), "00000000");

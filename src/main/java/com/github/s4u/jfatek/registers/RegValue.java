@@ -24,7 +24,6 @@ public abstract class RegValue {
     private long value;
     private final int bits;
 
-
     protected RegValue(long value, int bits) {
 
         this.value = value;
@@ -33,6 +32,33 @@ public abstract class RegValue {
             this.value += 1L << this.bits;
         }
     }
+
+    public static RegValue getForReg(Reg reg, boolean value) {
+
+        if (reg.isDiscrete()) {
+            return new RegValueDis(value);
+        }
+
+        if (reg.is32Bits()) {
+            return new RegValue32(value ? 1L : 0L);
+        }
+
+        return new RegValue16(value ? 1L : 0L);
+    }
+
+    public static RegValue getForReg(Reg reg, long value) {
+
+        if (reg.isDiscrete()) {
+            return new RegValueDis(value != 0);
+        }
+
+        if (reg.is32Bits()) {
+            return new RegValue32(value);
+        }
+
+        return new RegValue16(value);
+    }
+
 
     public int intValueUnsigned() {
 
@@ -49,7 +75,6 @@ public abstract class RegValue {
         return value;
     }
 
-    @SuppressWarnings("PMD.UselessParentheses") // PMD 5.0.2 error
     public long longValue() {
 
         if (value >= (1L << (bits - 1))) {

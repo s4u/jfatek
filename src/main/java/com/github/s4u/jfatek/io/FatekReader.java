@@ -103,7 +103,7 @@ public class FatekReader {
         if (n != 4) {
             throw new FatekUnexpectedEOSException();
         }
-        return new RegValue16(buf);
+        return new RegValue16(Long.parseLong(new String(buf, 0, 4), 16));
     }
 
     public RegValue32 readRegVal32() throws FatekIOException {
@@ -114,7 +114,7 @@ public class FatekReader {
         if (n != 8) {
             throw new FatekUnexpectedEOSException();
         }
-        return new RegValue32(buf);
+        return new RegValue32(Long.parseLong(new String(buf, 0, 8), 16));
     }
 
     /**

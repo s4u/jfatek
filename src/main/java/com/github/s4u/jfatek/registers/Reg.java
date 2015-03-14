@@ -127,13 +127,6 @@ public abstract class Reg implements Cloneable {
             throw new UnknownRegNameException(strReg);
         }
 
-        int regAddress;
-        try {
-            regAddress = Integer.parseInt(matcher.group(2));
-        } catch (NumberFormatException e) {
-            throw new UnknownRegNameException(strReg, e);
-        }
-
         String regName = matcher.group(1);
 
         RegDesc regDesc = REGS_DESC.get(regName);
@@ -141,6 +134,8 @@ public abstract class Reg implements Cloneable {
         if (null == regDesc) {
             throw new UnknownRegNameException(strReg);
         }
+
+        int regAddress = Integer.parseInt(matcher.group(2));
 
         if (regDesc.isDiscrete) {
             return new DisReg(regName, regAddress);

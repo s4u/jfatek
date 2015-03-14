@@ -47,12 +47,6 @@ public class RegValue16Test {
     }
 
     @Test
-    public void testBufConstructor() throws Exception {
-
-        assertEquals(new RegValue16(new char[]{'A', 'A', 'A', 'A'}).intValueUnsigned(), 0xaaaa);
-    }
-
-    @Test
     public void testToFatekString() throws Exception {
 
         assertEquals(new RegValue16(0).toFatekString(), "0000");

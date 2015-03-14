@@ -28,11 +28,6 @@ public class RegValue32 extends RegValue {
         super(value, BITS);
     }
 
-    public RegValue32(char... buf) {
-
-        super(Long.parseLong(new String(buf, 0, 8), 16), BITS);
-    }
-
     private static RegValue32 factory(long value) {
 
         return new RegValue32(value);

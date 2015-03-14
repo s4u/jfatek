@@ -16,6 +16,7 @@
 
 package com.github.s4u.jfatek;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import com.github.s4u.jfatek.io.FatekIOException;
@@ -37,6 +38,15 @@ public class FatekWriteMixDataCmd extends FatekCommand {
 
         super(fatekPLC);
         this.values = values;
+    }
+
+    public FatekWriteMixDataCmd(FatekPLC fatekPLC, Reg reg, RegValue value) {
+
+        super(fatekPLC);
+
+        Map<Reg, RegValue> map = new HashMap<>(1);
+        map.put(reg, value);
+        values = map;
     }
 
     @Override

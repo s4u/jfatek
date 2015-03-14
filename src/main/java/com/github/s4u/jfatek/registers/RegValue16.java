@@ -28,18 +28,15 @@ public class RegValue16 extends RegValue {
         super(value, BITS);
     }
 
-    public RegValue16(char... buf) {
-
-        super(Long.parseLong(new String(buf, 0, 4), 16), BITS);
-    }
-
     private static RegValue16 factory(int value) {
+
         return new RegValue16(value);
     }
 
     public static RegValue16[] asArray(int... values) {
+
         RegValue16[] ret = new RegValue16[values.length];
-        for (int i =0; i < values.length; i++) {
+        for (int i = 0; i < values.length; i++) {
             ret[i] = factory(values[i]);
         }
         return ret;
