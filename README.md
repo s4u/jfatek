@@ -1,4 +1,7 @@
-# Java Fatek PLC client library [![Build Status](https://travis-ci.org/s4u/jfatek.png?branch=master)](https://travis-ci.org/s4u/jfatek)
+# Java Fatek PLC client library
+
+[![Build Status](https://travis-ci.org/s4u/jfatek.png?branch=master)](https://travis-ci.org/s4u/jfatek)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.github.s4u/jfatek/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.github.s4u/jfatek)
 
 This project implements Fatek protocol to communicate with Fatek PLC (Programmable Logic Controller).
 
