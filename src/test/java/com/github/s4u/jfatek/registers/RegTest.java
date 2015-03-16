@@ -45,12 +45,33 @@ import static com.github.s4u.jfatek.registers.DisReg.T;
 import static com.github.s4u.jfatek.registers.DisReg.X;
 import static com.github.s4u.jfatek.registers.DisReg.Y;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotSame;
 
+import com.github.s4u.jfatek.FatekException;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class RegTest {
 
+
+    @Test
+    public void testClone() throws FatekException {
+
+        Reg r1 = X(1);
+        Reg r2 = r1.cloneReg();
+
+        assertEquals(r1, r2);
+        assertNotSame(r1, r2);
+    }
+
+    @Test
+    public void testInc() throws FatekException {
+
+        Reg r1 = X(1);
+        r1.inc(10);
+
+        assertEquals(r1, X(11));
+    }
 
     @DataProvider(name = "provideRegsOK")
     public Object[][] provideData() {
@@ -93,5 +114,23 @@ public class RegTest {
     public void testParse(String strReg, Reg reg) throws Exception {
 
         assertEquals(Reg.parse(strReg), reg);
+    }
+
+    @DataProvider(name = "provideRegsWrong")
+    public Object[][] provideDataWrong() {
+
+        return new Object[][]{
+                {null},
+                {""},
+                {" "},
+                {"X"},
+                {"O2"}
+        };
+    }
+
+    @Test(dataProvider = "provideRegsWrong", expectedExceptions = UnknownRegNameException.class)
+    public void testParseError(String strReg) throws Exception {
+
+        Reg.parse(strReg);
     }
 }

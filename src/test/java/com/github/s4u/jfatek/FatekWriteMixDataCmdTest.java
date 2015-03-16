@@ -50,9 +50,16 @@ public class FatekWriteMixDataCmdTest {
 
             new FatekWriteMixDataCmd(fatekPLC, map).send();
         }
-
-
     }
 
+    @Test
+    public void testCmdArgs() throws Exception {
 
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1" +
+                "&plcOutData=014901Y00001" +
+                "&plcInData=01490")) {
+
+            new FatekWriteMixDataCmd(fatekPLC, Y(0), RegValueDis.TRUE).send();
+        }
+    }
 }

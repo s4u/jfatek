@@ -85,12 +85,17 @@ public abstract class RegValue {
 
     public boolean boolValue() {
 
-        return value == 1;
+        return value != 0;
     }
 
     public boolean is32Bit() {
 
         return bits == 32;
+    }
+
+    public boolean isDiscrete() {
+
+        return bits == 1;
     }
 
     @Override

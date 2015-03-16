@@ -20,6 +20,7 @@ import static com.github.s4u.jfatek.registers.DataReg.DR;
 import static com.github.s4u.jfatek.registers.DataReg.R;
 import static com.github.s4u.jfatek.registers.DisReg.M;
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
@@ -30,23 +31,27 @@ public class RegValueTest {
     public Object[][] provideData() {
 
         return new Object[][]{
-                {M(1), RegValueDis.class},
-                {R(1), RegValue16.class},
-                {DR(1), RegValue32.class},
+                {M(1), RegValueDis.class, true},
+                {R(1), RegValue16.class, false},
+                {DR(1), RegValue32.class, false},
         };
     }
 
     @Test(dataProvider = "regsClass")
-    public void testForRegBool(Reg reg, Class<? extends RegValue> regValueClass) throws Exception {
+    public void testForRegBool(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
 
         RegValue regValue = RegValue.getForReg(reg, true);
         assertEquals(regValue.getClass(), regValueClass);
+        assertTrue(regValue.boolValue(), "boolValue");
+        assertEquals(regValue.isDiscrete(), isDiscrete);
     }
 
     @Test(dataProvider = "regsClass")
-    public void testForRegLong(Reg reg, Class<? extends RegValue> regValueClass) throws Exception {
+    public void testForRegLong(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
 
         RegValue regValue = RegValue.getForReg(reg, 123);
         assertEquals(regValue.getClass(), regValueClass);
+        assertTrue(regValue.boolValue(), "boolValue");
+        assertEquals(regValue.isDiscrete(), isDiscrete);
     }
 }

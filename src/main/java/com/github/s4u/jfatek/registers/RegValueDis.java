@@ -29,6 +29,11 @@ public class RegValueDis extends RegValue {
         super(value ? 1 : 0, 1);
     }
 
+    @Override
+    public String toString() {
+
+        return String.valueOf(boolValue());
+    }
 
     @Override
     public String toFatekString() {
