@@ -102,7 +102,6 @@
     </dependencies>
 
     <build>
-
         <plugins>
             <plugin>
                 <groupId>org.jacoco</groupId>
@@ -115,27 +114,6 @@
                         </goals>
                     </execution>
                 </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-pmd-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>id-pmd</id>
-                        <goals>
-                            <goal>check</goal>
-                            <goal>cpd-check</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <printFailingErrors>true</printFailingErrors>
-                    <linkXRef>false</linkXRef>
-                    <targetJdk>${maven.compiler.source}</targetJdk>
-                    <rulesets>
-                        <ruleset>${project.basedir}/pmd.xml</ruleset>
-                    </rulesets>
-                </configuration>
             </plugin>
             <plugin>
                 <groupId>com.github.s4u.plugins</groupId>
