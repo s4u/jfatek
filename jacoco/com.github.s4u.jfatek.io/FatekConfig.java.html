@@ -124,7 +124,7 @@ public class FatekConfig {
                     try {
 <span class="fc" id="L125">                        val = URLDecoder.decode(val, &quot;ASCII&quot;);</span>
 <span class="nc" id="L126">                    } catch (UnsupportedEncodingException e) {</span>
-                        // not possible
+<span class="nc" id="L127">                        val = null;</span>
 <span class="fc" id="L128">                    }</span>
 <span class="fc" id="L129">                    params.put(key, val);</span>
                 }
@@ -154,4 +154,4 @@ public class FatekConfig {
 <span class="nc" id="L154">        return 1;</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

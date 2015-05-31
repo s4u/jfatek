@@ -16,6 +16,7 @@
 
 package com.github.s4u.jfatek;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.github.s4u.jfatek.io.FatekIOException;
@@ -31,29 +32,55 @@ import com.github.s4u.jfatek.registers.RegValue;
 public class FatekWriteMixDataCmd extends FatekCommand {
 
     public static final int CMD_ID = 0x49;
-    private final Map&lt;? extends Reg, ? extends RegValue&gt; values;
+<span class="fc" id="L35">    private final Map&lt;Reg, RegValue&gt; values = new LinkedHashMap&lt;&gt;();</span>
+
+    public FatekWriteMixDataCmd(FatekPLC fatekPLC) {
+
+<span class="fc" id="L39">        super(fatekPLC);</span>
+<span class="fc" id="L40">    }</span>
 
     public FatekWriteMixDataCmd(FatekPLC fatekPLC, Map&lt;? extends Reg, ? extends RegValue&gt; values) {
 
-<span class="fc" id="L38">        super(fatekPLC);</span>
-<span class="fc" id="L39">        this.values = values;</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L44">        super(fatekPLC);</span>
+<span class="fc" id="L45">        this.values.putAll(values);</span>
+<span class="fc" id="L46">    }</span>
+
+    public FatekWriteMixDataCmd(FatekPLC fatekPLC, Reg reg, RegValue value) {
+
+<span class="fc" id="L50">        super(fatekPLC);</span>
+<span class="fc" id="L51">        values.put(reg, value);</span>
+<span class="fc" id="L52">    }</span>
+
+    public FatekWriteMixDataCmd addReg(Reg reg, RegValue value) {
+<span class="fc" id="L55">        values.put(reg, value);</span>
+<span class="fc" id="L56">        return this;</span>
+    }
+
+    public FatekWriteMixDataCmd addReg(Reg reg, long value) {
+<span class="fc" id="L60">        values.put(reg, RegValue.getForReg(reg, value));</span>
+<span class="fc" id="L61">        return this;</span>
+    }
+
+    public FatekWriteMixDataCmd addReg(Reg reg, boolean value) {
+<span class="fc" id="L65">        values.put(reg, RegValue.getForReg(reg, value));</span>
+<span class="fc" id="L66">        return this;</span>
+    }
 
     @Override
     public int getID() {
 
-<span class="fc" id="L45">        return CMD_ID;</span>
+<span class="fc" id="L72">        return CMD_ID;</span>
     }
 
     @Override
     protected void writeData(FatekWriter writer) throws FatekIOException {
 
-<span class="fc" id="L51">        writer.writeByte(values.size());</span>
+<span class="fc" id="L78">        writer.writeByte(values.size());</span>
 
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (Map.Entry&lt;? extends Reg, ? extends RegValue&gt; ve : values.entrySet()) {</span>
-<span class="fc" id="L54">            writer.write(ve.getKey().toString());</span>
-<span class="fc" id="L55">            writer.write(ve.getValue().toFatekString());</span>
-<span class="fc" id="L56">        }</span>
-<span class="fc" id="L57">    }</span>
+<span class="fc bfc" id="L80" title="All 2 branches covered.">        for (Map.Entry&lt;? extends Reg, ? extends RegValue&gt; ve : values.entrySet()) {</span>
+<span class="fc" id="L81">            writer.write(ve.getKey().toString());</span>
+<span class="fc" id="L82">            writer.write(ve.getValue().toFatekString());</span>
+<span class="fc" id="L83">        }</span>
+<span class="fc" id="L84">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

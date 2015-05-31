@@ -64,32 +64,31 @@ import com.github.s4u.jfatek.io.FatekConnectionFactory;
                 @Override
                 public void flush() throws IOException {
 
-<span class="nc" id="L67">                    DatagramPacket packet = new DatagramPacket(toByteArray(), size(),</span>
-                            fatekConfig.getSocketAddress(DEFAULT_PORT));
-<span class="nc" id="L69">                    socket.send(packet);</span>
-<span class="nc" id="L70">                    reset();</span>
-<span class="nc" id="L71">                }</span>
+<span class="nc" id="L67">                    DatagramPacket packet = new DatagramPacket(toByteArray(), size(), getSocketAddress(DEFAULT_PORT));</span>
+<span class="nc" id="L68">                    socket.send(packet);</span>
+<span class="nc" id="L69">                    reset();</span>
+<span class="nc" id="L70">                }</span>
             };
         }
 
         @Override
         protected void closeConnection() throws IOException {
 
-<span class="nc" id="L78">            socket.close();</span>
+<span class="nc" id="L77">            socket.close();</span>
 
-<span class="nc" id="L80">        }</span>
+<span class="nc" id="L79">        }</span>
 
         @Override
         public boolean isConnected() {
 
-<span class="nc bnc" id="L85" title="All 2 branches missed.">            return !socket.isClosed();</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            return !socket.isClosed();</span>
         }
     }
 
     @Override
     public FatekConnection getConnection(FatekConfig fatekConfig) throws IOException {
 
-<span class="nc" id="L92">        return new Connection(fatekConfig);</span>
+<span class="nc" id="L91">        return new Connection(fatekConfig);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

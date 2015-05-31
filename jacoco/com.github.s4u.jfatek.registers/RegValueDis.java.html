@@ -29,11 +29,16 @@ public class RegValueDis extends RegValue {
 <span class="fc bfc" id="L29" title="All 2 branches covered.">        super(value ? 1 : 0, 1);</span>
 <span class="fc" id="L30">    }</span>
 
+    @Override
+    public String toString() {
+
+<span class="nc" id="L35">        return String.valueOf(boolValue());</span>
+    }
 
     @Override
     public String toFatekString() {
 
-<span class="fc" id="L36">        return String.format(&quot;%d&quot;, longValueUnsigned());</span>
+<span class="fc" id="L41">        return String.format(&quot;%d&quot;, longValueUnsigned());</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

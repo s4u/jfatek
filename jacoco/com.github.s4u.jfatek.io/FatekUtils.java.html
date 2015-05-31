@@ -35,7 +35,7 @@ public final class FatekUtils {
 <span class="fc" id="L35">        return crc;</span>
     }
 
-    public static int countCRC(byte[] buf) {
+    public static int countCRC(byte... buf) {
 
 <span class="fc" id="L40">        return countCRC(buf, buf.length);</span>
     }
@@ -49,7 +49,7 @@ public final class FatekUtils {
      * @param bytes input array
      * @return string build from input array
      */
-    public static String byteArrayToString(byte[] bytes) {
+    public static String byteArrayToString(byte... bytes) {
 
 <span class="fc" id="L54">        StringBuilder ret = new StringBuilder(bytes.length + 8);</span>
 <span class="fc bfc" id="L55" title="All 2 branches covered.">        for (byte b : bytes) {</span>
@@ -68,4 +68,4 @@ public final class FatekUtils {
 <span class="fc" id="L68">        return ret.toString();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

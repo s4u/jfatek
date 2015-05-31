@@ -29,7 +29,7 @@ import java.util.WeakHashMap;
  */
 final class FatekConnectionFactoryLoader {
 
-<span class="fc" id="L32">    private final static Map&lt;String, FatekConnectionFactory&gt; cache = new WeakHashMap&lt;&gt;();</span>
+<span class="fc" id="L32">    private static final Map&lt;String, FatekConnectionFactory&gt; CACHE = new WeakHashMap&lt;&gt;();</span>
 
 <span class="nc" id="L34">    private FatekConnectionFactoryLoader() {</span>
         // it is utils class
@@ -42,8 +42,8 @@ final class FatekConnectionFactoryLoader {
         }
 
 <span class="fc" id="L44">        String schemeUp = scheme.toUpperCase(Locale.ENGLISH);</span>
-<span class="fc" id="L45">        synchronized (cache) {</span>
-<span class="fc" id="L46">            FatekConnectionFactory factory = cache.get(schemeUp);</span>
+<span class="fc" id="L45">        synchronized (CACHE) {</span>
+<span class="fc" id="L46">            FatekConnectionFactory factory = CACHE.get(schemeUp);</span>
 
 <span class="fc bfc" id="L48" title="All 2 branches covered.">            if (factory != null) {</span>
 <span class="fc" id="L49">                return factory;</span>
@@ -54,10 +54,10 @@ final class FatekConnectionFactoryLoader {
 
 <span class="fc" id="L55">            ClassLoader classLoader = Thread.currentThread().getContextClassLoader();</span>
 <span class="pc bpc" id="L56" title="1 of 2 branches missed.">            if (classLoader == null) {</span>
-<span class="nc" id="L57">                url = ClassLoader.getSystemResource(resName);</span>
-            } else {
-<span class="fc" id="L59">                url = classLoader.getResource(resName);</span>
+<span class="nc" id="L57">                classLoader = ClassLoader.getSystemClassLoader();</span>
             }
+
+<span class="fc" id="L60">            url = classLoader.getResource(resName);</span>
 
 <span class="fc bfc" id="L62" title="All 2 branches covered.">            if (url == null) {</span>
 <span class="fc" id="L63">                return null;</span>
@@ -70,35 +70,34 @@ final class FatekConnectionFactoryLoader {
 <span class="nc" id="L70">                    return null;</span>
                 }
 
-<span class="fc" id="L73">                Class&lt;?&gt; aClass = Class.forName(className, false, classLoader);</span>
+<span class="fc" id="L73">                Class&lt;?&gt; aClass = classLoader.loadClass(className);</span>
+<span class="fc" id="L74">                factory = FatekConnectionFactory.class.cast(aClass.newInstance());</span>
+<span class="fc" id="L75">                CACHE.put(schemeUp, factory);</span>
 
-<span class="fc" id="L75">                factory = FatekConnectionFactory.class.cast(aClass.newInstance());</span>
-<span class="fc" id="L76">                cache.put(schemeUp, factory);</span>
+<span class="fc" id="L77">                return factory;</span>
 
-<span class="fc" id="L78">                return factory;</span>
-
-<span class="nc" id="L80">            } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {</span>
-<span class="nc" id="L81">                throw new FatekIOException(e);</span>
+<span class="nc" id="L79">            } catch (IOException | ClassNotFoundException | InstantiationException | IllegalAccessException e) {</span>
+<span class="nc" id="L80">                throw new FatekIOException(e);</span>
             }
-<span class="nc" id="L83">        }</span>
+<span class="nc" id="L82">        }</span>
     }
 
     private static String readClassName(URL url) throws IOException {
 
-<span class="pc" id="L88">        try (BufferedReader buf = new BufferedReader(new InputStreamReader(url.openStream()))) {</span>
+<span class="pc" id="L87">        try (BufferedReader buf = new BufferedReader(new InputStreamReader(url.openStream()))) {</span>
             while (true) {
-<span class="fc" id="L90">                String line = buf.readLine();</span>
-<span class="pc bpc" id="L91" title="1 of 2 branches missed.">                if (line == null) {</span>
-<span class="nc" id="L92">                    return null;</span>
+<span class="fc" id="L89">                String line = buf.readLine();</span>
+<span class="pc bpc" id="L90" title="1 of 2 branches missed.">                if (line == null) {</span>
+<span class="nc" id="L91">                    return null;</span>
                 }
 
-<span class="fc" id="L95">                line = line.replaceAll(&quot;#.*$&quot;, &quot;&quot;).trim();</span>
+<span class="fc" id="L94">                line = line.replaceAll(&quot;#.*$&quot;, &quot;&quot;).trim();</span>
 
-<span class="fc bfc" id="L97" title="All 2 branches covered.">                if (line.length() &gt; 0) {</span>
-<span class="fc" id="L98">                    return line;</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">                if (line.length() &gt; 0) {</span>
+<span class="fc" id="L97">                    return line;</span>
                 }
-<span class="fc" id="L100">            }</span>
-<span class="pc bpc" id="L101" title="10 of 12 branches missed.">        }</span>
+<span class="fc" id="L99">            }</span>
+<span class="pc bpc" id="L100" title="10 of 12 branches missed.">        }</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

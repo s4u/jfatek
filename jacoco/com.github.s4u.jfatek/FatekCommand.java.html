@@ -104,7 +104,7 @@ public abstract class FatekCommand&lt;T&gt; {
 <span class="fc" id="L104">            fatekPLC.returnConnection(conn);</span>
 <span class="pc bpc" id="L105" title="2 of 4 branches missed.">            if (LOG.isDebugEnabled()) {</span>
 <span class="fc" id="L106">                LOG.debug(&quot;Process command ID: 0x{} work time: {} ms&quot;,</span>
-                        Integer.toHexString(getID()).toUpperCase(), System.currentTimeMillis() - startTime);
+<span class="fc" id="L107">                        Integer.toHexString(getID()).toUpperCase(), System.currentTimeMillis() - startTime);</span>
             }
         }
 
@@ -154,4 +154,4 @@ public abstract class FatekCommand&lt;T&gt; {
 <span class="fc" id="L154">        readData(reader);</span>
 <span class="fc" id="L155">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

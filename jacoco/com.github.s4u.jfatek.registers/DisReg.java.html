@@ -19,39 +19,40 @@ package com.github.s4u.jfatek.registers;
 /**
  * @author Slawomir Jaranowski.
  */
+@SuppressWarnings(&quot;checkstyle:methodname&quot;)
 public class DisReg extends Reg {
 
     protected DisReg(String name, int address) {
-<span class="fc" id="L25">        super(name, address, false, 4);</span>
-<span class="fc" id="L26">    }</span>
+<span class="fc" id="L26">        super(name, address, false, 4);</span>
+<span class="fc" id="L27">    }</span>
 
     @Override
     public boolean isDiscrete() {
-<span class="fc" id="L30">        return true;</span>
+<span class="fc" id="L31">        return true;</span>
     }
 
     public static DisReg X(int address) {
-<span class="fc" id="L34">        return new DisReg(&quot;X&quot;, address);</span>
+<span class="fc" id="L35">        return new DisReg(&quot;X&quot;, address);</span>
     }
 
     public static DisReg Y(int address) {
-<span class="fc" id="L38">        return new DisReg(&quot;Y&quot;, address);</span>
+<span class="fc" id="L39">        return new DisReg(&quot;Y&quot;, address);</span>
     }
 
     public static DisReg M(int address) {
-<span class="fc" id="L42">        return new DisReg(&quot;M&quot;, address);</span>
+<span class="fc" id="L43">        return new DisReg(&quot;M&quot;, address);</span>
     }
 
     public static DisReg S(int address) {
-<span class="fc" id="L46">        return new DisReg(&quot;S&quot;, address);</span>
+<span class="fc" id="L47">        return new DisReg(&quot;S&quot;, address);</span>
     }
 
     public static DisReg T(int address) {
-<span class="fc" id="L50">        return new DisReg(&quot;T&quot;, address);</span>
+<span class="fc" id="L51">        return new DisReg(&quot;T&quot;, address);</span>
     }
 
     public static DisReg C(int address) {
-<span class="fc" id="L54">        return new DisReg(&quot;C&quot;, address);</span>
+<span class="fc" id="L55">        return new DisReg(&quot;C&quot;, address);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

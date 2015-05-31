@@ -68,14 +68,14 @@ public class FatekLoopCmd extends FatekCommand&lt;Void&gt; {
     @Override
     protected void writeData(FatekWriter writer) throws FatekIOException {
 
-<span class="fc" id="L71">        writer.writeNibble('0');// will be return as status</span>
+<span class="fc" id="L71">        writer.writeNibble('0'); // will be return as status</span>
 <span class="fc" id="L72">        writer.write(message);</span>
 <span class="fc" id="L73">    }</span>
 
     @Override
     protected void readData(FatekReader reader) throws FatekException, FatekIOException {
 
-<span class="fc" id="L78">        char buf[] = new char[message.length()];</span>
+<span class="fc" id="L78">        char[] buf = new char[message.length()];</span>
 
 <span class="fc bfc" id="L80" title="All 2 branches covered.">        if (reader.read(buf) != buf.length) {</span>
 <span class="fc" id="L81">            throw new FatekException(&quot;Invalid response length&quot;);</span>
@@ -86,4 +86,4 @@ public class FatekLoopCmd extends FatekCommand&lt;Void&gt; {
         }
 <span class="fc" id="L87">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

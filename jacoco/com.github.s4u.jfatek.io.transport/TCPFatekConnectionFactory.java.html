@@ -40,11 +40,11 @@ import com.github.s4u.jfatek.io.FatekConnectionFactory;
 <span class="nc" id="L40">        public Connection(FatekConfig fatekConfig) throws IOException {</span>
 
 <span class="nc" id="L42">            super(fatekConfig);</span>
-<span class="nc" id="L43">            int timeOut = fatekConfig.getTimeout();</span>
+<span class="nc" id="L43">            int timeOut = getTimeout();</span>
 
 <span class="nc" id="L45">            socket = new Socket();</span>
 <span class="nc" id="L46">            socket.setSoTimeout(timeOut);</span>
-<span class="nc" id="L47">            socket.connect(fatekConfig.getSocketAddress(DEFAULT_PORT), timeOut);</span>
+<span class="nc" id="L47">            socket.connect(getSocketAddress(DEFAULT_PORT), timeOut);</span>
 <span class="nc" id="L48">        }</span>
 
         @Override
@@ -78,4 +78,4 @@ import com.github.s4u.jfatek.io.FatekConnectionFactory;
 <span class="nc" id="L78">        return new Connection(fatekConfig);</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

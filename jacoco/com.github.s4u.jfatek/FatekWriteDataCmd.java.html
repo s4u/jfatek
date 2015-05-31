@@ -16,9 +16,13 @@
 
 package com.github.s4u.jfatek;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.github.s4u.jfatek.io.FatekIOException;
 import com.github.s4u.jfatek.io.FatekWriter;
-import com.github.s4u.jfatek.registers.DataReg;
+import com.github.s4u.jfatek.registers.Reg;
 import com.github.s4u.jfatek.registers.RegValue;
 
 /**
@@ -29,33 +33,97 @@ import com.github.s4u.jfatek.registers.RegValue;
 public class FatekWriteDataCmd extends FatekCommand {
 
     public static final int CMD_ID = 0x47;
-    private final DataReg startReg;
-    private final RegValue[] values;
+    private final Reg startReg;
+<span class="fc" id="L37">    private final List&lt;RegValue&gt; values = new ArrayList&lt;&gt;();</span>
 
-    public FatekWriteDataCmd(FatekPLC fatekPLC, DataReg startReg, RegValue... values) {
+    /**
+     * Write command. After this constructor we need call addValue.
+     *
+     * @param fatekPLC fatek connection
+     * @param startReg register to startWrite
+     */
+    public FatekWriteDataCmd(FatekPLC fatekPLC, Reg startReg) {
 
-<span class="fc" id="L37">        super(fatekPLC);</span>
-<span class="fc" id="L38">        this.startReg = startReg;</span>
-<span class="fc" id="L39">        this.values = values;</span>
-<span class="fc" id="L40">    }</span>
+<span class="fc" id="L47">        super(fatekPLC);</span>
+<span class="fc" id="L48">        this.startReg = startReg;</span>
+<span class="fc" id="L49">    }</span>
+
+    public FatekWriteDataCmd(FatekPLC fatekPLC, Reg startReg, RegValue... values) {
+
+<span class="fc" id="L53">        super(fatekPLC);</span>
+<span class="fc" id="L54">        this.startReg = startReg;</span>
+<span class="fc" id="L55">        this.values.addAll(Arrays.asList(values));</span>
+<span class="fc" id="L56">    }</span>
+
+    public FatekWriteDataCmd(FatekPLC fatekPLC, Reg startReg, long... longValues) {
+
+<span class="fc" id="L60">        super(fatekPLC);</span>
+<span class="fc" id="L61">        this.startReg = startReg;</span>
+<span class="fc bfc" id="L62" title="All 2 branches covered.">        for (long value : longValues) {</span>
+<span class="fc" id="L63">            values.add(RegValue.getForReg(startReg, value));</span>
+        }
+<span class="fc" id="L65">    }</span>
+
+    public FatekWriteDataCmd(FatekPLC fatekPLC, Reg startReg, boolean... longValues) {
+
+<span class="fc" id="L69">        super(fatekPLC);</span>
+<span class="fc" id="L70">        this.startReg = startReg;</span>
+<span class="fc bfc" id="L71" title="All 2 branches covered.">        for (boolean value : longValues) {</span>
+<span class="fc" id="L72">            values.add(RegValue.getForReg(startReg, value));</span>
+        }
+<span class="fc" id="L74">    }</span>
+
+    /**
+     * Add next value to write.
+     *
+     * @param value value
+     * @return this object
+     */
+    public FatekWriteDataCmd addValue(RegValue value) {
+<span class="fc" id="L83">        values.add(value);</span>
+<span class="fc" id="L84">        return this;</span>
+    }
+
+    /**
+     * Add next value to write.
+     *
+     * @param value value
+     * @return this object
+     */
+    public FatekWriteDataCmd addValue(long value) {
+<span class="fc" id="L94">        values.add(RegValue.getForReg(startReg, value));</span>
+<span class="fc" id="L95">        return this;</span>
+    }
+
+    /**
+     * Add next value to write.
+     *
+     * @param value value
+     * @return this object
+     */
+    public FatekWriteDataCmd addValue(boolean value) {
+<span class="fc" id="L105">        values.add(RegValue.getForReg(startReg, value));</span>
+<span class="fc" id="L106">        return this;</span>
+    }
 
     @Override
     public int getID() {
 
-<span class="fc" id="L45">        return CMD_ID;</span>
+<span class="fc" id="L112">        return CMD_ID;</span>
     }
 
     @Override
     protected void writeData(FatekWriter writer) throws FatekIOException, FatekException {
 
-<span class="fc" id="L51">        writer.writeByte(values.length);</span>
-<span class="fc" id="L52">        writer.write(startReg.toString());</span>
-<span class="fc bfc" id="L53" title="All 2 branches covered.">        for (RegValue value : values) {</span>
-<span class="fc bfc" id="L54" title="All 2 branches covered.">            if (value.is32Bit() != startReg.is32Bits()) {</span>
-<span class="fc" id="L55">                throw new FatekException(&quot;Invalid value length&quot;);</span>
+<span class="fc" id="L118">        writer.writeByte(values.size());</span>
+<span class="fc" id="L119">        writer.write(startReg.toString());</span>
+
+<span class="fc bfc" id="L121" title="All 2 branches covered.">        for (RegValue value : values) {</span>
+<span class="pc bpc" id="L122" title="1 of 4 branches missed.">            if (value.is32Bit() != startReg.is32Bits() || value.isDiscrete() != startReg.isDiscrete()) {</span>
+<span class="fc" id="L123">                throw new FatekException(&quot;Invalid value type&quot;);</span>
             }
-<span class="fc" id="L57">            writer.write(value.toFatekString());</span>
-        }
-<span class="fc" id="L59">    }</span>
+<span class="fc" id="L125">            writer.write(value.toFatekString());</span>
+<span class="fc" id="L126">        }</span>
+<span class="fc" id="L127">    }</span>
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

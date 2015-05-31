@@ -19,18 +19,19 @@ package com.github.s4u.jfatek.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketAddress;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public abstract class FatekConnection {
 
-    protected final FatekConfig fatekConfig;
+    private final FatekConfig fatekConfig;
 
-<span class="fc" id="L30">    protected FatekConnection(FatekConfig fatekConfig) {</span>
+<span class="fc" id="L31">    protected FatekConnection(FatekConfig fatekConfig) {</span>
 
-<span class="fc" id="L32">        this.fatekConfig = fatekConfig;</span>
-<span class="fc" id="L33">    }</span>
+<span class="fc" id="L33">        this.fatekConfig = fatekConfig;</span>
+<span class="fc" id="L34">    }</span>
 
     protected abstract InputStream getInputStream() throws IOException;
 
@@ -43,38 +44,46 @@ public abstract class FatekConnection {
     public final FatekWriter getWriter() throws FatekIOException {
 
         try {
-<span class="fc" id="L46">            return new FatekWriter(getOutputStream());</span>
-<span class="nc" id="L47">        } catch (IOException e) {</span>
-<span class="nc" id="L48">            throw new FatekIOException(e);</span>
+<span class="fc" id="L47">            return new FatekWriter(getOutputStream());</span>
+<span class="nc" id="L48">        } catch (IOException e) {</span>
+<span class="nc" id="L49">            throw new FatekIOException(e);</span>
         }
     }
 
     public final FatekReader getReader() throws FatekIOException {
 
         try {
-<span class="fc" id="L55">            return new FatekReader(getInputStream());</span>
-<span class="nc" id="L56">        } catch (IOException e) {</span>
-<span class="nc" id="L57">            throw new FatekIOException(e);</span>
+<span class="fc" id="L56">            return new FatekReader(getInputStream());</span>
+<span class="nc" id="L57">        } catch (IOException e) {</span>
+<span class="nc" id="L58">            throw new FatekIOException(e);</span>
         }
     }
 
     public final void close() throws FatekIOException {
 
         try {
-<span class="fc" id="L64">            closeConnection();</span>
-<span class="nc" id="L65">        } catch (IOException e) {</span>
-<span class="nc" id="L66">            throw new FatekIOException(e);</span>
-<span class="fc" id="L67">        }</span>
-<span class="fc" id="L68">    }</span>
+<span class="fc" id="L65">            closeConnection();</span>
+<span class="nc" id="L66">        } catch (IOException e) {</span>
+<span class="nc" id="L67">            throw new FatekIOException(e);</span>
+<span class="fc" id="L68">        }</span>
+<span class="fc" id="L69">    }</span>
 
     public int getPlcId() {
 
-<span class="fc" id="L72">        return fatekConfig.getPlcId();</span>
+<span class="fc" id="L73">        return fatekConfig.getPlcId();</span>
     }
 
     public String getParam(String key) {
 
-<span class="fc" id="L77">        return fatekConfig.getParam(key);</span>
+<span class="fc" id="L78">        return fatekConfig.getParam(key);</span>
+    }
+
+    public SocketAddress getSocketAddress(int defaultPort) {
+<span class="nc" id="L82">        return fatekConfig.getSocketAddress(defaultPort);</span>
+    }
+
+    public int getTimeout() {
+<span class="nc" id="L86">        return fatekConfig.getTimeout();</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

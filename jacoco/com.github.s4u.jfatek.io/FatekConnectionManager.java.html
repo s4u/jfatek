@@ -94,7 +94,7 @@ public abstract class FatekConnectionManager implements Closeable {
         }
 <span class="fc" id="L95">    }</span>
 
-    protected FatekConnection _getConnection() throws FatekIOException {
+    protected FatekConnection getConnection0() throws FatekIOException {
 
         try {
             FatekConnection conn;
@@ -113,7 +113,7 @@ public abstract class FatekConnectionManager implements Closeable {
         }
     }
 
-    protected void _returnConnection(FatekConnection conn) throws FatekIOException {
+    protected void returnConnection0(FatekConnection conn) throws FatekIOException {
 
 <span class="pc bpc" id="L118" title="2 of 4 branches missed.">        if (conn == null || !conn.isConnected()) {</span>
 <span class="nc" id="L119">            return;</span>
@@ -154,17 +154,17 @@ public abstract class FatekConnectionManager implements Closeable {
 
 <span class="fc" id="L155">        executorService = Executors.newSingleThreadScheduledExecutor();</span>
 <span class="fc" id="L156">        executorService.scheduleWithFixedDelay(new ExecutorTask(),</span>
-                fatekConfig.getClearConnInterval(), fatekConfig.getClearConnInterval(), TimeUnit.SECONDS);
+<span class="fc" id="L157">                fatekConfig.getClearConnInterval(), fatekConfig.getClearConnInterval(), TimeUnit.SECONDS);</span>
 <span class="fc" id="L158">    }</span>
 
     @Override
     protected void finalize() throws Throwable {
 
-<span class="fc" id="L163">        super.finalize();</span>
-<span class="pc bpc" id="L164" title="1 of 2 branches missed.">        if (connectionPool != null) {</span>
-<span class="nc" id="L165">            close();</span>
-<span class="nc" id="L166">            LOG.warn(&quot;Please invoke close on Fatek PLC to terminate open connections.&quot;, stack);</span>
+<span class="pc bpc" id="L163" title="1 of 2 branches missed.">        if (connectionPool != null) {</span>
+<span class="nc" id="L164">            close();</span>
+<span class="nc" id="L165">            LOG.warn(&quot;Please invoke close on Fatek PLC to terminate open connections.&quot;, stack);</span>
         }
+<span class="fc" id="L167">        super.finalize();</span>
 <span class="fc" id="L168">    }</span>
 
 
@@ -175,7 +175,7 @@ public abstract class FatekConnectionManager implements Closeable {
 
 <span class="nc bnc" id="L176" title="All 2 branches missed.">            if (connectionPool.size() &lt; fatekConfig.getMinConnection()) {</span>
                 try {
-<span class="nc" id="L178">                    _returnConnection(_getConnection());</span>
+<span class="nc" id="L178">                    returnConnection0(getConnection0());</span>
 <span class="nc" id="L179">                } catch (FatekIOException e) {</span>
 <span class="nc" id="L180">                    LOG.error(&quot;ExecutorTask&quot;, e);</span>
 <span class="nc" id="L181">                }</span>
@@ -183,4 +183,4 @@ public abstract class FatekConnectionManager implements Closeable {
 <span class="nc" id="L183">        }</span>
     }
 }
-</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.6.5.201403032054</span></div></body></html>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>
