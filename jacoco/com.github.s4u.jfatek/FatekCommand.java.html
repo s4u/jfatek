@@ -61,10 +61,19 @@ public abstract class FatekCommand&lt;T&gt; {
         // default do nothing
 <span class="fc" id="L62">    }</span>
 
+    /**
+     * Test if command has more data for next transaction.
+     *
+     * @return true if some data is waiting
+     */
+    protected boolean isMoreDataToExecute() {
+<span class="fc" id="L70">        return false;</span>
+    }
+
     protected void setAlreadySent(boolean alreadySent) {
 
-<span class="fc" id="L66">        this.alreadySent = alreadySent;</span>
-<span class="fc" id="L67">    }</span>
+<span class="fc" id="L75">        this.alreadySent = alreadySent;</span>
+<span class="fc" id="L76">    }</span>
 
     /**
      * Test if command was sent.
@@ -73,10 +82,10 @@ public abstract class FatekCommand&lt;T&gt; {
      */
     public void checkSent() throws FatekNotSentException {
 
-<span class="pc bpc" id="L76" title="1 of 2 branches missed.">        if (!alreadySent) {</span>
-<span class="nc" id="L77">            throw new FatekNotSentException();</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">        if (!alreadySent) {</span>
+<span class="nc" id="L86">            throw new FatekNotSentException();</span>
         }
-<span class="fc" id="L79">    }</span>
+<span class="fc" id="L88">    }</span>
 
     /**
      * Send command to Fatek PLC.
@@ -87,28 +96,28 @@ public abstract class FatekCommand&lt;T&gt; {
     public T send() throws FatekIOException, FatekException {
 
 
-<span class="fc" id="L90">        long startTime = System.currentTimeMillis();</span>
-<span class="fc" id="L91">        setAlreadySent(false);</span>
+<span class="fc" id="L99">        long startTime = System.currentTimeMillis();</span>
+<span class="fc" id="L100">        setAlreadySent(false);</span>
 
-<span class="fc" id="L93">        FatekConnection conn = null;</span>
+<span class="fc" id="L102">        FatekConnection conn = null;</span>
         try {
-<span class="fc" id="L95">            conn = fatekPLC.getConnection();</span>
-<span class="fc" id="L96">            execute(conn);</span>
-<span class="fc" id="L97">            setAlreadySent(true);</span>
-<span class="nc" id="L98">        } catch (FatekIOException e) {</span>
-<span class="nc bnc" id="L99" title="All 2 branches missed.">            if (conn != null) {</span>
-<span class="nc" id="L100">                conn.close();</span>
+<span class="fc" id="L104">            conn = fatekPLC.getConnection();</span>
+<span class="fc" id="L105">            execute(conn);</span>
+<span class="fc" id="L106">            setAlreadySent(true);</span>
+<span class="nc" id="L107">        } catch (FatekIOException e) {</span>
+<span class="nc bnc" id="L108" title="All 2 branches missed.">            if (conn != null) {</span>
+<span class="nc" id="L109">                conn.close();</span>
             }
-<span class="nc" id="L102">            throw e;</span>
+<span class="nc" id="L111">            throw e;</span>
         } finally {
-<span class="fc" id="L104">            fatekPLC.returnConnection(conn);</span>
-<span class="pc bpc" id="L105" title="2 of 4 branches missed.">            if (LOG.isDebugEnabled()) {</span>
-<span class="fc" id="L106">                LOG.debug(&quot;Process command ID: 0x{} work time: {} ms&quot;,</span>
-<span class="fc" id="L107">                        Integer.toHexString(getID()).toUpperCase(), System.currentTimeMillis() - startTime);</span>
+<span class="fc" id="L113">            fatekPLC.returnConnection(conn);</span>
+<span class="pc bpc" id="L114" title="2 of 4 branches missed.">            if (LOG.isDebugEnabled()) {</span>
+<span class="fc" id="L115">                LOG.debug(&quot;Process command ID: 0x{} work time: {} ms&quot;,</span>
+<span class="fc" id="L116">                        Integer.toHexString(getID()).toUpperCase(), System.currentTimeMillis() - startTime);</span>
             }
         }
 
-<span class="fc" id="L111">        return getResult();</span>
+<span class="fc" id="L120">        return getResult();</span>
     }
 
     /**
@@ -119,39 +128,41 @@ public abstract class FatekCommand&lt;T&gt; {
      */
     public T getResult() throws FatekNotSentException {
 
-<span class="fc" id="L122">        checkSent();</span>
-<span class="fc" id="L123">        return null;</span>
+<span class="fc" id="L131">        checkSent();</span>
+<span class="fc" id="L132">        return null;</span>
     }
 
     protected void execute(FatekConnection conn) throws FatekIOException, FatekException {
 
-<span class="fc" id="L128">        FatekWriter writer = conn.getWriter();</span>
-<span class="fc" id="L129">        writer.writeByte(conn.getPlcId());</span>
-<span class="fc" id="L130">        writer.writeByte(getID());</span>
-<span class="fc" id="L131">        writeData(writer);</span>
-        // write whole message from internal buffer to stream
-<span class="fc" id="L133">        writer.flush();</span>
+        do {
+<span class="fc" id="L138">            FatekWriter writer = conn.getWriter();</span>
+<span class="fc" id="L139">            writer.writeByte(conn.getPlcId());</span>
+<span class="fc" id="L140">            writer.writeByte(getID());</span>
+<span class="fc" id="L141">            writeData(writer);</span>
+            // write whole message from internal buffer to stream
+<span class="fc" id="L143">            writer.flush();</span>
 
-<span class="fc" id="L135">        FatekReader reader = conn.getReader();</span>
-        // before start we must read next message to internal buffer
-<span class="fc" id="L137">        reader.readNextMessage();</span>
+<span class="fc" id="L145">            FatekReader reader = conn.getReader();</span>
+            // before start we must read next message to internal buffer
+<span class="fc" id="L147">            reader.readNextMessage();</span>
 
-        // check plc id in response
-<span class="pc bpc" id="L140" title="1 of 2 branches missed.">        if (reader.readByte() != conn.getPlcId()) {</span>
-<span class="nc" id="L141">            throw new FatekException(&quot;Incorrect return PLC ID&quot;);</span>
-        }
+            // check plc id in response
+<span class="pc bpc" id="L150" title="1 of 2 branches missed.">            if (reader.readByte() != conn.getPlcId()) {</span>
+<span class="nc" id="L151">                throw new FatekException(&quot;Incorrect return PLC ID&quot;);</span>
+            }
 
-        // check command id in response
-<span class="pc bpc" id="L145" title="1 of 2 branches missed.">        if (reader.readByte() != getID()) {</span>
-<span class="nc" id="L146">            throw new FatekException(&quot;Incorrect return CMD ID&quot;);</span>
-        }
+            // check command id in response
+<span class="pc bpc" id="L155" title="1 of 2 branches missed.">            if (reader.readByte() != getID()) {</span>
+<span class="nc" id="L156">                throw new FatekException(&quot;Incorrect return CMD ID&quot;);</span>
+            }
 
-        // check status code in response
-<span class="fc" id="L150">        int errorCode = reader.readNibble();</span>
-<span class="pc bpc" id="L151" title="1 of 2 branches missed.">        if (errorCode != 0) {</span>
-<span class="nc" id="L152">            throw new FatekCmdErrorException(errorCode);</span>
-        }
-<span class="fc" id="L154">        readData(reader);</span>
-<span class="fc" id="L155">    }</span>
+            // check status code in response
+<span class="fc" id="L160">            int errorCode = reader.readNibble();</span>
+<span class="pc bpc" id="L161" title="1 of 2 branches missed.">            if (errorCode != 0) {</span>
+<span class="nc" id="L162">                throw new FatekCmdErrorException(errorCode);</span>
+            }
+<span class="fc" id="L164">            readData(reader);</span>
+<span class="pc bpc" id="L165" title="1 of 2 branches missed.">        } while (isMoreDataToExecute());</span>
+<span class="fc" id="L166">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

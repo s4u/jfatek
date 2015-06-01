@@ -16,13 +16,13 @@ Java Fatek PLC client library,com.github.s4u.jfatek.registers,UnknownRegNameExce
 Java Fatek PLC client library,com.github.s4u.jfatek.registers,DisReg,0,45,0,0,0,9,0,8,0,8
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekCmdErrorException,83,0,9,0,25,0,11,0,3,0
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekLoopCmd,0,64,0,4,0,16,0,7,0,5
-Java Fatek PLC client library,com.github.s4u.jfatek,FatekWriteDataCmd,0,175,1,9,0,33,1,13,0,9
+Java Fatek PLC client library,com.github.s4u.jfatek,FatekWriteDataCmd,0,130,1,7,0,26,1,10,0,7
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekControlCmd,0,20,0,2,0,6,0,4,0,3
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekGistSystemStatus,9,67,6,6,0,15,6,11,0,11
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekDiscreteControlCmd,0,23,0,0,0,8,0,3,0,3
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekException,4,9,0,0,2,4,1,2,1,2
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekReadDataCmd,0,61,0,4,0,16,0,7,0,5
-Java Fatek PLC client library,com.github.s4u.jfatek,FatekCommand,30,126,8,6,8,36,7,8,0,8
+Java Fatek PLC client library,com.github.s4u.jfatek,FatekCommand,30,131,9,7,8,38,8,9,0,9
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekNotSentException,3,0,0,0,1,0,1,0,1,0
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekReadDiscreteCmd,0,8,0,0,0,3,0,2,0,2
 Java Fatek PLC client library,com.github.s4u.jfatek,FatekPLC,4,11,0,0,2,5,1,3,1,3
