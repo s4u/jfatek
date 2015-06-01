@@ -64,8 +64,7 @@ public class UDPFatekConnectionFactory implements FatekConnectionFactory {
                 @Override
                 public void flush() throws IOException {
 
-                    DatagramPacket packet = new DatagramPacket(toByteArray(), size(),
-                            fatekConfig.getSocketAddress(DEFAULT_PORT));
+                    DatagramPacket packet = new DatagramPacket(toByteArray(), size(), getSocketAddress(DEFAULT_PORT));
                     socket.send(packet);
                     reset();
                 }

@@ -19,7 +19,7 @@ package com.github.s4u.jfatek.registers;
 /**
  * @author Slawomir Jaranowski.
  */
-@SuppressWarnings("PMD.TooManyMethods")
+@SuppressWarnings("checkstyle:methodname")
 public class DataReg extends Reg {
 
 

@@ -78,9 +78,9 @@ public abstract class Reg implements Cloneable {
 
     static class RegDesc {
 
-        public boolean isDiscrete;
-        public boolean is32bit;
-        public int digitCount;
+        private final boolean isDiscrete;
+        private final boolean is32bit;
+        private final int digitCount;
 
         public static final RegDesc DISC = new RegDesc(true, false, 0);
         public static final RegDesc DATA4_16B = new RegDesc(false, false, 4);

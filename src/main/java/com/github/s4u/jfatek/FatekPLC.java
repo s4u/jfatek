@@ -54,11 +54,11 @@ public class FatekPLC extends FatekConnectionManager {
 
     FatekConnection getConnection() throws FatekIOException {
 
-        return super._getConnection();
+        return super.getConnection0();
     }
 
     void returnConnection(FatekConnection conn) throws FatekIOException {
 
-        super._returnConnection(conn);
+        super.returnConnection0(conn);
     }
 }

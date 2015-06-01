@@ -68,14 +68,14 @@ public class FatekLoopCmd extends FatekCommand<Void> {
     @Override
     protected void writeData(FatekWriter writer) throws FatekIOException {
 
-        writer.writeNibble('0');// will be return as status
+        writer.writeNibble('0'); // will be return as status
         writer.write(message);
     }
 
     @Override
     protected void readData(FatekReader reader) throws FatekException, FatekIOException {
 
-        char buf[] = new char[message.length()];
+        char[] buf = new char[message.length()];
 
         if (reader.read(buf) != buf.length) {
             throw new FatekException("Invalid response length");

@@ -94,7 +94,7 @@ public abstract class FatekConnectionManager implements Closeable {
         }
     }
 
-    protected FatekConnection _getConnection() throws FatekIOException {
+    protected FatekConnection getConnection0() throws FatekIOException {
 
         try {
             FatekConnection conn;
@@ -113,7 +113,7 @@ public abstract class FatekConnectionManager implements Closeable {
         }
     }
 
-    protected void _returnConnection(FatekConnection conn) throws FatekIOException {
+    protected void returnConnection0(FatekConnection conn) throws FatekIOException {
 
         if (conn == null || !conn.isConnected()) {
             return;
@@ -175,7 +175,7 @@ public abstract class FatekConnectionManager implements Closeable {
 
             if (connectionPool.size() < fatekConfig.getMinConnection()) {
                 try {
-                    _returnConnection(_getConnection());
+                    returnConnection0(getConnection0());
                 } catch (FatekIOException e) {
                     LOG.error("ExecutorTask", e);
                 }

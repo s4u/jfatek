@@ -19,6 +19,7 @@ package com.github.s4u.jfatek.registers;
 /**
  * @author Slawomir Jaranowski.
  */
+@SuppressWarnings("checkstyle:methodname")
 public class DisReg extends Reg {
 
     protected DisReg(String name, int address) {

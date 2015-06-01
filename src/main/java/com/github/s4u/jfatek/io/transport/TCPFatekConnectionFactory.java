@@ -40,11 +40,11 @@ public class TCPFatekConnectionFactory implements FatekConnectionFactory {
         public Connection(FatekConfig fatekConfig) throws IOException {
 
             super(fatekConfig);
-            int timeOut = fatekConfig.getTimeout();
+            int timeOut = getTimeout();
 
             socket = new Socket();
             socket.setSoTimeout(timeOut);
-            socket.connect(fatekConfig.getSocketAddress(DEFAULT_PORT), timeOut);
+            socket.connect(getSocketAddress(DEFAULT_PORT), timeOut);
         }
 
         @Override

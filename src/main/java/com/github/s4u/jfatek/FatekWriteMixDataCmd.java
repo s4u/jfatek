@@ -16,7 +16,7 @@
 
 package com.github.s4u.jfatek;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import com.github.s4u.jfatek.io.FatekIOException;
@@ -32,21 +32,38 @@ import com.github.s4u.jfatek.registers.RegValue;
 public class FatekWriteMixDataCmd extends FatekCommand {
 
     public static final int CMD_ID = 0x49;
-    private final Map<? extends Reg, ? extends RegValue> values;
+    private final Map<Reg, RegValue> values = new LinkedHashMap<>();
+
+    public FatekWriteMixDataCmd(FatekPLC fatekPLC) {
+
+        super(fatekPLC);
+    }
 
     public FatekWriteMixDataCmd(FatekPLC fatekPLC, Map<? extends Reg, ? extends RegValue> values) {
 
         super(fatekPLC);
-        this.values = values;
+        this.values.putAll(values);
     }
 
     public FatekWriteMixDataCmd(FatekPLC fatekPLC, Reg reg, RegValue value) {
 
         super(fatekPLC);
+        values.put(reg, value);
+    }
 
-        Map<Reg, RegValue> map = new HashMap<>(1);
-        map.put(reg, value);
-        values = map;
+    public FatekWriteMixDataCmd addReg(Reg reg, RegValue value) {
+        values.put(reg, value);
+        return this;
+    }
+
+    public FatekWriteMixDataCmd addReg(Reg reg, long value) {
+        values.put(reg, RegValue.getForReg(reg, value));
+        return this;
+    }
+
+    public FatekWriteMixDataCmd addReg(Reg reg, boolean value) {
+        values.put(reg, RegValue.getForReg(reg, value));
+        return this;
     }
 
     @Override

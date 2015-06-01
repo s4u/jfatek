@@ -36,8 +36,8 @@ public class FatekReadMixDataCmdTest {
     public void testCmd() throws Exception {
 
         Map<Reg, RegValue> map;
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1" +
-                "&plcOutData=014803R00001Y0009DWM0000&plcInData=014805C341003547BA")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1"
+                + "&plcOutData=014803R00001Y0009DWM0000&plcInData=014805C341003547BA")) {
 
             map = new FatekReadMixDataCmd(fatekPLC, R(1), Y(9), DWM(0)).send();
         }

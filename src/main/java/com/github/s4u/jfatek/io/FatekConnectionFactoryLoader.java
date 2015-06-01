@@ -29,7 +29,7 @@ import java.util.WeakHashMap;
  */
 final class FatekConnectionFactoryLoader {
 
-    private final static Map<String, FatekConnectionFactory> cache = new WeakHashMap<>();
+    private static final Map<String, FatekConnectionFactory> CACHE = new WeakHashMap<>();
 
     private FatekConnectionFactoryLoader() {
         // it is utils class
@@ -42,8 +42,8 @@ final class FatekConnectionFactoryLoader {
         }
 
         String schemeUp = scheme.toUpperCase(Locale.ENGLISH);
-        synchronized (cache) {
-            FatekConnectionFactory factory = cache.get(schemeUp);
+        synchronized (CACHE) {
+            FatekConnectionFactory factory = CACHE.get(schemeUp);
 
             if (factory != null) {
                 return factory;
@@ -72,7 +72,7 @@ final class FatekConnectionFactoryLoader {
 
                 Class<?> aClass = classLoader.loadClass(className);
                 factory = FatekConnectionFactory.class.cast(aClass.newInstance());
-                cache.put(schemeUp, factory);
+                CACHE.put(schemeUp, factory);
 
                 return factory;
 

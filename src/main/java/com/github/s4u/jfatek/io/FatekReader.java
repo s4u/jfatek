@@ -13,6 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 package com.github.s4u.jfatek.io;
 
 import java.io.ByteArrayOutputStream;
@@ -30,11 +31,11 @@ import org.slf4j.LoggerFactory;
  */
 public class FatekReader {
 
-    private final static Logger LOG = LoggerFactory.getLogger(FatekReader.class);
+    private static final Logger LOG = LoggerFactory.getLogger(FatekReader.class);
 
     private final InputStream input;
 
-    private char msgBuf[];
+    private char[] msgBuf;
     private int msgBufOutPos;
 
     FatekReader(InputStream input) {

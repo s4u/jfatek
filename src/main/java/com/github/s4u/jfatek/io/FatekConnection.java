@@ -19,13 +19,14 @@ package com.github.s4u.jfatek.io;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.SocketAddress;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public abstract class FatekConnection {
 
-    protected final FatekConfig fatekConfig;
+    private final FatekConfig fatekConfig;
 
     protected FatekConnection(FatekConfig fatekConfig) {
 
@@ -75,5 +76,13 @@ public abstract class FatekConnection {
     public String getParam(String key) {
 
         return fatekConfig.getParam(key);
+    }
+
+    public SocketAddress getSocketAddress(int defaultPort) {
+        return fatekConfig.getSocketAddress(defaultPort);
+    }
+
+    public int getTimeout() {
+        return fatekConfig.getTimeout();
     }
 }
