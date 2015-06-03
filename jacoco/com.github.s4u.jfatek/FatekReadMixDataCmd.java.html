@@ -37,65 +37,97 @@ public class FatekReadMixDataCmd extends FatekCommand&lt;Map&lt;Reg, RegValue&gt
     public static final int CMD_ID = 0x48;
     private final Reg[] regs;
     private Map&lt;Reg, RegValue&gt; result;
+    private int nextRegIndex;
+    private int lastRegIndex;
 
     /**
      * Create new command for mixed read the random discrete status or register data.
      *
      * @param fatekPLC connection manager to use
-     * @param regs regs name to read
+     * @param regs     regs name to read
      */
     public FatekReadMixDataCmd(FatekPLC fatekPLC, Reg... regs) {
 
-<span class="fc" id="L49">        super(fatekPLC);</span>
-<span class="fc" id="L50">        this.regs = regs.clone();</span>
-<span class="fc" id="L51">    }</span>
+<span class="fc" id="L51">        super(fatekPLC);</span>
+<span class="fc" id="L52">        this.regs = regs.clone();</span>
+<span class="fc" id="L53">    }</span>
 
     /**
      * Create new command for mixed read the random discrete status or register data.
      *
      * @param fatekPLC connection manager to use
-     * @param regs list of regs name to read
+     * @param regs     list of regs name to read
      */
     public FatekReadMixDataCmd(FatekPLC fatekPLC, List&lt;Reg&gt; regs) {
 
-<span class="nc" id="L61">        super(fatekPLC);</span>
-<span class="nc" id="L62">        this.regs = regs.toArray(new Reg[regs.size()]);</span>
-<span class="nc" id="L63">    }</span>
+<span class="fc" id="L63">        super(fatekPLC);</span>
+<span class="fc" id="L64">        this.regs = regs.toArray(new Reg[regs.size()]);</span>
+<span class="fc" id="L65">    }</span>
 
     @Override
     public int getID() {
 
-<span class="fc" id="L68">        return CMD_ID;</span>
+<span class="fc" id="L70">        return CMD_ID;</span>
     }
+
+    @Override
+    protected boolean isMoreDataToExecute() {
+<span class="fc bfc" id="L75" title="All 2 branches covered.">        return nextRegIndex &lt; regs.length;</span>
+    }
+
+    @Override
+    protected void beforeExecute() {
+<span class="fc" id="L80">        result = new LinkedHashMap&lt;&gt;();</span>
+<span class="fc" id="L81">    }</span>
 
     @Override
     protected void writeData(FatekWriter writer) throws FatekIOException {
 
-<span class="fc" id="L74">        writer.writeByte(regs.length);</span>
-<span class="fc bfc" id="L75" title="All 2 branches covered.">        for (Reg r : regs) {</span>
-<span class="fc" id="L76">            writer.write(r.toString());</span>
+        // calculate max regs to one message
+<span class="fc" id="L87">        StringBuilder message = new StringBuilder();</span>
+<span class="fc" id="L88">        int w = 64;</span>
+
+<span class="fc" id="L90">        lastRegIndex = -1;</span>
+<span class="fc bfc" id="L91" title="All 4 branches covered.">        for (int i = nextRegIndex; i &lt; regs.length &amp;&amp; w &gt; 0; i++) {</span>
+
+<span class="fc bfc" id="L93" title="All 2 branches covered.">            if (regs[i].is32Bits()) {</span>
+<span class="fc" id="L94">                w -= 2;</span>
+            } else {
+<span class="fc" id="L96">                w--;</span>
+            }
+
+<span class="pc bpc" id="L99" title="1 of 2 branches missed.">            if (w &gt;= 0) {</span>
+<span class="fc" id="L100">                lastRegIndex = i;</span>
+<span class="fc" id="L101">                message.append(regs[i].toString());</span>
+            }
         }
-<span class="fc" id="L78">    }</span>
+
+<span class="pc bpc" id="L105" title="1 of 2 branches missed.">        if (lastRegIndex &gt;= 0) {</span>
+<span class="fc" id="L106">            writer.writeByte(lastRegIndex - nextRegIndex + 1);</span>
+<span class="fc" id="L107">            writer.write(message.toString());</span>
+        }
+<span class="fc" id="L109">    }</span>
 
     @Override
     protected void readData(FatekReader reader) throws FatekIOException {
 
-<span class="fc" id="L83">        result = new LinkedHashMap&lt;&gt;();</span>
-
-<span class="fc bfc" id="L85" title="All 2 branches covered.">        for (Reg r : regs) {</span>
-<span class="fc bfc" id="L86" title="All 2 branches covered.">            if (r.isDiscrete()) {</span>
-<span class="fc" id="L87">                result.put(r, reader.readRegValueDis());</span>
-<span class="fc bfc" id="L88" title="All 2 branches covered.">            } else if (r.is32Bits()) {</span>
-<span class="fc" id="L89">                result.put(r, reader.readRegVal32());</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        for (int i = nextRegIndex; i &lt;= lastRegIndex; i++) {</span>
+<span class="fc bfc" id="L115" title="All 2 branches covered.">            if (regs[i].isDiscrete()) {</span>
+<span class="fc" id="L116">                result.put(regs[i], reader.readRegValueDis());</span>
+<span class="fc bfc" id="L117" title="All 2 branches covered.">            } else if (regs[i].is32Bits()) {</span>
+<span class="fc" id="L118">                result.put(regs[i], reader.readRegVal32());</span>
             } else {
-<span class="fc" id="L91">                result.put(r, reader.readRegVal16());</span>
+<span class="fc" id="L120">                result.put(regs[i], reader.readRegVal16());</span>
             }
         }
-<span class="fc" id="L94">    }</span>
 
+<span class="fc" id="L124">        nextRegIndex = lastRegIndex + 1;</span>
+<span class="fc" id="L125">    }</span>
+
+    @Override
     public Map&lt;Reg, RegValue&gt; getResult() {
 
-<span class="fc" id="L98">        return Collections.unmodifiableMap(result);</span>
+<span class="fc" id="L130">        return Collections.unmodifiableMap(result);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>
