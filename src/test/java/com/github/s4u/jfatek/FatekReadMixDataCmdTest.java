@@ -16,8 +16,11 @@
 
 package com.github.s4u.jfatek;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import static com.github.s4u.jfatek.registers.DataReg.DR;
 import static com.github.s4u.jfatek.registers.DataReg.DWM;
 import static com.github.s4u.jfatek.registers.DataReg.R;
 import static com.github.s4u.jfatek.registers.DisReg.Y;
@@ -46,5 +49,47 @@ public class FatekReadMixDataCmdTest {
         assertEquals(map.get(R(1)).intValueUnsigned(), 0x5c34);
         assertEquals(map.get(Y(9)).boolValue(), true);
         assertEquals(map.get(DWM(0)).longValueUnsigned(), 0x003547BAL);
+    }
+
+    @Test
+    public void testLongMessage1() throws Exception {
+
+        StringBuilder outRegs = new StringBuilder();
+        StringBuilder inRegs = new StringBuilder();
+        List<Reg> regs = new ArrayList<>();
+
+        outRegs.append("014840");
+        inRegs.append("01480");
+        for (int i = 0; i < 64; i++) {
+            outRegs.append(String.format("R%05d", i));
+            inRegs.append(String.format("%04X", i));
+            regs.add(R(i));
+        }
+
+        outRegs.append("014840");
+        inRegs.append(";").append("01480");
+        for (int i = 64; i < 128; i++) {
+            outRegs.append(String.format("R%05d", i));
+            inRegs.append(String.format("%04X", i));
+            regs.add(R(i));
+        }
+
+        outRegs.append("014810");
+        inRegs.append(";").append("01480");
+        for (int i = 128; i < 144; i++) {
+            outRegs.append(String.format("DR%05d", i));
+            inRegs.append(String.format("%08X", i));
+            regs.add(DR(i));
+        }
+
+        Map<Reg, RegValue> result;
+
+        try (FatekPLC fatekPLC = new FatekPLC(String.format("test://test?plcId=1&plcOutData=%s&&plcInData=%s", outRegs, inRegs))) {
+            result = new FatekReadMixDataCmd(fatekPLC, regs).send();
+        }
+
+        for (int i = 0; i < regs.size(); i++) {
+            assertEquals(result.get(regs.get(i)).intValue(), i);
+        }
     }
 }

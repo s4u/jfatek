@@ -33,7 +33,8 @@ public class MockConnectionFactory implements FatekConnectionFactory {
 
     private class MockConnection extends FatekConnection {
 
-        private ByteArrayOutputStream outputStream;
+        private ByteArrayOutputStream outputStream = null;
+        private ByteArrayInputStream inputStream = null;
 
         public MockConnection(FatekConfig fatekConfig) {
 
@@ -43,13 +44,18 @@ public class MockConnectionFactory implements FatekConnectionFactory {
         @Override
         protected InputStream getInputStream() throws IOException {
 
-            return new ByteArrayInputStream(getTestMessageByte());
+            if (inputStream == null) {
+                inputStream = new ByteArrayInputStream(getTestMessageByte());
+            }
+            return inputStream;
         }
 
         @Override
         protected OutputStream getOutputStream() throws IOException {
 
-            outputStream = new ByteArrayOutputStream();
+            if (outputStream == null) {
+                outputStream = new ByteArrayOutputStream();
+            }
             return outputStream;
         }
 
@@ -58,10 +64,18 @@ public class MockConnectionFactory implements FatekConnectionFactory {
 
             String outActual = outputStream.toString("ASCII");
             String outExpected = getParam("plcOutData");
-            if (outActual.length() > 3) {
-                outActual = outActual.substring(1, outActual.length() - 3);
+
+            // first remove all start char
+            outActual = outActual.replaceAll("\\x02", "");
+            String[] outs = outActual.split("\\x03");
+
+            StringBuilder out2Test = new StringBuilder();
+            for (String s : outs) {
+                if (s.length() > 1) {
+                    out2Test.append(s.substring(0, s.length() - 2));
+                }
             }
-            assertEquals(outActual, outExpected, "Out to PLC");
+            assertEquals(out2Test.toString(), outExpected, "Out to PLC");
             outputStream = null;
         }
 
@@ -74,22 +88,28 @@ public class MockConnectionFactory implements FatekConnectionFactory {
         private byte[] getTestMessageByte() {
 
             String rawMsg = getParam("plcInData");
+            StringBuilder allMsg = new StringBuilder();
 
-            StringBuilder msg = new StringBuilder();
-            msg.append((char) 0x02);
-            msg.append(rawMsg);
+            for (String rawMsgItem : rawMsg.split(";")) {
 
-            int crc = 0;
-            try {
-                crc = FatekUtils.countCRC(msg.toString().getBytes("ASCII"));
-            } catch (UnsupportedEncodingException e) {
-                return null;
+                StringBuilder msg = new StringBuilder();
+
+                msg.append((char) 0x02);
+                msg.append(rawMsgItem);
+
+                int crc = 0;
+                try {
+                    crc = FatekUtils.countCRC(msg.toString().getBytes("ASCII"));
+                } catch (UnsupportedEncodingException e) {
+                    return null;
+                }
+                msg.append(String.format("%02X", crc));
+                msg.append((char) 0x03);
+                allMsg.append(msg);
             }
-            msg.append(String.format("%02X", crc));
-            msg.append((char) 0x03);
 
             try {
-                return msg.toString().getBytes("ASCII");
+                return allMsg.toString().getBytes("ASCII");
             } catch (UnsupportedEncodingException e) {
                 return null;
             }

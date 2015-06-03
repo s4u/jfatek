@@ -61,6 +61,23 @@ public abstract class FatekCommand<T> {
         // default do nothing
     }
 
+    /**
+     * Test if command has more data for next transaction.
+     *
+     * @return true if some data is waiting
+     */
+    protected boolean isMoreDataToExecute() {
+        return false;
+    }
+
+    /**
+     * Do some task before send command.
+     */
+    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
+    protected void beforeExecute() {
+        // default do nothing
+    }
+
     protected void setAlreadySent(boolean alreadySent) {
 
         this.alreadySent = alreadySent;
@@ -125,32 +142,35 @@ public abstract class FatekCommand<T> {
 
     protected void execute(FatekConnection conn) throws FatekIOException, FatekException {
 
-        FatekWriter writer = conn.getWriter();
-        writer.writeByte(conn.getPlcId());
-        writer.writeByte(getID());
-        writeData(writer);
-        // write whole message from internal buffer to stream
-        writer.flush();
+        beforeExecute();
+        do {
+            FatekWriter writer = conn.getWriter();
+            writer.writeByte(conn.getPlcId());
+            writer.writeByte(getID());
+            writeData(writer);
+            // write whole message from internal buffer to stream
+            writer.flush();
 
-        FatekReader reader = conn.getReader();
-        // before start we must read next message to internal buffer
-        reader.readNextMessage();
+            FatekReader reader = conn.getReader();
+            // before start we must read next message to internal buffer
+            reader.readNextMessage();
 
-        // check plc id in response
-        if (reader.readByte() != conn.getPlcId()) {
-            throw new FatekException("Incorrect return PLC ID");
-        }
+            // check plc id in response
+            if (reader.readByte() != conn.getPlcId()) {
+                throw new FatekException("Incorrect return PLC ID");
+            }
 
-        // check command id in response
-        if (reader.readByte() != getID()) {
-            throw new FatekException("Incorrect return CMD ID");
-        }
+            // check command id in response
+            if (reader.readByte() != getID()) {
+                throw new FatekException("Incorrect return CMD ID");
+            }
 
-        // check status code in response
-        int errorCode = reader.readNibble();
-        if (errorCode != 0) {
-            throw new FatekCmdErrorException(errorCode);
-        }
-        readData(reader);
+            // check status code in response
+            int errorCode = reader.readNibble();
+            if (errorCode != 0) {
+                throw new FatekCmdErrorException(errorCode);
+            }
+            readData(reader);
+        } while (isMoreDataToExecute());
     }
 }
