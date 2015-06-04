@@ -16,9 +16,9 @@
 
 package com.github.s4u.jfatek;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.github.s4u.jfatek.io.FatekIOException;
@@ -58,7 +58,7 @@ public class FatekReadMixDataCmd extends FatekCommand<Map<Reg, RegValue>> {
      * @param fatekPLC connection manager to use
      * @param regs     list of regs name to read
      */
-    public FatekReadMixDataCmd(FatekPLC fatekPLC, List<Reg> regs) {
+    public FatekReadMixDataCmd(FatekPLC fatekPLC, Collection<Reg> regs) {
 
         super(fatekPLC);
         this.regs = regs.toArray(new Reg[regs.size()]);
@@ -125,8 +125,9 @@ public class FatekReadMixDataCmd extends FatekCommand<Map<Reg, RegValue>> {
     }
 
     @Override
-    public Map<Reg, RegValue> getResult() {
+    public Map<Reg, RegValue> getResult() throws FatekNotSentException {
 
+        checkSent();
         return Collections.unmodifiableMap(result);
     }
 }
