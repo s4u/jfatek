@@ -59,72 +59,88 @@ public abstract class RegValue {
 <span class="fc" id="L59">        return new RegValue16(value);</span>
     }
 
+    public static RegValue getForReg(Reg reg, float value) {
+
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">        if (!reg.is32Bits()) {</span>
+<span class="nc" id="L65">            throw new UnsupportedOperationException(&quot;Only 32 bits registers support float&quot;);</span>
+        }
+
+<span class="fc" id="L68">        return new RegValue32(Float.floatToIntBits(value));</span>
+    }
 
     public int intValueUnsigned() {
 
-<span class="fc" id="L65">        return (int) longValueUnsigned();</span>
+<span class="fc" id="L73">        return (int) longValueUnsigned();</span>
     }
 
     public int intValue() {
 
-<span class="fc" id="L70">        return (int) longValue();</span>
+<span class="fc" id="L78">        return (int) longValue();</span>
     }
 
     public long longValueUnsigned() {
 
-<span class="fc" id="L75">        return value;</span>
+<span class="fc" id="L83">        return value;</span>
     }
 
     public long longValue() {
 
-<span class="fc bfc" id="L80" title="All 2 branches covered.">        if (value &gt;= (1L &lt;&lt; (bits - 1))) {</span>
-<span class="fc" id="L81">            return value - (1L &lt;&lt; bits);</span>
+<span class="fc bfc" id="L88" title="All 2 branches covered.">        if (value &gt;= (1L &lt;&lt; (bits - 1))) {</span>
+<span class="fc" id="L89">            return value - (1L &lt;&lt; bits);</span>
         }
-<span class="fc" id="L83">        return value;</span>
+<span class="fc" id="L91">        return value;</span>
     }
 
     public boolean boolValue() {
 
-<span class="pc bpc" id="L88" title="1 of 2 branches missed.">        return value != 0;</span>
+<span class="pc bpc" id="L96" title="1 of 2 branches missed.">        return value != 0;</span>
     }
+
+    /**
+     * Convert value in standard  IEEE-754 to float.
+     * Only 32 bits registers support float.
+     *
+     * @return float value.
+     */
+    public abstract float floatValue();
 
     public boolean is32Bit() {
 
-<span class="fc bfc" id="L93" title="All 2 branches covered.">        return bits == 32;</span>
+<span class="fc bfc" id="L109" title="All 2 branches covered.">        return bits == 32;</span>
     }
 
     public boolean isDiscrete() {
 
-<span class="fc bfc" id="L98" title="All 2 branches covered.">        return bits == 1;</span>
+<span class="fc bfc" id="L114" title="All 2 branches covered.">        return bits == 1;</span>
     }
 
     @Override
     public boolean equals(Object o) {
 
-<span class="fc bfc" id="L104" title="All 2 branches covered.">        if (this == o) {</span>
-<span class="fc" id="L105">            return true;</span>
+<span class="fc bfc" id="L120" title="All 2 branches covered.">        if (this == o) {</span>
+<span class="fc" id="L121">            return true;</span>
         }
 
-<span class="fc bfc" id="L108" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
-<span class="fc" id="L109">            return false;</span>
+<span class="fc bfc" id="L124" title="All 4 branches covered.">        if (o == null || getClass() != o.getClass()) {</span>
+<span class="fc" id="L125">            return false;</span>
         }
 
-<span class="fc" id="L112">        RegValue regValue = (RegValue) o;</span>
-<span class="pc bpc" id="L113" title="2 of 4 branches missed.">        return value == regValue.value &amp;&amp; bits == regValue.bits;</span>
+<span class="fc" id="L128">        RegValue regValue = (RegValue) o;</span>
+<span class="pc bpc" id="L129" title="2 of 4 branches missed.">        return value == regValue.value &amp;&amp; bits == regValue.bits;</span>
     }
 
     @Override
     public int hashCode() {
 
-<span class="fc" id="L119">        int result = (int) (value ^ (value &gt;&gt;&gt; 32));</span>
-<span class="fc" id="L120">        result = 31 * result + bits;</span>
-<span class="fc" id="L121">        return result;</span>
+<span class="fc" id="L135">        int result = (int) (value ^ (value &gt;&gt;&gt; 32));</span>
+<span class="fc" id="L136">        result = 31 * result + bits;</span>
+<span class="fc" id="L137">        return result;</span>
     }
 
     @Override
     public String toString() {
 
-<span class="fc" id="L127">        return String.valueOf(longValue());</span>
+<span class="fc" id="L143">        return String.valueOf(longValue());</span>
     }
 
     public abstract String toFatekString();

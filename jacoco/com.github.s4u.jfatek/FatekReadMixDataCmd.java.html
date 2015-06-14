@@ -16,9 +16,9 @@
 
 package com.github.s4u.jfatek;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.github.s4u.jfatek.io.FatekIOException;
@@ -58,7 +58,7 @@ public class FatekReadMixDataCmd extends FatekCommand&lt;Map&lt;Reg, RegValue&gt
      * @param fatekPLC connection manager to use
      * @param regs     list of regs name to read
      */
-    public FatekReadMixDataCmd(FatekPLC fatekPLC, List&lt;Reg&gt; regs) {
+    public FatekReadMixDataCmd(FatekPLC fatekPLC, Collection&lt;Reg&gt; regs) {
 
 <span class="fc" id="L63">        super(fatekPLC);</span>
 <span class="fc" id="L64">        this.regs = regs.toArray(new Reg[regs.size()]);</span>
@@ -125,9 +125,10 @@ public class FatekReadMixDataCmd extends FatekCommand&lt;Map&lt;Reg, RegValue&gt
 <span class="fc" id="L125">    }</span>
 
     @Override
-    public Map&lt;Reg, RegValue&gt; getResult() {
+    public Map&lt;Reg, RegValue&gt; getResult() throws FatekNotSentException {
 
-<span class="fc" id="L130">        return Collections.unmodifiableMap(result);</span>
+<span class="fc" id="L130">        checkSent();</span>
+<span class="fc" id="L131">        return Collections.unmodifiableMap(result);</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

@@ -30,15 +30,20 @@ public class RegValueDis extends RegValue {
 <span class="fc" id="L30">    }</span>
 
     @Override
+    public float floatValue() {
+<span class="nc" id="L34">        throw new UnsupportedOperationException(&quot;Only 32 bits registers support float&quot;);</span>
+    }
+
+    @Override
     public String toString() {
 
-<span class="nc" id="L35">        return String.valueOf(boolValue());</span>
+<span class="nc" id="L40">        return String.valueOf(boolValue());</span>
     }
 
     @Override
     public String toFatekString() {
 
-<span class="fc" id="L41">        return String.format(&quot;%d&quot;, longValueUnsigned());</span>
+<span class="fc" id="L46">        return String.format(&quot;%d&quot;, longValueUnsigned());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>

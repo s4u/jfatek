@@ -43,9 +43,14 @@ public class RegValue16 extends RegValue {
     }
 
     @Override
+    public float floatValue() {
+<span class="nc" id="L47">        throw new UnsupportedOperationException(&quot;Only 32 bits registers support float&quot;);</span>
+    }
+
+    @Override
     public String toFatekString() {
 
-<span class="fc" id="L48">        return String.format(&quot;%04X&quot;, longValueUnsigned());</span>
+<span class="fc" id="L53">        return String.format(&quot;%04X&quot;, longValueUnsigned());</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.4.201502262128</span></div></body></html>
