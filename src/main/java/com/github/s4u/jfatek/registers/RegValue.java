@@ -59,6 +59,14 @@ public abstract class RegValue {
         return new RegValue16(value);
     }
 
+    public static RegValue getForReg(Reg reg, float value) {
+
+        if (!reg.is32Bits()) {
+            throw new UnsupportedOperationException("Only 32 bits registers support float");
+        }
+
+        return new RegValue32(Float.floatToIntBits(value));
+    }
 
     public int intValueUnsigned() {
 
@@ -87,6 +95,14 @@ public abstract class RegValue {
 
         return value != 0;
     }
+
+    /**
+     * Convert value in standard  IEEE-754 to float.
+     * Only 32 bits registers support float.
+     *
+     * @return float value.
+     */
+    public abstract float floatValue();
 
     public boolean is32Bit() {
 

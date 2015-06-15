@@ -30,6 +30,11 @@ public class RegValueDis extends RegValue {
     }
 
     @Override
+    public float floatValue() {
+        throw new UnsupportedOperationException("Only 32 bits registers support float");
+    }
+
+    @Override
     public String toString() {
 
         return String.valueOf(boolValue());

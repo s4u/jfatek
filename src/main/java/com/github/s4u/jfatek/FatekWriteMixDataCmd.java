@@ -66,6 +66,11 @@ public class FatekWriteMixDataCmd extends FatekCommand {
         return this;
     }
 
+    public FatekWriteMixDataCmd addReg(Reg reg, float value) {
+        values.put(reg, RegValue.getForReg(reg, value));
+        return this;
+    }
+
     @Override
     public int getID() {
 

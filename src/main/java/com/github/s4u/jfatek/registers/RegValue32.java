@@ -43,6 +43,11 @@ public class RegValue32 extends RegValue {
     }
 
     @Override
+    public float floatValue() {
+        return Float.intBitsToFloat(intValue());
+    }
+
+    @Override
     public String toFatekString() {
 
         return String.format("%08X", longValueUnsigned());

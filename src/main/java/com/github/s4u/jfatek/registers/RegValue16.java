@@ -43,6 +43,11 @@ public class RegValue16 extends RegValue {
     }
 
     @Override
+    public float floatValue() {
+        throw new UnsupportedOperationException("Only 32 bits registers support float");
+    }
+
+    @Override
     public String toFatekString() {
 
         return String.format("%04X", longValueUnsigned());

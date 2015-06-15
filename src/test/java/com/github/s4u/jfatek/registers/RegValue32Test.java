@@ -16,6 +16,7 @@
 
 package com.github.s4u.jfatek.registers;
 
+import static com.github.s4u.jfatek.registers.DataReg.DR;
 import static org.testng.Assert.assertEquals;
 
 import org.testng.annotations.Test;
@@ -50,5 +51,27 @@ public class RegValue32Test {
 
         assertEquals(new RegValue32(0).toFatekString(), "00000000");
         assertEquals(new RegValue32(-1).toFatekString(), "FFFFFFFF");
+
+        // float tests
+        assertEquals(RegValue.getForReg(DR(1), 0.5f).toFatekString(), "3F000000");
+        assertEquals(RegValue.getForReg(DR(1), -500.125f).toFatekString(), "C3FA1000");
+    }
+
+    @Test
+    public void testFloatValue() throws Exception {
+
+        // examples from Fatek manual
+        assertEquals(new RegValue32(0x3F800000L).floatValue(), 1.0f);
+        assertEquals(new RegValue32(0x3F000000L).floatValue(), 0.5f);
+        assertEquals(new RegValue32(0xC3FA1000L).floatValue(), -500.125f);
+    }
+
+    @Test
+    public void testValueForFloat() throws Exception {
+
+        // examples from Fatek manual
+        assertEquals(RegValue.getForReg(DR(1), 1.0f).floatValue(), 1.0f);
+        assertEquals(RegValue.getForReg(DR(1), 0.5f).floatValue(), 0.5f);
+        assertEquals(RegValue.getForReg(DR(1), -500.125f).floatValue(), -500.125f);
     }
 }
