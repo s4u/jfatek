@@ -114,11 +114,14 @@ public abstract class FatekCommand<T> {
             setAlreadySent(true);
         } catch (FatekIOException e) {
             if (conn != null) {
-                conn.close();
+                try {
+                    conn.close();
+                } catch (FatekIOException ioe) {
+                    LOG.debug("Error during closing connection in case of failure", ioe);
+                }
             }
             throw e;
         } finally {
-            fatekPLC.returnConnection(conn);
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Process command ID: 0x{} work time: {} ms",
                         Integer.toHexString(getID()).toUpperCase(), System.currentTimeMillis() - startTime);

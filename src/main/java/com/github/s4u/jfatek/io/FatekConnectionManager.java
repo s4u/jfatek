@@ -20,18 +20,13 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.concurrent.BlockingDeque;
-import java.util.concurrent.Executors;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
 
 import com.github.s4u.jfatek.FatekException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * This class is responsible for manage connection pool to Fatek PLC.
+ * This class is responsible for manage connection.
  *
  * @author Slawomir Jaranowski.
  */
@@ -41,9 +36,8 @@ public abstract class FatekConnectionManager implements Closeable {
 
     private FatekConfig fatekConfig;
     private FatekConnectionFactory connectionFactory;
+    private FatekConnection connection;
 
-    private BlockingDeque<FatekConnection> connectionPool;
-    private ScheduledExecutorService executorService;
     private FatekException stack;
 
     protected FatekConnectionManager(URI uri) throws FatekIOException {
@@ -61,7 +55,7 @@ public abstract class FatekConnectionManager implements Closeable {
     }
 
     /**
-     * Close all open connection to FatekPLC.<br/>
+     * Close open connection to FatekPLC.<br/>
      * This method should be called always when we end work with current object.
      *
      * @throws FatekIOException
@@ -69,58 +63,37 @@ public abstract class FatekConnectionManager implements Closeable {
     @Override
     public void close() throws FatekIOException {
 
-        if (executorService != null) {
-            executorService.shutdown();
-            executorService = null;
-        }
-
-        FatekIOException lastException = null;
-        FatekConnection conn;
-        while ((conn = connectionPool.pollFirst()) != null) {
-            try {
-                conn.close();
-            } catch (FatekIOException e) {
-                LOG.error("close", e);
-                lastException = e;
+        try {
+            if (connection != null) {
+                connection.close();
             }
-        }
-
-        fatekConfig = null;
-        connectionPool = null;
-        connectionFactory = null;
-
-        if (lastException != null) {
-            throw new FatekIOException(lastException);
+        } finally {
+            fatekConfig = null;
+            connectionFactory = null;
+            connection = null;
         }
     }
 
     protected FatekConnection getConnection0() throws FatekIOException {
 
+        if (connection != null && connection.isConnected()) {
+            return connection;
+        }
+
         try {
-            FatekConnection conn;
-            do {
-                conn = connectionPool.pollFirst();
-            } while (conn != null && !conn.isConnected());
+            synchronized (this) {
 
-            if (conn == null) {
-                conn = connectionFactory.getConnection(fatekConfig);
-                LOG.trace("Create new connection: {}", conn);
+                // try again in synchronized block
+                if (connection != null && connection.isConnected()) {
+                    return connection;
+                }
+
+                connection = connectionFactory.getConnection(fatekConfig);
             }
-
-            return conn;
+            LOG.trace("Create new connection: {}", connection);
+            return connection;
         } catch (IOException e) {
             throw new FatekIOException(e);
-        }
-    }
-
-    protected void returnConnection0(FatekConnection conn) throws FatekIOException {
-
-        if (conn == null || !conn.isConnected()) {
-            return;
-        }
-
-        if (!connectionPool.offerFirst(conn)) {
-            conn.close();
         }
     }
 
@@ -130,9 +103,9 @@ public abstract class FatekConnectionManager implements Closeable {
 
         fatekConfig = new FatekConfig(uri);
         connectionFactory = findConnectionFactory();
-        connectionPool = new LinkedBlockingDeque<>(fatekConfig.getMaxConnection());
-        stack = new FatekException();
-        prepareExecutorService();
+        if (LOG.isDebugEnabled()) {
+            stack = new FatekException();
+        }
     }
 
     private FatekConnectionFactory findConnectionFactory() throws FatekIOException {
@@ -146,40 +119,17 @@ public abstract class FatekConnectionManager implements Closeable {
         return fcf;
     }
 
-    private void prepareExecutorService() {
-
-        if (executorService != null) {
-            executorService.shutdown();
-        }
-
-        executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleWithFixedDelay(new ExecutorTask(),
-                fatekConfig.getClearConnInterval(), fatekConfig.getClearConnInterval(), TimeUnit.SECONDS);
-    }
-
     @Override
     protected void finalize() throws Throwable {
 
-        if (connectionPool != null) {
-            close();
-            LOG.warn("Please invoke close on Fatek PLC to terminate open connections.", stack);
-        }
-        super.finalize();
-    }
-
-
-    private class ExecutorTask implements Runnable {
-
-        @Override
-        public void run() {
-
-            if (connectionPool.size() < fatekConfig.getMinConnection()) {
-                try {
-                    returnConnection0(getConnection0());
-                } catch (FatekIOException e) {
-                    LOG.error("ExecutorTask", e);
-                }
+        if (connection != null) {
+            LOG.debug("Please invoke close on Fatek PLC to terminate open connections.", stack);
+            try {
+                close();
+            } catch (FatekIOException e) {
+                LOG.error("Close connection in finalize error", e);
             }
         }
+        super.finalize();
     }
 }

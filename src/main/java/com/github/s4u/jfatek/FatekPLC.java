@@ -28,7 +28,8 @@ import com.github.s4u.jfatek.io.FatekIOException;
  * @author Slawomir Jaranowski.
  */
 
-public class FatekPLC extends FatekConnectionManager {
+public final class FatekPLC extends FatekConnectionManager {
+
 
     /**
      * Create new FatekPLC client instance.
@@ -55,10 +56,5 @@ public class FatekPLC extends FatekConnectionManager {
     FatekConnection getConnection() throws FatekIOException {
 
         return super.getConnection0();
-    }
-
-    void returnConnection(FatekConnection conn) throws FatekIOException {
-
-        super.returnConnection0(conn);
     }
 }

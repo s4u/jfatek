@@ -136,21 +136,4 @@ public class FatekConfig {
 
         return new InetSocketAddress(getHost(), getPort(defaultPort));
     }
-
-    //TODO - add params
-
-    public int getMaxConnection() {
-
-        return 10;
-    }
-
-    public int getClearConnInterval() {
-
-        return 15;
-    }
-
-    public int getMinConnection() {
-
-        return 1;
-    }
 }
