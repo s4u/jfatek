@@ -120,6 +120,8 @@ public class FatekReader {
 
     /**
      * Read whole fatek message from STX char to ETX char to internal buffer.
+     *
+     * @throws FatekIOException if problem with connection
      */
     public void readNextMessage() throws FatekIOException {
 

@@ -21,14 +21,14 @@ import java.io.IOException;
 /**
  * <p>Connection factory for transport.</p>
  *
- * <p>To add new transport you must create file, which name match below pattern:<br/>
- * <code>jfatek/PROTOFatekConnectionFactory</code><br/>
+ * <p>To add new transport you must create file, which name match below pattern:<br>
+ * <code>jfatek/PROTOFatekConnectionFactory</code><br>
  * Where PROTO is uppercase name of implementing protocol.
  * </p>
  *
  * <p>File must contain only class name which implements this interface.</p>
  *
- * <p>You can use new protocol as schema name in connection URI, eg.<br/>
+ * <p>You can use new protocol as schema name in connection URI, eg.<br>
  * <code>proto://192.168.1.100</code></p>
  *
  * @author Slawomir Jaranowski.

@@ -55,10 +55,10 @@ public abstract class FatekConnectionManager implements Closeable {
     }
 
     /**
-     * Close open connection to FatekPLC.<br/>
+     * Close open connection to FatekPLC.<br>
      * This method should be called always when we end work with current object.
      *
-     * @throws FatekIOException
+     * @throws FatekIOException if problem with connection
      */
     @Override
     public void close() throws FatekIOException {

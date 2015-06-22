@@ -51,8 +51,8 @@ public abstract class FatekCommand<T> {
      * Write data which command want to send to Fatek PLC.
      *
      * @param writer output writer
-     * @throws FatekException
-     * @throws FatekIOException
+     * @throws FatekIOException if problem with connection
+     * @throws FatekException   if another problem
      */
     protected abstract void writeData(final FatekWriter writer) throws FatekException, FatekIOException;
 
@@ -100,6 +100,7 @@ public abstract class FatekCommand<T> {
      *
      * @throws FatekIOException if problem with connection
      * @throws FatekException   if another problem
+     * @return result of command execution
      */
     public T send() throws FatekIOException, FatekException {
 

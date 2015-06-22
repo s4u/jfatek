@@ -43,7 +43,7 @@ public final class FatekUtils {
     /**
      * Convert input array to string, replace STX(0x02) and ETX(0x03) chars
      * to special string ^B and ^C.
-     * <p/>
+     * <br>
      * This method is used for debug purpose.
      *
      * @param bytes input array

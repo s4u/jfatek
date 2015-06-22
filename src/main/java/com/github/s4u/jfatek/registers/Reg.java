@@ -106,8 +106,9 @@ public abstract class Reg implements Cloneable {
     }
 
     /**
-     * @param strReg
-     * @return
+     * @param strReg string representation of register
+     * @return parsed register
+     * @throws UnknownRegNameException if problem with parse register
      */
     public static Reg parse(String strReg) throws UnknownRegNameException {
 

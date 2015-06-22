@@ -27,7 +27,7 @@ import com.github.s4u.jfatek.registers.DisReg;
 
 /**
  * <p>The status reading of ENABLE/DISABLE of continuous discrete.</p>
- * <p/>
+ *
  * <p>Use this command to read the ENABLE/DISABLE status of continuous adding discrete.</p>
  *
  * @author Slawomir Jaranowski.
