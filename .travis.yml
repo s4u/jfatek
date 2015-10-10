@@ -1,7 +1,15 @@
+sudo: false
 language: java
 
 install: git clone --depth 1 -b travis git://github.com/s4u/parent.git ../travis
 script: 'if [ ${TRAVIS_PULL_REQUEST} = ''false'' ]; then mvn -V -s ../travis/settings.xml deploy; else mvn -V -s ../travis/settings.xml verify; fi'
+
+cache:
+  directories:
+  - $HOME/.m2/repository
+
+before_cache:
+    - rm -rfv $HOME/.m2/repository/com/github/s4u/jfatek/
 
 env:
   global:
