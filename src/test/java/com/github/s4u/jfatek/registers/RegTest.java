@@ -64,15 +64,6 @@ public class RegTest {
         assertNotSame(r1, r2);
     }
 
-    @Test
-    public void testInc() throws FatekException {
-
-        Reg r1 = X(1);
-        r1.inc(10);
-
-        assertEquals(r1, X(11));
-    }
-
     @DataProvider(name = "provideRegsOK")
     public Object[][] provideData() {
 
@@ -132,5 +123,14 @@ public class RegTest {
     public void testParseError(String strReg) throws Exception {
 
         Reg.parse(strReg);
+    }
+    @Test
+    public void testImmutableInc() {
+
+        Reg r = X(10);
+        Reg r2 = r.incAddress(10);
+
+        assertEquals(r.getAddress(), 10);
+        assertEquals(r2.getAddress(), 20);
     }
 }

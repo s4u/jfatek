@@ -33,7 +33,7 @@ public abstract class Reg implements Cloneable {
     protected static final Map<String, RegDesc> REGS_DESC;
 
     private final String name;
-    private int address;
+    private final int address;
     private final boolean a32bit;
     private final int digitCount;
 
@@ -152,9 +152,13 @@ public abstract class Reg implements Cloneable {
 
     public abstract boolean isDiscrete();
 
-    public void inc(int number) {
+    public Reg incAddress(int number) {
 
-        address += number;
+        if (isDiscrete()) {
+            return new DisReg(name, address + number);
+        }
+
+        return new DataReg(name, address + number, a32bit, digitCount);
     }
 
     @Override
