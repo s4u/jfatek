@@ -16,13 +16,20 @@
 
 package com.github.s4u.jfatek.registers;
 
+import static com.github.s4u.jfatek.registers.RegName.C;
+import static com.github.s4u.jfatek.registers.RegName.M;
+import static com.github.s4u.jfatek.registers.RegName.S;
+import static com.github.s4u.jfatek.registers.RegName.T;
+import static com.github.s4u.jfatek.registers.RegName.X;
+import static com.github.s4u.jfatek.registers.RegName.Y;
+
 /**
  * @author Slawomir Jaranowski.
  */
-@SuppressWarnings("checkstyle:methodname")
+@SuppressWarnings({"checkstyle:methodname", "PMD.TooManyStaticImports"})
 public class DisReg extends Reg {
 
-    protected DisReg(String name, int address) {
+    protected DisReg(RegName name, int address) {
         super(name, address, false, 4);
     }
 
@@ -32,26 +39,26 @@ public class DisReg extends Reg {
     }
 
     public static DisReg X(int address) {
-        return new DisReg("X", address);
+        return new DisReg(X, address);
     }
 
     public static DisReg Y(int address) {
-        return new DisReg("Y", address);
+        return new DisReg(Y, address);
     }
 
     public static DisReg M(int address) {
-        return new DisReg("M", address);
+        return new DisReg(M, address);
     }
 
     public static DisReg S(int address) {
-        return new DisReg("S", address);
+        return new DisReg(S, address);
     }
 
     public static DisReg T(int address) {
-        return new DisReg("T", address);
+        return new DisReg(T, address);
     }
 
     public static DisReg C(int address) {
-        return new DisReg("C", address);
+        return new DisReg(C, address);
     }
 }

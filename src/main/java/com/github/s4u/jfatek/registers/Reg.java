@@ -20,58 +20,89 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.github.s4u.jfatek.registers.RegName.C;
+import static com.github.s4u.jfatek.registers.RegName.D;
+import static com.github.s4u.jfatek.registers.RegName.DD;
+import static com.github.s4u.jfatek.registers.RegName.DF;
+import static com.github.s4u.jfatek.registers.RegName.DR;
+import static com.github.s4u.jfatek.registers.RegName.DRC;
+import static com.github.s4u.jfatek.registers.RegName.DRT;
+import static com.github.s4u.jfatek.registers.RegName.DWC;
+import static com.github.s4u.jfatek.registers.RegName.DWM;
+import static com.github.s4u.jfatek.registers.RegName.DWS;
+import static com.github.s4u.jfatek.registers.RegName.DWT;
+import static com.github.s4u.jfatek.registers.RegName.DWX;
+import static com.github.s4u.jfatek.registers.RegName.DWY;
+import static com.github.s4u.jfatek.registers.RegName.F;
+import static com.github.s4u.jfatek.registers.RegName.M;
+import static com.github.s4u.jfatek.registers.RegName.R;
+import static com.github.s4u.jfatek.registers.RegName.RC;
+import static com.github.s4u.jfatek.registers.RegName.RT;
+import static com.github.s4u.jfatek.registers.RegName.S;
+import static com.github.s4u.jfatek.registers.RegName.T;
+import static com.github.s4u.jfatek.registers.RegName.WC;
+import static com.github.s4u.jfatek.registers.RegName.WM;
+import static com.github.s4u.jfatek.registers.RegName.WS;
+import static com.github.s4u.jfatek.registers.RegName.WT;
+import static com.github.s4u.jfatek.registers.RegName.WX;
+import static com.github.s4u.jfatek.registers.RegName.WY;
+import static com.github.s4u.jfatek.registers.RegName.X;
+import static com.github.s4u.jfatek.registers.RegName.Y;
 
 import com.github.s4u.jfatek.FatekException;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public abstract class Reg implements Cloneable {
+@SuppressWarnings("PMD.TooManyStaticImports")
+public abstract class Reg implements Cloneable, Comparable<Reg> {
 
-    protected static final Map<String, RegDesc> REGS_DESC;
+    protected static final Map<RegName, RegDesc> REGS_DESC;
 
-    private final String name;
+    private final RegName name;
     private final int address;
     private final boolean a32bit;
     private final int digitCount;
 
     static {
-        Map<String, RegDesc> map = new HashMap<>();
+        Map<RegName, RegDesc> map = new HashMap<>();
 
-        map.put("X", RegDesc.DISC);
-        map.put("Y", RegDesc.DISC);
-        map.put("M", RegDesc.DISC);
-        map.put("S", RegDesc.DISC);
-        map.put("T", RegDesc.DISC);
-        map.put("C", RegDesc.DISC);
+        map.put(X, RegDesc.DISC);
+        map.put(Y, RegDesc.DISC);
+        map.put(M, RegDesc.DISC);
+        map.put(S, RegDesc.DISC);
+        map.put(T, RegDesc.DISC);
+        map.put(C, RegDesc.DISC);
 
-        map.put("WX", RegDesc.DATA4_16B);
-        map.put("WY", RegDesc.DATA4_16B);
-        map.put("WM", RegDesc.DATA4_16B);
-        map.put("WS", RegDesc.DATA4_16B);
-        map.put("WT", RegDesc.DATA4_16B);
-        map.put("WC", RegDesc.DATA4_16B);
-        map.put("RT", RegDesc.DATA4_16B);
-        map.put("RC", RegDesc.DATA4_16B);
+        map.put(WX, RegDesc.DATA4_16B);
+        map.put(WY, RegDesc.DATA4_16B);
+        map.put(WM, RegDesc.DATA4_16B);
+        map.put(WS, RegDesc.DATA4_16B);
+        map.put(WT, RegDesc.DATA4_16B);
+        map.put(WC, RegDesc.DATA4_16B);
+        map.put(RT, RegDesc.DATA4_16B);
+        map.put(RC, RegDesc.DATA4_16B);
 
-        map.put("R", RegDesc.DATA5_16B);
-        map.put("D", RegDesc.DATA5_16B);
-        map.put("F", RegDesc.DATA5_16B);
+        map.put(R, RegDesc.DATA5_16B);
+        map.put(D, RegDesc.DATA5_16B);
+        map.put(F, RegDesc.DATA5_16B);
 
-        map.put("DWX", RegDesc.DATA4_32B);
-        map.put("DWY", RegDesc.DATA4_32B);
-        map.put("DWM", RegDesc.DATA4_32B);
-        map.put("DWS", RegDesc.DATA4_32B);
-        map.put("DWT", RegDesc.DATA4_32B);
-        map.put("DWC", RegDesc.DATA4_32B);
-        map.put("DRT", RegDesc.DATA4_32B);
-        map.put("DRC", RegDesc.DATA4_32B);
+        map.put(DWX, RegDesc.DATA4_32B);
+        map.put(DWY, RegDesc.DATA4_32B);
+        map.put(DWM, RegDesc.DATA4_32B);
+        map.put(DWS, RegDesc.DATA4_32B);
+        map.put(DWT, RegDesc.DATA4_32B);
+        map.put(DWC, RegDesc.DATA4_32B);
+        map.put(DRT, RegDesc.DATA4_32B);
+        map.put(DRC, RegDesc.DATA4_32B);
 
-        map.put("DR", RegDesc.DATA5_32B);
-        map.put("DD", RegDesc.DATA5_32B);
-        map.put("DF", RegDesc.DATA5_32B);
+        map.put(DR, RegDesc.DATA5_32B);
+        map.put(DD, RegDesc.DATA5_32B);
+        map.put(DF, RegDesc.DATA5_32B);
 
         REGS_DESC = Collections.unmodifiableMap(map);
     }
@@ -97,12 +128,20 @@ public abstract class Reg implements Cloneable {
     }
 
 
-    protected Reg(String name, int address, boolean a32bit, int digitCount) {
+    protected Reg(RegName name, int address, boolean a32bit, int digitCount) {
 
         this.name = name;
         this.address = address;
         this.a32bit = a32bit;
         this.digitCount = digitCount;
+    }
+
+    public RegName getName() {
+        return name;
+    }
+
+    public int getAddress() {
+        return address;
     }
 
     /**
@@ -113,7 +152,7 @@ public abstract class Reg implements Cloneable {
     public static Reg parse(String strReg) throws UnknownRegNameException {
 
         if (null == strReg) {
-            throw new UnknownRegNameException(strReg);
+            throw new UnknownRegNameException("strReg is null");
         }
 
         String trimStrReg = strReg.trim().toUpperCase(Locale.US);
@@ -128,7 +167,12 @@ public abstract class Reg implements Cloneable {
             throw new UnknownRegNameException(strReg);
         }
 
-        String regName = matcher.group(1);
+        RegName regName;
+        try {
+            regName = RegName.valueOf(matcher.group(1).toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new UnknownRegNameException(strReg, e);
+        }
 
         RegDesc regDesc = REGS_DESC.get(regName);
 
@@ -194,6 +238,24 @@ public abstract class Reg implements Cloneable {
         } catch (CloneNotSupportedException e) {
             throw new FatekException(e);
         }
+    }
+
+    @Override
+    public int compareTo(Reg reg) {
+
+        Objects.requireNonNull(reg);
+
+        if (equals(reg)) {
+            return 0;
+        }
+
+        int ret = name.compareTo(reg.name);
+
+        if (ret != 0) {
+            return ret;
+        }
+
+        return address - reg.address;
     }
 
     @Override

@@ -16,6 +16,10 @@
 
 package com.github.s4u.jfatek.registers;
 
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import static com.github.s4u.jfatek.registers.DataReg.D;
 import static com.github.s4u.jfatek.registers.DataReg.DD;
 import static com.github.s4u.jfatek.registers.DataReg.DF;
@@ -124,6 +128,46 @@ public class RegTest {
 
         Reg.parse(strReg);
     }
+
+
+    @DataProvider(name = "compareData")
+    public Object[][] compareData() {
+
+        return new Object[][]{
+                {R(0), R(0), 0},
+                {R(0), R(1), -1},
+                {R(1), R(0), 1},
+                {R(100), DR(1), -1},
+                {X(2), R(0), -1}
+        };
+    }
+
+    @Test(dataProvider = "compareData")
+    public void testCompare(Reg thisObject, Reg specifiedObject, int result) {
+
+        int compareResult = thisObject.compareTo(specifiedObject);
+
+        // normalize result value
+        if (compareResult > 0) {
+            compareResult = 1;
+        } else if (compareResult < 0) {
+            compareResult = -1;
+        }
+
+        assertEquals(compareResult, result);
+    }
+
+    @Test
+    public void testSortRegName() {
+        List<Reg> regNameList = Arrays.asList(R(0), R(100), R(25), D(24), D(8), X(100), Y(20));
+
+        Collections.sort(regNameList);
+
+        Reg[] regNameSorted = regNameList.toArray(new Reg[regNameList.size()]);
+
+        assertEquals(regNameSorted, new Reg[]{X(100), Y(20), R(0), R(25), R(100), D(8), D(24)});
+    }
+
     @Test
     public void testImmutableInc() {
 
