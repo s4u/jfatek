@@ -196,13 +196,19 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
 
     public abstract boolean isDiscrete();
 
-    public Reg incAddress(int number) {
+    /**
+     * Increment register address by given value.
+     * @param number value added to register address
+     * @return new register with new address
+     */
+    @SuppressWarnings("unchecked")
+    public <T extends Reg> T incAddress(int number) {
 
         if (isDiscrete()) {
-            return new DisReg(name, address + number);
+            return (T) new DisReg(name, address + number);
         }
 
-        return new DataReg(name, address + number, a32bit, digitCount);
+        return (T) new DataReg(name, address + number, a32bit, digitCount);
     }
 
     @Override
