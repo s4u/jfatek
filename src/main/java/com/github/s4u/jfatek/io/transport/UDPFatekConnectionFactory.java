@@ -41,7 +41,7 @@ public class UDPFatekConnectionFactory implements FatekConnectionFactory {
 
         private final DatagramSocket socket;
 
-        public Connection(FatekConfig fatekConfig) throws IOException {
+        Connection(FatekConfig fatekConfig) throws IOException {
 
             super(fatekConfig);
             socket = new DatagramSocket();

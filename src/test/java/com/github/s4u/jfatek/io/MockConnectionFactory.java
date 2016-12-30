@@ -36,7 +36,7 @@ public class MockConnectionFactory implements FatekConnectionFactory {
         private ByteArrayOutputStream outputStream = null;
         private ByteArrayInputStream inputStream = null;
 
-        public MockConnection(FatekConfig fatekConfig) {
+        MockConnection(FatekConfig fatekConfig) {
 
             super(fatekConfig);
         }

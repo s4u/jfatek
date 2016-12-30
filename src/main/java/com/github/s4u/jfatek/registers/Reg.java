@@ -119,7 +119,7 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
         public static final RegDesc DATA5_16B = new RegDesc(false, false, 5);
         public static final RegDesc DATA5_32B = new RegDesc(false, true, 5);
 
-        public RegDesc(boolean isDiscrete, boolean is32bit, int digitCount) {
+        RegDesc(boolean isDiscrete, boolean is32bit, int digitCount) {
 
             this.isDiscrete = isDiscrete;
             this.is32bit = is32bit;

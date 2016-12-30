@@ -37,7 +37,7 @@ public class TCPFatekConnectionFactory implements FatekConnectionFactory {
         private static final int DEFAULT_PORT = 500;
         private final Socket socket;
 
-        public Connection(FatekConfig fatekConfig) throws IOException {
+        Connection(FatekConfig fatekConfig) throws IOException {
 
             super(fatekConfig);
             int timeOut = getTimeout();
