@@ -24,23 +24,24 @@ import com.github.s4u.jfatek.io.FatekIOException;
 import com.github.s4u.jfatek.io.FatekWriter;
 import com.github.s4u.jfatek.registers.DataReg;
 import com.github.s4u.jfatek.registers.RegValue;
+import com.github.s4u.jfatek.registers.RegValueData;
 
 /**
- * <p>Write the data to continuous registers.</p>
+ * <p>Write the data to continuous data registers.</p>
  *
  * @author Slawomir Jaranowski.
  */
-public class FatekWriteDataCmd extends FatekCommand {
+public class FatekWriteDataCmd extends FatekCommand<Void> {
 
     public static final int CMD_ID = 0x47;
     private final DataReg startReg;
-    private final List<RegValue> values = new ArrayList<>();
+    private final List<RegValueData> values = new ArrayList<>();
 
     /**
      * Write command. After this constructor we need call addValue.
      *
-     * @param fatekPLC fatek connection
-     * @param startReg register to startWrite
+     * @param fatekPLC plc connection
+     * @param startReg first register to write
      */
     public FatekWriteDataCmd(FatekPLC fatekPLC, DataReg startReg) {
 
@@ -48,19 +49,33 @@ public class FatekWriteDataCmd extends FatekCommand {
         this.startReg = startReg;
     }
 
-    public FatekWriteDataCmd(FatekPLC fatekPLC, DataReg startReg, RegValue... values) {
+    /**
+     * Write the data to continuous registers.
+     *
+     * @param fatekPLC plc connection
+     * @param startReg first register to write
+     * @param values values list
+     */
+    public FatekWriteDataCmd(FatekPLC fatekPLC, DataReg startReg, RegValueData... values) {
 
         super(fatekPLC);
         this.startReg = startReg;
         this.values.addAll(Arrays.asList(values));
     }
 
-    public FatekWriteDataCmd(FatekPLC fatekPLC, DataReg startReg, long... longValues) {
+    /**
+     * Write the data to continuous registers.
+     *
+     * @param fatekPLC plc connection
+     * @param startReg first register to write
+     * @param values values list
+     */
+    public FatekWriteDataCmd(FatekPLC fatekPLC, DataReg startReg, long... values) {
 
         super(fatekPLC);
         this.startReg = startReg;
-        for (long value : longValues) {
-            values.add(RegValue.getForReg(startReg, value));
+        for (long value : values) {
+            this.values.add((RegValueData) RegValue.getForReg(startReg, value));
         }
     }
 
@@ -70,7 +85,7 @@ public class FatekWriteDataCmd extends FatekCommand {
      * @param value value
      * @return this object
      */
-    public FatekWriteDataCmd addValue(RegValue value) {
+    public FatekWriteDataCmd addValue(RegValueData value) {
         values.add(value);
         return this;
     }
@@ -82,7 +97,7 @@ public class FatekWriteDataCmd extends FatekCommand {
      * @return this object
      */
     public FatekWriteDataCmd addValue(long value) {
-        values.add(RegValue.getForReg(startReg, value));
+        values.add((RegValueData) RegValue.getForReg(startReg, value));
         return this;
     }
 
@@ -98,8 +113,8 @@ public class FatekWriteDataCmd extends FatekCommand {
         writer.writeByte(values.size());
         writer.write(startReg.toString());
 
-        for (RegValue value : values) {
-            if (value.is32Bit() != startReg.is32Bits() || value.isDiscrete() != startReg.isDiscrete()) {
+        for (RegValueData value : values) {
+            if (value.is32Bit() != startReg.is32Bits()) {
                 throw new FatekException("Invalid value type");
             }
             writer.write(value.toFatekString());

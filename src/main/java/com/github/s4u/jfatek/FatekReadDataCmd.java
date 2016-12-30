@@ -41,6 +41,13 @@ public class FatekReadDataCmd extends FatekCommand<List<RegValue>> {
 
     private List<RegValue> result;
 
+    /**
+     * Read the data from continuous registers.
+     *
+     * @param fatekPLC  PLC connection
+     * @param startReg start register
+     * @param number registers number to read
+     */
     public FatekReadDataCmd(FatekPLC fatekPLC, DataReg startReg, int number) {
 
         super(fatekPLC);

@@ -19,7 +19,7 @@ package com.github.s4u.jfatek.registers;
 /**
  * @author Slawomir Jaranowski.
  */
-public class RegValue32 extends RegValue {
+public class RegValue32 extends RegValueData {
 
     private static final int BITS = 32;
 

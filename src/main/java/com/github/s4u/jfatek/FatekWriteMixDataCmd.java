@@ -29,7 +29,7 @@ import com.github.s4u.jfatek.registers.RegValue;
  *
  * @author Slawomir Jaranowski.
  */
-public class FatekWriteMixDataCmd extends FatekCommand {
+public class FatekWriteMixDataCmd extends FatekCommand<Void> {
 
     public static final int CMD_ID = 0x49;
     private final Map<Reg, RegValue> values = new LinkedHashMap<>();

@@ -198,7 +198,9 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
 
     /**
      * Increment register address by given value.
+
      * @param number value added to register address
+     * @param <T> register class
      * @return new register with new address
      */
     @SuppressWarnings("unchecked")

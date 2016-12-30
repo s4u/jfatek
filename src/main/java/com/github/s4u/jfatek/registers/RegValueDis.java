@@ -17,6 +17,8 @@
 package com.github.s4u.jfatek.registers;
 
 /**
+ * Discrete register value.
+ *
  * @author Slawomir Jaranowski.
  */
 public class RegValueDis extends RegValue {
