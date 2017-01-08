@@ -18,14 +18,14 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <groupId>com.github.s4u</groupId>
+        <groupId>org.simplify4u</groupId>
         <artifactId>parent</artifactId>
-        <version>2.1.0</version>
+        <version>2.2.0</version>
         <relativePath/>
     </parent>
 
     <artifactId>jfatek</artifactId>
-    <version>1.1.1-SNAPSHOT</version>
+    <version>2.0.0-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>Java Fatek PLC client library</name>

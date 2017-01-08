@@ -1,1 +1,1 @@
-com.github.s4u.jfatek.io.transport.TCPFatekConnectionFactory
+org.simplify4u.jfatek.io.transport.TCPFatekConnectionFactory
