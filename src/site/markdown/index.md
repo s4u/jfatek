@@ -10,4 +10,4 @@ Central Repository
 The JFatek is deployed to the Central Repository, so you can use it by simply adding dependency to your project.
 
 Last deployed version:
-[com.github.s4u:jfatek](http://search.maven.org/#search|ga|1|g:com.github.s4u%20a:jfatek)
+[org.simplify4u:jfatek](http://search.maven.org/#search|ga|1|g:org.simplify4u%20a:jfatek)

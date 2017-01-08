@@ -22,7 +22,31 @@
     <publishDate position="right" />
     <version position="right" />
 
+    <skin>
+        <groupId>org.apache.maven.skins</groupId>
+        <artifactId>maven-fluido-skin</artifactId>
+        <version>1.6</version>
+    </skin>
+
+    <custom>
+        <fluidoSkin>
+            <copyrightClass>pull-right</copyrightClass>
+            <gitHub>
+                <projectId>s4u/jfatek</projectId>
+                <ribbonOrientation>right</ribbonOrientation>
+                <ribbonColor>gray</ribbonColor>
+            </gitHub>
+            <facebookLike />
+            <googlePlusOne />
+        </fluidoSkin>
+    </custom>
+
     <body>
+
+        <breadcrumbs>
+            <item name="JFatek"/>
+        </breadcrumbs>
+
         <menu name="Overview">
             <item name="Introduction" href="index.html" />
             <item name="Usage" href="usage.html" />

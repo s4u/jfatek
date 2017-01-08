@@ -32,6 +32,7 @@
     <description>
         This project implements Fatek protocol to communicate with Fatek PLC (Programmable Logic Controller).
     </description>
+    <url>https://www.simplify4u.org/jfatek/</url>
 
     <licenses>
         <license>
