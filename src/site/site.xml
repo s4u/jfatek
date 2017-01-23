@@ -49,7 +49,7 @@
 
         <menu name="Overview">
             <item name="Introduction" href="index.html" />
-            <item name="Usage" href="usage.html" />
+            <item name="Examples of usage" href="usage.html" />
         </menu>
 
         <menu ref="reports" />
