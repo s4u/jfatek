@@ -3,14 +3,24 @@ sudo: false
 language: java
 jdk: oraclejdk8
 
+# turn shallow clone off for sonar
+git:
+  depth: false
+
+addons:
+  sonarcloud:
+    organization: "simplify4u"
+    token:
+      secure: "agVrAQtKaI8lM+U3wcajWhPTPqAHHWc0ONpmjpwAAvc4xWvrF/fo5nKYWBXEBW2VhSzadsHfLUWzrU0UDxaLFVnKB94RZ7n5Obeg/6C2NouYdnzpRXiQUKqWxJg0BYYrQmP/CjMo1adoIC89d2PY5kersoRPDE25i59G7jFRUV8="
+
 install:
   - mkdir -p ../utils
-  - curl -Ls https://github.com/s4u/travis/archive/master.tar.gz \
-    | tar -zx --strip-components 2 -C ../utils travis-master/src
+  - curl -Ls https://github.com/s4u/travis/archive/master.tar.gz |
+      tar -zx --strip-components 2 -C ../utils travis-master/src
 
 script:
-  - ../utils/mvn-push.sh clean deploy
-  - ../utils/mvn-pr.sh   clean verify
+  - ../utils/mvn-push.sh clean deploy sonar:sonar
+  - ../utils/mvn-pr.sh   clean verify sonar:sonar
 
 
 cache:
