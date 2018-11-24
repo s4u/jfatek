@@ -42,7 +42,6 @@ import static org.simplify4u.jfatek.registers.RegName.WY;
 /**
  * @author Slawomir Jaranowski.
  */
-@SuppressWarnings({"checkstyle:methodname", "PMD.TooManyStaticImports"})
 public class DataReg extends Reg {
 
 

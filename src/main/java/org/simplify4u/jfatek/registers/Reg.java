@@ -58,7 +58,6 @@ import org.simplify4u.jfatek.FatekException;
 /**
  * @author Slawomir Jaranowski.
  */
-@SuppressWarnings("PMD.TooManyStaticImports")
 public abstract class Reg implements Cloneable, Comparable<Reg> {
 
     protected static final Map<RegName, RegDesc> REGS_DESC;
@@ -203,7 +202,6 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
      * @param <T> register class
      * @return new register with new address
      */
-    @SuppressWarnings("unchecked")
     public <T extends Reg> T incAddress(int number) {
 
         if (isDiscrete()) {
@@ -238,7 +236,6 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
     public <T extends Reg> T cloneReg() throws FatekException {
 
         try {

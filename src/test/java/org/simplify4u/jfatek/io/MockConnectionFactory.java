@@ -28,7 +28,6 @@ import static org.testng.Assert.assertEquals;
 /**
  * @author Slawomir Jaranowski.
  */
-@SuppressWarnings("unused")
 public class MockConnectionFactory implements FatekConnectionFactory {
 
     private class MockConnection extends FatekConnection {

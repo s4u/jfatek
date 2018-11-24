@@ -26,7 +26,6 @@ import static org.simplify4u.jfatek.registers.RegName.Y;
 /**
  * @author Slawomir Jaranowski.
  */
-@SuppressWarnings({"checkstyle:methodname", "PMD.TooManyStaticImports"})
 public class DisReg extends Reg {
 
     protected DisReg(RegName name, int address) {

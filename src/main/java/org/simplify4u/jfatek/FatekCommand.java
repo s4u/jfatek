@@ -56,7 +56,6 @@ public abstract class FatekCommand<T> {
      */
     protected abstract void writeData(final FatekWriter writer) throws FatekException, FatekIOException;
 
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     protected void readData(final FatekReader reader) throws FatekException, FatekIOException {
         // default do nothing
     }
@@ -73,7 +72,6 @@ public abstract class FatekCommand<T> {
     /**
      * Do some task before send command.
      */
-    @SuppressWarnings("PMD.EmptyMethodInAbstractClassShouldBeAbstract")
     protected void beforeExecute() {
         // default do nothing
     }
