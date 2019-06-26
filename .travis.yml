@@ -1,7 +1,10 @@
 sudo: false
 
 language: java
-jdk: oraclejdk8
+
+branches:
+  only:
+    - master
 
 # turn shallow clone off for sonar
 git:
@@ -18,10 +21,17 @@ install:
   - curl -Ls https://github.com/s4u/travis/archive/master.tar.gz |
       tar -zx --strip-components 2 -C ../utils travis-master/src
 
-script:
-  - ../utils/mvn-push.sh clean deploy sonar:sonar
-  - ../utils/mvn-pr.sh   clean verify sonar:sonar
+matrix:
+  include:
 
+    - jdk: openjdk8
+      script:
+        - ../utils/mvn-push.sh clean deploy sonar:sonar
+        - ../utils/mvn-pr.sh   clean verify
+
+    - jdk: openjdk11
+      script:
+        - ../utils/mvn-run.sh clean verify
 
 cache:
   directories:
