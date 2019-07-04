@@ -24,12 +24,20 @@ import static org.simplify4u.jfatek.registers.DisReg.S;
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
 
+import org.simplify4u.jfatek.io.MockConnectionFactory;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekReadDiscreteCmdTest {
+
+    @BeforeClass
+    public void setup() {
+        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    }
+
     @Test
     public void testCmd1() throws Exception {
 

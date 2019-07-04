@@ -20,14 +20,21 @@ import static org.simplify4u.jfatek.registers.DataReg.DWX;
 import static org.simplify4u.jfatek.registers.DataReg.F;
 import static org.simplify4u.jfatek.registers.DataReg.WX;
 
+import org.simplify4u.jfatek.io.MockConnectionFactory;
 import org.simplify4u.jfatek.registers.RegValue16;
 import org.simplify4u.jfatek.registers.RegValue32;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekWriteDataCmdTest {
+
+    @BeforeClass
+    public void setup() {
+        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    }
 
     @Test
     public void testCmdValue16() throws Exception {

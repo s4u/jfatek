@@ -16,12 +16,19 @@
 
 package org.simplify4u.jfatek;
 
+import org.simplify4u.jfatek.io.MockConnectionFactory;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekControlCmdTest {
+
+    @BeforeClass
+    public void setup() {
+        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    }
 
     @Test
     public void testCmd() throws Exception {

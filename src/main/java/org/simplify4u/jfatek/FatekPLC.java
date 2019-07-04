@@ -19,6 +19,7 @@ package org.simplify4u.jfatek;
 import java.net.URI;
 
 import org.simplify4u.jfatek.io.FatekConnection;
+import org.simplify4u.jfatek.io.FatekConnectionFactory;
 import org.simplify4u.jfatek.io.FatekConnectionManager;
 import org.simplify4u.jfatek.io.FatekIOException;
 
@@ -51,6 +52,10 @@ public final class FatekPLC extends FatekConnectionManager {
     public FatekPLC(String uriStr) throws FatekIOException {
 
         super(uriStr);
+    }
+
+    public static void registerConnectionFactory(FatekConnectionFactory connectionFactory) {
+        FatekConnectionManager.registerConnectionFactory(connectionFactory);
     }
 
     FatekConnection getConnection() throws FatekIOException {

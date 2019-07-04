@@ -17,13 +17,22 @@
 package org.simplify4u.jfatek;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertFalse;
+import static org.testng.Assert.assertTrue;
 
+import org.simplify4u.jfatek.io.MockConnectionFactory;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekGistSystemStatusCmdTest {
+
+    @BeforeClass
+    public void setup() {
+        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    }
 
     @Test
     public void testCmd() throws Exception {
@@ -32,12 +41,12 @@ public class FatekGistSystemStatusCmdTest {
 
             FatekGistSystemStatus cmdSystemStatus = new FatekGistSystemStatusCmd(fatekPLC).send();
 
-            assertEquals(cmdSystemStatus.isRun(), true, "SystemStatus.isRun");
-            assertEquals(cmdSystemStatus.isLadderChecksumError(), false, "SystemStatus.isLadderChecksumError");
-            assertEquals(cmdSystemStatus.isUseRomPack(), true, "SystemStatus.isUseRomPack");
-            assertEquals(cmdSystemStatus.isWDTTimeout(), false, "SystemStatus.isWDTTimeout");
-            assertEquals(cmdSystemStatus.isSetId(), true, "SystemStatus.isSetId");
-            assertEquals(cmdSystemStatus.isEmergencyStop(), false, "SystemStatus.isEmergencyStop");
+            assertTrue(cmdSystemStatus.isRun(), "SystemStatus.isRun");
+            assertFalse(cmdSystemStatus.isLadderChecksumError(), "SystemStatus.isLadderChecksumError");
+            assertTrue(cmdSystemStatus.isUseRomPack(), "SystemStatus.isUseRomPack");
+            assertFalse(cmdSystemStatus.isWDTTimeout(), "SystemStatus.isWDTTimeout");
+            assertTrue(cmdSystemStatus.isSetId(), "SystemStatus.isSetId");
+            assertFalse(cmdSystemStatus.isEmergencyStop(), "SystemStatus.isEmergencyStop");
 
             assertEquals(cmdSystemStatus.getStatus1(), 0x29, "SystemStatus.getStatus1");
             assertEquals(cmdSystemStatus.getStatus2(), 0xaa, "SystemStatus.getStatus2");

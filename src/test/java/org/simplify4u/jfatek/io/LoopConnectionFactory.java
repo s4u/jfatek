@@ -27,6 +27,8 @@ import java.io.OutputStream;
  */
 public class LoopConnectionFactory implements FatekConnectionFactory {
 
+    private static final String SCHEMA_NAME = "LOOP";
+
     private class LoopConnection extends FatekConnection {
 
         private ByteArrayOutputStream outStream;
@@ -65,5 +67,10 @@ public class LoopConnectionFactory implements FatekConnectionFactory {
     public FatekConnection getConnection(FatekConfig fatekConfig) throws IOException {
 
         return new LoopConnection(fatekConfig);
+    }
+
+    @Override
+    public String getSchema() {
+        return SCHEMA_NAME;
     }
 }

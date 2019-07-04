@@ -17,6 +17,7 @@
 package org.simplify4u.jfatek.io;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
 import static org.testng.Assert.assertEquals;
 
@@ -56,7 +57,7 @@ public class FatekConfigTest {
     public void testParams(String testUri, String key, String value) throws Exception {
 
         FatekConfig fc = new FatekConfig(new URI(testUri));
-        assertEquals(fc.getParam(key), value);
+        assertEquals(fc.getParam(key).get(), value);
     }
 
     @Test
@@ -87,5 +88,23 @@ public class FatekConfigTest {
 
         FatekConfig fatekConfig2 = new FatekConfig(new URI("test://test"));
         assertEquals(fatekConfig2.getPlcId(), FatekConfig.DEFAULT_PLC_ID);
+    }
+
+    @DataProvider(name = "name", parallel = true)
+    public static Object[][] name() {
+
+        return new Object[][]{
+                {"test://test1", "test1"},
+                {"test://test1/test2", "test1/test2"},
+                {"test:///test3/test4", "/test3/test4"},
+                {"test://test1/", "test1/"}
+        };
+    }
+
+    @Test(dataProvider = "name")
+    public void testGetFullName(String testUri, String name) throws URISyntaxException {
+        FatekConfig fc = new FatekConfig(new URI(testUri));
+
+        assertEquals(fc.getFullName(), name);
     }
 }

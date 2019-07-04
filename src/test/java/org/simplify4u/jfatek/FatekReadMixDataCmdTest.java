@@ -26,14 +26,21 @@ import static org.simplify4u.jfatek.registers.DataReg.R;
 import static org.simplify4u.jfatek.registers.DisReg.Y;
 import static org.testng.Assert.assertEquals;
 
+import org.simplify4u.jfatek.io.MockConnectionFactory;
 import org.simplify4u.jfatek.registers.Reg;
 import org.simplify4u.jfatek.registers.RegValue;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekReadMixDataCmdTest {
+
+    @BeforeClass
+    public void setup() {
+        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    }
 
     @Test
     public void testCmd() throws Exception {

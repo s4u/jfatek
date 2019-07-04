@@ -1,5 +1,5 @@
 /*
- * Copyright 2017 Slawomir Jaranowski
+ * Copyright 2019 Slawomir Jaranowski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -43,4 +43,11 @@ public interface FatekConnectionFactory {
      * @throws IOException if problem during creating connection
      */
     FatekConnection getConnection(FatekConfig fatekConfig) throws IOException;
+
+    /**
+     * Schema supported by connection factory
+     *
+     * @return schema name
+     */
+    String getSchema();
 }

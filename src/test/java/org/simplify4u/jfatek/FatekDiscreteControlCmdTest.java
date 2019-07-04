@@ -18,13 +18,20 @@ package org.simplify4u.jfatek;
 
 import static org.simplify4u.jfatek.registers.DisReg.M;
 
+import org.simplify4u.jfatek.io.MockConnectionFactory;
 import org.simplify4u.jfatek.registers.DisRunCode;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekDiscreteControlCmdTest {
+
+    @BeforeClass
+    public void setup() {
+        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    }
 
     @Test
     public void testCmd() throws Exception {

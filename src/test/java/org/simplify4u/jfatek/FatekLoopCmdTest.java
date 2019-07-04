@@ -16,12 +16,21 @@
 
 package org.simplify4u.jfatek;
 
+import org.simplify4u.jfatek.io.LoopConnectionFactory;
+import org.simplify4u.jfatek.io.MockConnectionFactory;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekLoopCmdTest {
+
+    @BeforeClass
+    public void setup() {
+        FatekPLC.registerConnectionFactory(new LoopConnectionFactory());
+        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    }
 
     @Test
     public void testDefaultMsg() throws Exception {

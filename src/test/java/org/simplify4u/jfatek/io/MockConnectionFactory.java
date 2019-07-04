@@ -21,7 +21,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
+import java.nio.charset.StandardCharsets;
 
 import static org.testng.Assert.assertEquals;
 
@@ -29,6 +29,8 @@ import static org.testng.Assert.assertEquals;
  * @author Slawomir Jaranowski.
  */
 public class MockConnectionFactory implements FatekConnectionFactory {
+
+    private static final String SCHEMA_NAME = "TEST";
 
     private class MockConnection extends FatekConnection {
 
@@ -62,7 +64,7 @@ public class MockConnectionFactory implements FatekConnectionFactory {
         protected void closeConnection() throws IOException {
 
             String outActual = outputStream.toString("ASCII");
-            String outExpected = getParam("plcOutData");
+            String outExpected = getParam("plcOutData").get();
 
             // first remove all start char
             outActual = outActual.replaceAll("\\x02", "");
@@ -86,7 +88,7 @@ public class MockConnectionFactory implements FatekConnectionFactory {
 
         private byte[] getTestMessageByte() {
 
-            String rawMsg = getParam("plcInData");
+            String rawMsg = getParam("plcInData").get();
             StringBuilder allMsg = new StringBuilder();
 
             for (String rawMsgItem : rawMsg.split(";")) {
@@ -97,27 +99,24 @@ public class MockConnectionFactory implements FatekConnectionFactory {
                 msg.append(rawMsgItem);
 
                 int crc = 0;
-                try {
-                    crc = FatekUtils.countCRC(msg.toString().getBytes("ASCII"));
-                } catch (UnsupportedEncodingException e) {
-                    return null;
-                }
+                crc = FatekUtils.countCRC(msg.toString().getBytes(StandardCharsets.US_ASCII));
                 msg.append(String.format("%02X", crc));
                 msg.append((char) 0x03);
                 allMsg.append(msg);
             }
 
-            try {
-                return allMsg.toString().getBytes("ASCII");
-            } catch (UnsupportedEncodingException e) {
-                return null;
-            }
+            return allMsg.toString().getBytes(StandardCharsets.US_ASCII);
         }
     }
 
     @Override
-    public FatekConnection getConnection(FatekConfig fatekConfig) throws IOException {
+    public FatekConnection getConnection(FatekConfig fatekConfig) {
 
         return new MockConnection(fatekConfig);
+    }
+
+    @Override
+    public String getSchema() {
+        return SCHEMA_NAME;
     }
 }

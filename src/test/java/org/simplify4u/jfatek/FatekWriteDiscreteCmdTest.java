@@ -22,12 +22,19 @@ import java.util.List;
 import static org.simplify4u.jfatek.registers.DisReg.X;
 import static org.simplify4u.jfatek.registers.DisReg.Y;
 
+import org.simplify4u.jfatek.io.MockConnectionFactory;
+import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekWriteDiscreteCmdTest {
+
+    @BeforeClass
+    public void setup() {
+        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    }
 
     @Test
     public void testCmd1() throws Exception {

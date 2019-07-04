@@ -23,6 +23,7 @@ import java.net.URI;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -80,12 +81,17 @@ public class FatekConfig {
         return port;
     }
 
-    public int getPlcId() {
+    /**
+     * Returns the host and path of current URI.
+     *
+     * @return uri.getHost + uri.getPath
+     */
+    public String getFullName() {
+        return Optional.ofNullable(uri.getHost()).orElse("") + Optional.ofNullable(uri.getPath()).orElse("");
+    }
 
-        if (params.containsKey(PARAM_PLC_ID)) {
-            return Integer.parseInt(params.get(PARAM_PLC_ID));
-        }
-        return DEFAULT_PLC_ID;
+    public int getPlcId() {
+        return getParamAsInt(PARAM_PLC_ID).orElse(DEFAULT_PLC_ID);
     }
 
     /**
@@ -96,27 +102,42 @@ public class FatekConfig {
      * @see FatekConfig#DEFAULT_TIMEOUT
      */
     public int getTimeout() {
-
-        if (params.containsKey(PARAM_TIMEOUT)) {
-            return Integer.parseInt(params.get(PARAM_TIMEOUT));
-        }
-        return DEFAULT_TIMEOUT;
+        return getParamAsInt(PARAM_TIMEOUT).orElse(DEFAULT_TIMEOUT);
     }
 
-    public String getParam(String key) {
-
-        return params.get(key);
+    /**
+     * @param key key for looking param
+     * @return Parameter value  for given key
+     */
+    public Optional<String> getParam(String key) {
+        return Optional.ofNullable(params.get(key));
     }
+
+    /**
+     * Retrieve parameter as Integer.
+     *
+     * @param key key for looking param
+     * @return Parameter value  for given key
+     */
+    public Optional<Integer> getParamAsInt(String key) {
+        return getParam(key).map(Integer::valueOf);
+    }
+
+    public SocketAddress getSocketAddress(int defaultPort) {
+
+        return new InetSocketAddress(getHost(), getPort(defaultPort));
+    }
+
+    private static final Pattern KEY_VALUE_PATTERN = Pattern.compile("^\\s*(\\w+)=(.*)$");
 
     private void parseQuery() {
 
         String query = uri.getRawQuery();
         if (query != null) {
 
-            Pattern p = Pattern.compile("^\\s*(\\w+)=(.*)$");
 
             for (String param : query.split("&")) {
-                Matcher matcher = p.matcher(param);
+                Matcher matcher = KEY_VALUE_PATTERN.matcher(param);
                 if (matcher.find()) {
                     String key = matcher.group(1);
                     String val = matcher.group(2);
@@ -130,10 +151,5 @@ public class FatekConfig {
                 }
             }
         }
-    }
-
-    public SocketAddress getSocketAddress(int defaultPort) {
-
-        return new InetSocketAddress(getHost(), getPort(defaultPort));
     }
 }

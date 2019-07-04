@@ -20,8 +20,11 @@ import java.io.Closeable;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Optional;
 
-import org.simplify4u.jfatek.FatekException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,11 +37,17 @@ public abstract class FatekConnectionManager implements Closeable {
 
     private static final Logger LOG = LoggerFactory.getLogger(FatekConnectionManager.class);
 
+    private static final Map<String, FatekConnectionFactory> CONNECTION_FACTORY_MAP = new HashMap<>();
+
+    static {
+        // register connection factory for supported protocols
+        registerConnectionFactory(new TCPConnectionFactory());
+        registerConnectionFactory(new UDPConnectionFactory());
+    }
+
     private FatekConfig fatekConfig;
     private FatekConnectionFactory connectionFactory;
     private FatekConnection connection;
-
-    private FatekException stack;
 
     protected FatekConnectionManager(URI uri) throws FatekIOException {
 
@@ -52,6 +61,10 @@ public abstract class FatekConnectionManager implements Closeable {
         } catch (URISyntaxException e) {
             throw new FatekIOException(e);
         }
+    }
+
+    protected static void registerConnectionFactory(FatekConnectionFactory connectionFactory) {
+        CONNECTION_FACTORY_MAP.put(connectionFactory.getSchema().toUpperCase(Locale.ENGLISH), connectionFactory);
     }
 
     /**
@@ -97,39 +110,20 @@ public abstract class FatekConnectionManager implements Closeable {
         }
     }
 
+
     // private methods
-
-    private void init(URI uri) throws FatekIOException {
-
-        fatekConfig = new FatekConfig(uri);
-        connectionFactory = findConnectionFactory();
-        if (LOG.isDebugEnabled()) {
-            stack = new FatekException();
-        }
-    }
 
     private FatekConnectionFactory findConnectionFactory() throws FatekIOException {
 
         String scheme = fatekConfig.getScheme();
 
-        FatekConnectionFactory fcf = FatekConnectionFactoryLoader.getByScheme(scheme);
-        if (fcf == null) {
-            throw new FatekIOException("Unknown connection factory for scheme: %s", scheme);
-        }
-        return fcf;
+        return Optional.ofNullable(CONNECTION_FACTORY_MAP.get(scheme.toUpperCase(Locale.ENGLISH)))
+                .orElseThrow(() -> new FatekIOException("Unknown connection factory for scheme: %s", scheme));
     }
 
-    @Override
-    protected void finalize() throws Throwable {
+    private void init(URI uri) throws FatekIOException {
 
-        if (connection != null) {
-            LOG.debug("Please invoke close on Fatek PLC to terminate open connections.", stack);
-            try {
-                close();
-            } catch (FatekIOException e) {
-                LOG.error("Close connection in finalize error", e);
-            }
-        }
-        super.finalize();
+        fatekConfig = new FatekConfig(uri);
+        connectionFactory = findConnectionFactory();
     }
 }

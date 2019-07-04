@@ -20,6 +20,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.SocketAddress;
+import java.util.Optional;
 
 /**
  * @author Slawomir Jaranowski.
@@ -69,13 +70,19 @@ public abstract class FatekConnection {
     }
 
     public int getPlcId() {
-
         return fatekConfig.getPlcId();
     }
 
-    public String getParam(String key) {
-
+    public Optional<String> getParam(String key) {
         return fatekConfig.getParam(key);
+    }
+
+    public Optional<Integer> getParamAsInt(String key) {
+        return fatekConfig.getParamAsInt(key);
+    }
+
+    public String getFullName() {
+        return fatekConfig.getFullName();
     }
 
     public SocketAddress getSocketAddress(int defaultPort) {
