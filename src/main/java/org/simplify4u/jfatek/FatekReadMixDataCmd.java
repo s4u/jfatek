@@ -112,13 +112,7 @@ public class FatekReadMixDataCmd extends FatekCommand<Map<Reg, RegValue>> {
     protected void readData(FatekReader reader) throws FatekIOException {
 
         for (int i = nextRegIndex; i <= lastRegIndex; i++) {
-            if (regs[i].isDiscrete()) {
-                result.put(regs[i], reader.readRegValueDis());
-            } else if (regs[i].is32Bits()) {
-                result.put(regs[i], reader.readRegVal32());
-            } else {
-                result.put(regs[i], reader.readRegVal16());
-            }
+            result.put(regs[i], RegValue.getForReg(regs[i], reader));
         }
 
         nextRegIndex = lastRegIndex + 1;

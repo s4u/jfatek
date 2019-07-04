@@ -83,12 +83,7 @@ public class FatekReadDataCmd extends FatekCommand<List<RegValue>> {
         result = new ArrayList<>(number);
 
         for (int i = 0; i < number; i++) {
-
-            if (startReg.is32Bits()) {
-                result.add(reader.readRegVal32());
-            } else {
-                result.add(reader.readRegVal16());
-            }
+            result.add(RegValue.getForReg(startReg, reader));
         }
     }
 }

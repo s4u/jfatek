@@ -16,6 +16,9 @@
 
 package org.simplify4u.jfatek.registers;
 
+import org.simplify4u.jfatek.io.FatekIOException;
+import org.simplify4u.jfatek.io.FatekReader;
+
 /**
  * @author Slawomir Jaranowski.
  */
@@ -66,6 +69,18 @@ public abstract class RegValue {
         }
 
         return new RegValue32(Float.floatToIntBits(value));
+    }
+
+    public static RegValue getForReg(Reg reg, FatekReader reader) throws FatekIOException {
+        if (reg.isDiscrete()) {
+            return new RegValueDis(reader.readBool());
+        }
+
+        if (reg.is32Bits()) {
+            return new RegValue32(reader.readInt32());
+        }
+
+        return new RegValue16(reader.readInt16());
     }
 
     public int intValueUnsigned() {

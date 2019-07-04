@@ -19,10 +19,8 @@ package org.simplify4u.jfatek.io;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
-import org.simplify4u.jfatek.registers.RegValue16;
-import org.simplify4u.jfatek.registers.RegValue32;
-import org.simplify4u.jfatek.registers.RegValueDis;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +42,7 @@ public class FatekReader {
         this.msgBuf = new char[0];
     }
 
-    public int read(char... buf) throws FatekIOException {
+    public int read(char... buf) {
 
         int lenToCopy = Math.min(buf.length, msgBuf.length - msgBufOutPos - 3);
         if (lenToCopy <= 0) {
@@ -91,12 +89,7 @@ public class FatekReader {
         }
     }
 
-    public RegValueDis readRegValueDis() throws FatekIOException {
-
-        return new RegValueDis(readBool());
-    }
-
-    public RegValue16 readRegVal16() throws FatekIOException {
+    public long readInt16() throws FatekIOException {
 
         char[] buf = new char[4];
 
@@ -104,10 +97,10 @@ public class FatekReader {
         if (n != 4) {
             throw new FatekUnexpectedEOSException();
         }
-        return new RegValue16(Long.parseLong(new String(buf, 0, 4), 16));
+        return Long.parseLong(new String(buf), 16);
     }
 
-    public RegValue32 readRegVal32() throws FatekIOException {
+    public long readInt32() throws FatekIOException {
 
         char[] buf = new char[8];
 
@@ -115,7 +108,7 @@ public class FatekReader {
         if (n != 8) {
             throw new FatekUnexpectedEOSException();
         }
-        return new RegValue32(Long.parseLong(new String(buf, 0, 8), 16));
+        return Long.parseLong(new String(buf), 16);
     }
 
     /**
@@ -151,13 +144,13 @@ public class FatekReader {
             }
 
             int crc0 = FatekUtils.countCRC(bufArray, bufArray.length - 3);
-            int crc = Integer.parseInt(new String(bufArray, bufArray.length - 3, 2), 16);
+            int crc = Integer.parseInt(new String(bufArray, bufArray.length - 3, 2, StandardCharsets.US_ASCII), 16);
 
             if (crc != crc0) {
                 throw new FatekCRCException(crc, crc0);
             }
 
-            msgBuf = new String(bufArray, "ASCII").toCharArray();
+            msgBuf = new String(bufArray, StandardCharsets.US_ASCII).toCharArray();
             msgBufOutPos = 1;
         } catch (FatekIOException e) {
             throw e;
