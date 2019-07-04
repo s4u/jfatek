@@ -16,6 +16,8 @@
 
 package org.simplify4u.jfatek;
 
+import java.util.Locale;
+
 import org.simplify4u.jfatek.io.FatekConnection;
 import org.simplify4u.jfatek.io.FatekIOException;
 import org.simplify4u.jfatek.io.FatekReader;
@@ -123,7 +125,7 @@ public abstract class FatekCommand<T> {
         } finally {
             if (LOG.isDebugEnabled()) {
                 LOG.debug("Process command ID: 0x{} work time: {} ms",
-                        Integer.toHexString(getID()).toUpperCase(), System.currentTimeMillis() - startTime);
+                        Integer.toHexString(getID()).toUpperCase(Locale.ENGLISH), System.currentTimeMillis() - startTime);
             }
         }
 

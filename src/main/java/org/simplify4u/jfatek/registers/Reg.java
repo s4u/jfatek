@@ -17,7 +17,7 @@
 package org.simplify4u.jfatek.registers;
 
 import java.util.Collections;
-import java.util.HashMap;
+import java.util.EnumMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -68,7 +68,7 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
     private final int digitCount;
 
     static {
-        Map<RegName, RegDesc> map = new HashMap<>();
+        Map<RegName, RegDesc> map = new EnumMap(RegName.class);
 
         map.put(X, RegDesc.DISC);
         map.put(Y, RegDesc.DISC);
@@ -143,6 +143,9 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
         return address;
     }
 
+
+    private static final Pattern REG_NAME_PATTERN = Pattern.compile("([A-Z]+)(\\d+)");
+
     /**
      * @param strReg string representation of register
      * @return parsed register
@@ -160,15 +163,14 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
             throw new UnknownRegNameException(strReg);
         }
 
-        Pattern pattern = Pattern.compile("([A-Z]+)(\\d+)");
-        Matcher matcher = pattern.matcher(trimStrReg);
+        Matcher matcher = REG_NAME_PATTERN.matcher(trimStrReg);
         if (!matcher.find()) {
             throw new UnknownRegNameException(strReg);
         }
 
         RegName regName;
         try {
-            regName = RegName.valueOf(matcher.group(1).toUpperCase());
+            regName = RegName.valueOf(matcher.group(1).toUpperCase(Locale.ENGLISH));
         } catch (IllegalArgumentException e) {
             throw new UnknownRegNameException(strReg, e);
         }
@@ -223,7 +225,7 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
         }
 
         Reg reg = (Reg) o;
-        return name.equals(reg.name) && address == reg.address && a32bit == reg.a32bit && digitCount == reg.digitCount;
+        return name == reg.name && address == reg.address && a32bit == reg.a32bit && digitCount == reg.digitCount;
     }
 
     @Override

@@ -19,6 +19,7 @@ package org.simplify4u.jfatek.io;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.nio.charset.StandardCharsets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +44,7 @@ public class FatekWriter {
     public void write(String string) throws FatekIOException {
 
         try {
-            outputBuf.write(string.getBytes("ASCII"));
+            outputBuf.write(string.getBytes(StandardCharsets.US_ASCII));
         } catch (IOException e) {
             throw new FatekIOException(e);
         }
