@@ -1,43 +1,15 @@
-sudo: false
-
+version: ~> 1.0
 language: java
 
-branches:
-  only:
-    - master
+env:
+  global:
+    - M2_CACHE_CLEAN_DIR: "org/simplify4u/jfatek/"
+    - SONAR_ORG: "simplify4u"
+    - MY_REPO: "s4u/jfatek"
 
-# turn shallow clone off for sonar
-git:
-  depth: false
+import:
+  - source: s4u/travis:install.yml@master
+  - source: s4u/travis:m2-cache.yml@master
+  - source: s4u/travis:standard-jobs.yml@master
+  - source: s4u/travis:deploy-ghpages.yml@master
 
-addons:
-  sonarcloud:
-    organization: "simplify4u"
-
-install:
-  - mkdir -p ../utils
-  - curl -Ls https://github.com/s4u/travis/archive/master.tar.gz |
-      tar -zx --strip-components 2 -C ../utils travis-master/src
-
-before_script:
-  - ../utils/print-env.sh
-
-matrix:
-  include:
-
-    - jdk: openjdk8
-      script:
-        - ../utils/mvn-push.sh    clean deploy
-        - ../utils/mvn-sec-env.sh sonar:sonar
-        - ../utils/mvn-pr.sh      clean verify
-
-    - jdk: openjdk11
-      script:
-        - ../utils/mvn-run.sh clean verify
-
-cache:
-  directories:
-  - $HOME/.m2/repository
-
-before_cache:
-  - rm -rfv $HOME/.m2/repository/org/simplify4u/jfatek/
