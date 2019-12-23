@@ -19,8 +19,8 @@
     <parent>
         <groupId>org.simplify4u</groupId>
         <artifactId>parent</artifactId>
-        <version>2.4.1</version>
-        <relativePath />
+        <version>2.4.3</version>
+        <relativePath/>
     </parent>
 
     <artifactId>jfatek</artifactId>
@@ -28,6 +28,7 @@
     <packaging>bundle</packaging>
 
     <name>Java Fatek PLC client library</name>
+
     <description>
         This project implements Fatek protocol to communicate with Fatek PLC (Programmable Logic Controller).
     </description>
@@ -63,6 +64,10 @@
         </site>
     </distributionManagement>
 
+    <properties>
+        <pgp-keys-map.version>2019.12-SNAPSHOT</pgp-keys-map.version>
+    </properties>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -78,7 +83,12 @@
             <dependency>
                 <groupId>org.testng</groupId>
                 <artifactId>testng</artifactId>
-                <version>6.14.3</version>
+                <version>7.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>org.simplify4u</groupId>
+                <artifactId>pgp-keys-map</artifactId>
+                <version>${pgp-keys-map.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -98,6 +108,12 @@
             <artifactId>testng</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.simplify4u</groupId>
+            <artifactId>pgp-keys-map</artifactId>
+            <scope>runtime</scope>
+            <optional>true</optional>
+        </dependency>
     </dependencies>
 
     <build>
@@ -106,6 +122,30 @@
                 <groupId>org.apache.felix</groupId>
                 <artifactId>maven-bundle-plugin</artifactId>
                 <extensions>true</extensions>
+            </plugin>
+            <plugin>
+                <groupId>org.simplify4u.plugins</groupId>
+                <artifactId>pgpverify-maven-plugin</artifactId>
+                <version>1.5.1</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <verifyPlugins>true</verifyPlugins>
+                    <keysMapLocation>/pgp-keys-map.list</keysMapLocation>
+                    <strictNoSignature>true</strictNoSignature>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.simplify4u</groupId>
+                        <artifactId>pgp-keys-map</artifactId>
+                        <version>${pgp-keys-map.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
         </plugins>
     </build>
