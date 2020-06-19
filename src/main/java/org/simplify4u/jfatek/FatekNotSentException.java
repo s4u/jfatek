@@ -21,4 +21,5 @@ package org.simplify4u.jfatek;
  */
 public class FatekNotSentException extends FatekException {
 
+    private static final long serialVersionUID = 5013903649957387228L;
 }

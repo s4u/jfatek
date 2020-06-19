@@ -23,6 +23,8 @@ import java.io.IOException;
  */
 public class FatekUnexpectedEOSException extends FatekIOException {
 
+    private static final long serialVersionUID = 8418743881106869882L;
+
     public FatekUnexpectedEOSException(IOException e) {
 
         super(e);

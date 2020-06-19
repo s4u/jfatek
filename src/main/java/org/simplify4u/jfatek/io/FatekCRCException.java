@@ -21,6 +21,8 @@ package org.simplify4u.jfatek.io;
  */
 public class FatekCRCException extends FatekIOException {
 
+    private static final long serialVersionUID = -3686223442230597566L;
+
     public FatekCRCException(int actual, int expect) {
 
         super(String.format("CRC is: %X, but expected: %X", actual, expect));

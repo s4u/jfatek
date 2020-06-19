@@ -21,6 +21,8 @@ package org.simplify4u.jfatek.registers;
  */
 public class UnknownRegNameException extends Exception {
 
+    private static final long serialVersionUID = -8810141852675816236L;
+
     public UnknownRegNameException(String message) {
         super(String.format("Unknown reg name: '%s'", message));
     }

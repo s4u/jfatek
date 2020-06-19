@@ -23,6 +23,8 @@ import java.io.IOException;
  */
 public class FatekIOException extends IOException {
 
+    private static final long serialVersionUID = 8505646456857247899L;
+
     protected FatekIOException() {
 
         super();

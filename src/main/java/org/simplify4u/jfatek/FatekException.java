@@ -21,6 +21,8 @@ package org.simplify4u.jfatek;
  */
 public class FatekException extends Exception {
 
+    private static final long serialVersionUID = 8976724460883070966L;
+
     public FatekException(Exception e) {
 
         super(e);

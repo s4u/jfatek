@@ -60,6 +60,8 @@ import org.simplify4u.jfatek.FatekException;
  */
 public abstract class Reg implements Cloneable, Comparable<Reg> {
 
+    private static final Pattern REG_NAME_PATTERN = Pattern.compile("([A-Z]+)(\\d+)");
+
     protected static final Map<RegName, RegDesc> REGS_DESC;
 
     private final RegName name;
@@ -68,7 +70,7 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
     private final int digitCount;
 
     static {
-        Map<RegName, RegDesc> map = new EnumMap(RegName.class);
+        Map<RegName, RegDesc> map = new EnumMap<>(RegName.class);
 
         map.put(X, RegDesc.DISC);
         map.put(Y, RegDesc.DISC);
@@ -143,9 +145,6 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
         return address;
     }
 
-
-    private static final Pattern REG_NAME_PATTERN = Pattern.compile("([A-Z]+)(\\d+)");
-
     /**
      * @param strReg string representation of register
      * @return parsed register
@@ -204,6 +203,7 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
      * @param <T> register class
      * @return new register with new address
      */
+    @SuppressWarnings("unchecked")
     public <T extends Reg> T incAddress(int number) {
 
         if (isDiscrete()) {
@@ -238,6 +238,7 @@ public abstract class Reg implements Cloneable, Comparable<Reg> {
         return result;
     }
 
+    @SuppressWarnings("unchecked")
     public <T extends Reg> T cloneReg() throws FatekException {
 
         try {
