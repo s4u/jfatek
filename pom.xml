@@ -65,7 +65,6 @@
     </distributionManagement>
 
     <properties>
-        <pgp-keys-map.version>2019.12-SNAPSHOT</pgp-keys-map.version>
         <slf4j.version>1.7.30</slf4j.version>
     </properties>
 
@@ -86,11 +85,6 @@
                 <artifactId>testng</artifactId>
                 <version>7.1.0</version>
             </dependency>
-            <dependency>
-                <groupId>org.simplify4u</groupId>
-                <artifactId>pgp-keys-map</artifactId>
-                <version>${pgp-keys-map.version}</version>
-            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -108,12 +102,6 @@
             <groupId>org.testng</groupId>
             <artifactId>testng</artifactId>
             <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.simplify4u</groupId>
-            <artifactId>pgp-keys-map</artifactId>
-            <scope>runtime</scope>
-            <optional>true</optional>
         </dependency>
     </dependencies>
 
@@ -137,14 +125,15 @@
                 </executions>
                 <configuration>
                     <verifyPlugins>true</verifyPlugins>
+                    <verifyPluginDependencies>true</verifyPluginDependencies>
                     <keysMapLocation>/pgp-keys-map.list</keysMapLocation>
-                    <strictNoSignature>true</strictNoSignature>
+                    <quiet>true</quiet>
                 </configuration>
                 <dependencies>
                     <dependency>
                         <groupId>org.simplify4u</groupId>
                         <artifactId>pgp-keys-map</artifactId>
-                        <version>${pgp-keys-map.version}</version>
+                        <version>2020.08</version>
                     </dependency>
                 </dependencies>
             </plugin>
