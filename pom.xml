@@ -33,6 +33,14 @@
         This project implements Fatek protocol to communicate with Fatek PLC (Programmable Logic Controller).
     </description>
 
+    <url>https://www.simplify4u.org/jfatek</url>
+    <inceptionYear>2013</inceptionYear>
+
+    <organization>
+        <name>Simplify4U</name>
+        <url>https://www.simplify4u.org</url>
+    </organization>
+
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -46,6 +54,7 @@
             <id>sjaranowski</id>
             <name>Slawomir Jaranowski</name>
             <email>s.jaranowski@gmail.com</email>
+            <url>https://github.com/slawekjaranowski</url>
             <timezone>Europe/Warsaw</timezone>
         </developer>
     </developers>
@@ -59,7 +68,7 @@
 
     <distributionManagement>
         <site>
-            <id>github-pages</id>
+            <id>github</id>
             <url>${project.scm.connection}</url>
         </site>
     </distributionManagement>
@@ -139,29 +148,5 @@
             </plugin>
         </plugins>
     </build>
-
-    <reporting>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>dependencies</report>
-                            <report>dependency-info</report>
-                            <report>ci-management</report>
-                            <report>issue-management</report>
-                            <report>licenses</report>
-                            <report>plugins</report>
-                            <report>team</report>
-                            <report>scm</report>
-                            <report>summary</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-        </plugins>
-    </reporting>
 
 </project>
