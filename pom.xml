@@ -24,7 +24,7 @@
     </parent>
 
     <artifactId>jfatek</artifactId>
-    <version>3.0.1</version>
+    <version>3.0.2-SNAPSHOT</version>
     <packaging>bundle</packaging>
 
     <name>Java Fatek PLC client library</name>
@@ -63,7 +63,7 @@
         <connection>scm:git:git@github.com:s4u/jfatek.git</connection>
         <developerConnection>${project.scm.connection}</developerConnection>
         <url>https://github.com/s4u/jfatek</url>
-        <tag>v3.0.1</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
