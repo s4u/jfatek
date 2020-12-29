@@ -21,11 +21,6 @@ Will be very welcome.
 If you have question or suggestion simply create [issue](https://github.com/s4u/jfatek/issues)
 or send a pull request on [GitHub](https://github.com/s4u/jfatek).
 
-Know uses of JFatek
-====================
-
-* [OpenHAB - Fatek PLC Binding](http://docs.openhab.org/addons/bindings.html)
-
 ---
 
 Please let us know if you are using this project and would like to be listed here.
