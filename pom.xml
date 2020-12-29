@@ -20,11 +20,11 @@
         <groupId>org.simplify4u</groupId>
         <artifactId>parent</artifactId>
         <version>2.9.0</version>
-        <relativePath/>
+        <relativePath />
     </parent>
 
     <artifactId>jfatek</artifactId>
-    <version>3.0.1-SNAPSHOT</version>
+    <version>3.0.1</version>
     <packaging>bundle</packaging>
 
     <name>Java Fatek PLC client library</name>
@@ -63,7 +63,7 @@
         <connection>scm:git:git@github.com:s4u/jfatek.git</connection>
         <developerConnection>${project.scm.connection}</developerConnection>
         <url>https://github.com/s4u/jfatek</url>
-        <tag>HEAD</tag>
+        <tag>v3.0.1</tag>
     </scm>
 
     <distributionManagement>
