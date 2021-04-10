@@ -49,7 +49,7 @@ import static org.simplify4u.jfatek.registers.DisReg.T;
 import static org.simplify4u.jfatek.registers.DisReg.X;
 import static org.simplify4u.jfatek.registers.DisReg.Y;
 import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotSame;
+import static org.testng.Assert.assertFalse;
 
 import org.simplify4u.jfatek.FatekException;
 import org.testng.annotations.DataProvider;
@@ -65,7 +65,7 @@ public class RegTest {
         Reg r2 = r1.cloneReg();
 
         assertEquals(r1, r2);
-        assertNotSame(r1, r2);
+        assertFalse(r1 == r2);
     }
 
     @DataProvider(name = "provideRegsOK")
