@@ -27,51 +27,54 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Slawomir Jaranowski.
  */
-public class RegValueDisTest {
+class RegValueDisTest {
 
     @Test
-    public void testBoolValue() {
+    void testBoolValue() {
         assertTrue(new RegValueDis(true).boolValue());
         assertFalse(new RegValueDis(false).boolValue());
     }
 
     @Test
-    public void testIntValue() {
+    void testIntValue() {
         assertEquals(1, new RegValueDis(true).intValue());
         assertEquals(0, new RegValueDis(false).intValue());
     }
 
     @Test
-    public void testIntValueUnsigned() {
+    void testIntValueUnsigned() {
         assertEquals(1, new RegValueDis(true).intValueUnsigned());
         assertEquals(0, new RegValueDis(false).intValueUnsigned());
     }
 
     @Test
-    public void testLongValue() {
+    void testLongValue() {
         assertEquals(1, new RegValueDis(true).longValue());
         assertEquals(0, new RegValueDis(false).longValue());
     }
 
     @Test
-    public void testLongValueUnsigned() {
+    void testLongValueUnsigned() {
         assertEquals(1, new RegValueDis(true).longValueUnsigned());
         assertEquals(0, new RegValueDis(false).longValueUnsigned());
     }
 
     @Test
-    public void testFload() {
-        assertThrows(UnsupportedOperationException.class, () -> new RegValueDis(true).floatValue());
+    void testFload() {
+
+        RegValueDis regValueDis = new RegValueDis(true);
+
+        assertThrows(UnsupportedOperationException.class, regValueDis::floatValue);
     }
 
     @Test
-    public void testToFatekString() {
+    void testToFatekString() {
         assertEquals("1", new RegValueDis(true).toFatekString());
         assertEquals("0", new RegValueDis(false).toFatekString());
     }
 
     @Test
-    public void testEquals() {
+    void testEquals() {
 
         RegValue val00 = new RegValueDis(false);
         RegValue val01 = new RegValueDis(false);
@@ -85,7 +88,7 @@ public class RegValueDisTest {
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
 
         RegValue val00 = new RegValueDis(false);
         RegValue val01 = new RegValueDis(false);

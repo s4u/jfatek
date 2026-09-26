@@ -26,11 +26,11 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekReaderTest {
+class FatekReaderTest {
 
 
     @Test
-    public void testReadByte() throws Exception {
+    void testReadByte() throws Exception {
 
         String input = "\0020140C7\003";
         FatekReader fatekReader = new FatekReader(new ByteArrayInputStream(input.getBytes("ASCII")));
@@ -41,7 +41,7 @@ public class FatekReaderTest {
     }
 
     @Test
-    public void testWrongCRC() throws Exception {
+    void testWrongCRC() throws Exception {
 
         String input = "\0020140AA\003";
         FatekReader fatekReader = new FatekReader(new ByteArrayInputStream(input.getBytes("ASCII")));

@@ -30,17 +30,17 @@ import org.simplify4u.jfatek.io.MockConnectionFactory;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekWriteDiscreteCmdTest {
+class FatekWriteDiscreteCmdTest {
 
     private static final MockConnectionFactory MOCK = new MockConnectionFactory();
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd1() throws Exception {
+    void testCmd1() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01450")) {
             new FatekWriteDiscreteCmd(fatekPLC, Y(10), true, false, true).send();
@@ -50,7 +50,7 @@ public class FatekWriteDiscreteCmdTest {
     }
 
     @Test
-    public void testCmd2() throws Exception {
+    void testCmd2() throws Exception {
 
         StringBuilder expectedOut = new StringBuilder();
         List<Boolean> tList = new ArrayList<>(256);

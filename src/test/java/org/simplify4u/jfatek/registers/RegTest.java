@@ -60,11 +60,11 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.simplify4u.jfatek.FatekException;
 
-public class RegTest {
+class RegTest {
 
 
     @Test
-    public void testClone() throws FatekException {
+    void testClone() throws FatekException {
 
         Reg r1 = X(1);
         Reg r2 = r1.cloneReg();
@@ -73,7 +73,7 @@ public class RegTest {
         assertNotSame(r1, r2);
     }
 
-    public static Stream<Arguments> provideRegsOK() {
+    static Stream<Arguments> provideRegsOK() {
 
         return Stream.of(
                 Arguments.of("X1", X(1)),
@@ -111,12 +111,12 @@ public class RegTest {
 
     @ParameterizedTest
     @MethodSource("provideRegsOK")
-    public void testParse(String strReg, Reg reg) throws Exception {
+    void testParse(String strReg, Reg reg) throws Exception {
 
         assertEquals(reg, Reg.parse(strReg));
     }
 
-    public static Stream<Arguments> provideRegsWrong() {
+    static Stream<Arguments> provideRegsWrong() {
 
         return Stream.of(
                 Arguments.of((Object) null),
@@ -129,13 +129,13 @@ public class RegTest {
 
     @ParameterizedTest
     @MethodSource("provideRegsWrong")
-    public void testParseError(String strReg) {
+    void testParseError(String strReg) {
 
         assertThrows(UnknownRegNameException.class, () -> Reg.parse(strReg));
     }
 
 
-    public static Stream<Arguments> compareData() {
+    static Stream<Arguments> compareData() {
 
         return Stream.of(
                 Arguments.of(R(0), R(0), 0),
@@ -148,7 +148,7 @@ public class RegTest {
 
     @ParameterizedTest
     @MethodSource("compareData")
-    public void testCompare(Reg thisObject, Reg specifiedObject, int result) {
+    void testCompare(Reg thisObject, Reg specifiedObject, int result) {
 
         int compareResult = thisObject.compareTo(specifiedObject);
 
@@ -163,7 +163,7 @@ public class RegTest {
     }
 
     @Test
-    public void testSortRegName() {
+    void testSortRegName() {
         List<Reg> regNameList = Arrays.asList(R(0), R(100), R(25), D(24), D(8), X(100), Y(20));
 
         Collections.sort(regNameList);
@@ -174,7 +174,7 @@ public class RegTest {
     }
 
     @Test
-    public void testImmutableInc() {
+    void testImmutableInc() {
 
         Reg r = X(10);
         Reg r2 = r.incAddress(10);

@@ -28,9 +28,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
-public class RegValueTest {
+class RegValueTest {
 
-    public static Stream<Arguments> regsClass() {
+    static Stream<Arguments> regsClass() {
 
         return Stream.of(
                 Arguments.of(M(1), RegValueDis.class, true),
@@ -41,7 +41,7 @@ public class RegValueTest {
 
     @ParameterizedTest
     @MethodSource("regsClass")
-    public void testForRegBool(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
+    void testForRegBool(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
 
         RegValue regValue = RegValue.getForReg(reg, true);
         assertEquals(regValueClass, regValue.getClass());
@@ -51,7 +51,7 @@ public class RegValueTest {
 
     @ParameterizedTest
     @MethodSource("regsClass")
-    public void testForRegLong(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
+    void testForRegLong(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
 
         RegValue regValue = RegValue.getForReg(reg, 123);
         assertEquals(regValueClass, regValue.getClass());

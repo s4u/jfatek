@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Slawomir Jaranowski.
  */
-public class RegValue32Test {
+class RegValue32Test {
 
     @Test
-    public void testUnSign() throws Exception {
+    void testUnSign() throws Exception {
 
         assertEquals(0, new RegValue32(0).longValueUnsigned());
         assertEquals(1, new RegValue32(1).longValueUnsigned());
@@ -37,7 +37,7 @@ public class RegValue32Test {
     }
 
     @Test
-    public void testSign() throws Exception {
+    void testSign() throws Exception {
 
         assertEquals(0, new RegValue32(0).longValue());
         assertEquals(1, new RegValue32(1).longValue());
@@ -47,7 +47,7 @@ public class RegValue32Test {
     }
 
     @Test
-    public void testToFatekString() throws Exception {
+    void testToFatekString() throws Exception {
 
         assertEquals("00000000", new RegValue32(0).toFatekString());
         assertEquals("FFFFFFFF", new RegValue32(-1).toFatekString());
@@ -58,7 +58,7 @@ public class RegValue32Test {
     }
 
     @Test
-    public void testFloatValue() throws Exception {
+    void testFloatValue() throws Exception {
 
         // examples from Fatek manual
         assertEquals(1.0f, new RegValue32(0x3F800000L).floatValue());
@@ -67,7 +67,7 @@ public class RegValue32Test {
     }
 
     @Test
-    public void testValueForFloat() throws Exception {
+    void testValueForFloat() throws Exception {
 
         // examples from Fatek manual
         assertEquals(1.0f, RegValue.getForReg(DR(1), 1.0f).floatValue());

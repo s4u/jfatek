@@ -32,17 +32,17 @@ import org.junit.jupiter.params.provider.MethodSource;
  * @author Slawomir Jaranowski.
  */
 
-public class FatekConfigTest {
+class FatekConfigTest {
 
     private FatekConfig fatekConfig;
 
     @BeforeEach
-    public void setUp() throws Exception {
+    void setUp() throws Exception {
 
         fatekConfig = new FatekConfig(new URI("test://test:1234?plcId=123"));
     }
 
-    public static Stream<Arguments> queryStrings() {
+    static Stream<Arguments> queryStrings() {
 
         return Stream.of(
                 Arguments.of("test://test?key=value", "key", "value"),
@@ -57,26 +57,26 @@ public class FatekConfigTest {
 
     @ParameterizedTest
     @MethodSource("queryStrings")
-    public void testParams(String testUri, String key, String value) throws Exception {
+    void testParams(String testUri, String key, String value) throws Exception {
 
         FatekConfig fc = new FatekConfig(new URI(testUri));
         assertEquals(value, fc.getParam(key).get());
     }
 
     @Test
-    public void testGetScheme() throws Exception {
+    void testGetScheme() throws Exception {
 
         assertEquals("test", fatekConfig.getScheme());
     }
 
     @Test
-    public void testGetHost() throws Exception {
+    void testGetHost() throws Exception {
 
         assertEquals("test", fatekConfig.getHost());
     }
 
     @Test
-    public void testGetPort() throws Exception {
+    void testGetPort() throws Exception {
 
         assertEquals(1234, fatekConfig.getPort(9999));
 
@@ -85,7 +85,7 @@ public class FatekConfigTest {
     }
 
     @Test
-    public void testGetPlcId() throws Exception {
+    void testGetPlcId() throws Exception {
 
         assertEquals(123, fatekConfig.getPlcId());
 
@@ -93,7 +93,7 @@ public class FatekConfigTest {
         assertEquals(FatekConfig.DEFAULT_PLC_ID, fatekConfig2.getPlcId());
     }
 
-    public static Stream<Arguments> name() {
+    static Stream<Arguments> name() {
 
         return Stream.of(
                 Arguments.of("test://test1", "test1"),
@@ -105,7 +105,7 @@ public class FatekConfigTest {
 
     @ParameterizedTest
     @MethodSource("name")
-    public void testGetFullName(String testUri, String name) throws URISyntaxException {
+    void testGetFullName(String testUri, String name) throws URISyntaxException {
         FatekConfig fc = new FatekConfig(new URI(testUri));
 
         assertEquals(name, fc.getFullName());

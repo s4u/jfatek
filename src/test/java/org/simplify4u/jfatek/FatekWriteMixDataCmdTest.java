@@ -38,17 +38,17 @@ import org.simplify4u.jfatek.registers.RegValueDis;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekWriteMixDataCmdTest {
+class FatekWriteMixDataCmdTest {
 
     private static final MockConnectionFactory MOCK = new MockConnectionFactory();
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd() throws Exception {
+    void testCmd() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01490")) {
 
@@ -65,7 +65,7 @@ public class FatekWriteMixDataCmdTest {
     }
 
     @Test
-    public void testCmdAdd() throws Exception {
+    void testCmdAdd() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01490")) {
 
@@ -83,7 +83,7 @@ public class FatekWriteMixDataCmdTest {
     }
 
     @Test
-    public void testCmdArgs() throws Exception {
+    void testCmdArgs() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01490")) {
 

@@ -34,17 +34,17 @@ import org.simplify4u.jfatek.registers.RegValue32;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekReadDataCmdTest {
+class FatekReadDataCmdTest {
 
     private static final MockConnectionFactory MOCK = new MockConnectionFactory();
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmdValue16() throws Exception {
+    void testCmdValue16() throws Exception {
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=0146010A57FC40001")) {
 
             List<RegValue> list = new FatekReadDataCmd(fatekPLC, D(12), 3).send();
@@ -59,7 +59,7 @@ public class FatekReadDataCmdTest {
     }
 
     @Test
-    public void testCmdValue32() throws Exception {
+    void testCmdValue32() throws Exception {
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=0146010A510A57FC47FC400010001")) {
 
             List<RegValue> list = new FatekReadDataCmd(fatekPLC, DD(12), 3).send();

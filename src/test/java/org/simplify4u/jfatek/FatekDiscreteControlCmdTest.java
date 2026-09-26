@@ -27,17 +27,17 @@ import org.simplify4u.jfatek.registers.DisRunCode;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekDiscreteControlCmdTest {
+class FatekDiscreteControlCmdTest {
 
     private static final MockConnectionFactory MOCK = new MockConnectionFactory();
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd() throws Exception {
+    void testCmd() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01420")) {
             new FatekDiscreteControlCmd(fatekPLC, M(123), DisRunCode.Disable).send();

@@ -36,17 +36,17 @@ import org.simplify4u.jfatek.registers.RegValue;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekReadMixDataCmdTest {
+class FatekReadMixDataCmdTest {
 
     private static final MockConnectionFactory MOCK = new MockConnectionFactory();
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd() throws Exception {
+    void testCmd() throws Exception {
 
         Map<Reg, RegValue> map;
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1"
@@ -64,7 +64,7 @@ public class FatekReadMixDataCmdTest {
     }
 
     @Test
-    public void testLongMessage1() throws Exception {
+    void testLongMessage1() throws Exception {
 
         StringBuilder outRegs = new StringBuilder();
         StringBuilder inRegs = new StringBuilder();

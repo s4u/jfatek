@@ -32,17 +32,17 @@ import org.simplify4u.jfatek.io.MockConnectionFactory;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekReadDiscreteStatusCmdTest {
+class FatekReadDiscreteStatusCmdTest {
 
     private static final MockConnectionFactory MOCK = new MockConnectionFactory();
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd1() throws Exception {
+    void testCmd1() throws Exception {
 
         List<Boolean> values;
 
@@ -60,7 +60,7 @@ public class FatekReadDiscreteStatusCmdTest {
     }
 
     @Test
-    public void testCmd2() throws Exception {
+    void testCmd2() throws Exception {
 
         StringBuilder tStr = new StringBuilder();
         List<Boolean> tList = new ArrayList<>(256);

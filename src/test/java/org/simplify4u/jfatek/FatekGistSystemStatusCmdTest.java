@@ -27,17 +27,17 @@ import org.simplify4u.jfatek.io.MockConnectionFactory;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekGistSystemStatusCmdTest {
+class FatekGistSystemStatusCmdTest {
 
     private static final MockConnectionFactory MOCK = new MockConnectionFactory();
 
     @BeforeAll
-    public static void setup() {
+    static void setup() {
         FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd() throws Exception {
+    void testCmd() throws Exception {
         try (FatekPLC fatekPLC = new FatekPLC(
                 String.format("test://test?plcId=1&plcInData=01400%02X%02X%02X", 0x29, 0xaa, 0xbb))) {
 

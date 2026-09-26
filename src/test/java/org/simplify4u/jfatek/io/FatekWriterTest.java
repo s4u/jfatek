@@ -25,10 +25,10 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekWriterTest {
+class FatekWriterTest {
 
     @Test
-    public void testWrite() throws Exception {
+    void testWrite() throws Exception {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
@@ -41,7 +41,7 @@ public class FatekWriterTest {
     }
 
     @Test
-    public void testWriteByte() throws Exception {
+    void testWriteByte() throws Exception {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 

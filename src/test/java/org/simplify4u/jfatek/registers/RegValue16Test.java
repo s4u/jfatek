@@ -24,10 +24,10 @@ import org.junit.jupiter.api.Test;
 /**
  * @author Slawomir Jaranowski.
  */
-public class RegValue16Test {
+class RegValue16Test {
 
     @Test
-    public void testUnSign() throws Exception {
+    void testUnSign() throws Exception {
 
         assertEquals(0, new RegValue16(0).intValueUnsigned());
         assertEquals(1, new RegValue16(1).intValueUnsigned());
@@ -37,7 +37,7 @@ public class RegValue16Test {
     }
 
     @Test
-    public void testSign() throws Exception {
+    void testSign() throws Exception {
 
         assertEquals(0, new RegValue16(0).intValue());
         assertEquals(1, new RegValue16(1).intValue());
@@ -47,14 +47,14 @@ public class RegValue16Test {
     }
 
     @Test
-    public void testToFatekString() throws Exception {
+    void testToFatekString() throws Exception {
 
         assertEquals("0000", new RegValue16(0).toFatekString());
         assertEquals("FFFF", new RegValue16(-1).toFatekString());
     }
 
     @Test
-    public void testEquals() throws Exception {
+    void testEquals() throws Exception {
 
         RegValue val00 = new RegValue16(0);
         RegValue val01 = new RegValue16(0);
@@ -73,7 +73,7 @@ public class RegValue16Test {
     }
 
     @Test
-    public void testHashCode() throws Exception {
+    void testHashCode() throws Exception {
 
         RegValue val00 = new RegValue16(0);
         RegValue val01 = new RegValue16(0);
