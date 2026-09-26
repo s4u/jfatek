@@ -16,23 +16,25 @@
 
 package org.simplify4u.jfatek;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.simplify4u.jfatek.registers.DataReg.DWX;
 import static org.simplify4u.jfatek.registers.DataReg.F;
 import static org.simplify4u.jfatek.registers.DataReg.WX;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
 import org.simplify4u.jfatek.registers.RegValue16;
 import org.simplify4u.jfatek.registers.RegValue32;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekWriteDataCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         FatekPLC.registerConnectionFactory(new MockConnectionFactory());
     }
 
@@ -93,11 +95,15 @@ public class FatekWriteDataCmdTest {
     }
 
 
-    @Test(expectedExceptions = FatekException.class, expectedExceptionsMessageRegExp = "Invalid value type")
+    @Test
     public void testCmdWrongValueType() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=&plcInData=01470")) {
-            new FatekWriteDataCmd(fatekPLC, WX(12), RegValue32.asArray(0xaaaa, 0x5555)).send();
+
+            FatekException exception = assertThrows(FatekException.class,
+                    () -> new FatekWriteDataCmd(fatekPLC, WX(12), RegValue32.asArray(0xaaaa, 0x5555)).send());
+
+            assertEquals("Invalid value type", exception.getMessage());
         }
     }
 }

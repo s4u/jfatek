@@ -16,17 +16,17 @@
 
 package org.simplify4u.jfatek;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekControlCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         FatekPLC.registerConnectionFactory(new MockConnectionFactory());
     }
 

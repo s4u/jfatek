@@ -16,12 +16,13 @@
 
 package org.simplify4u.jfatek.registers;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Slawomir Jaranowski.
@@ -36,37 +37,37 @@ public class RegValueDisTest {
 
     @Test
     public void testIntValue() {
-        assertEquals(new RegValueDis(true).intValue(), 1);
-        assertEquals(new RegValueDis(false).intValue(), 0);
+        assertEquals(1, new RegValueDis(true).intValue());
+        assertEquals(0, new RegValueDis(false).intValue());
     }
 
     @Test
     public void testIntValueUnsigned() {
-        assertEquals(new RegValueDis(true).intValueUnsigned(), 1);
-        assertEquals(new RegValueDis(false).intValueUnsigned(), 0);
+        assertEquals(1, new RegValueDis(true).intValueUnsigned());
+        assertEquals(0, new RegValueDis(false).intValueUnsigned());
     }
 
     @Test
     public void testLongValue() {
-        assertEquals(new RegValueDis(true).longValue(), 1);
-        assertEquals(new RegValueDis(false).longValue(), 0);
+        assertEquals(1, new RegValueDis(true).longValue());
+        assertEquals(0, new RegValueDis(false).longValue());
     }
 
     @Test
     public void testLongValueUnsigned() {
-        assertEquals(new RegValueDis(true).longValueUnsigned(), 1);
-        assertEquals(new RegValueDis(false).longValueUnsigned(), 0);
+        assertEquals(1, new RegValueDis(true).longValueUnsigned());
+        assertEquals(0, new RegValueDis(false).longValueUnsigned());
     }
 
-    @Test(expectedExceptions = UnsupportedOperationException.class)
+    @Test
     public void testFload() {
-        assertEquals(new RegValueDis(true).floatValue(), 1.0);
+        assertThrows(UnsupportedOperationException.class, () -> new RegValueDis(true).floatValue());
     }
 
     @Test
     public void testToFatekString() {
-        assertEquals(new RegValueDis(true).toFatekString(), "1");
-        assertEquals(new RegValueDis(false).toFatekString(), "0");
+        assertEquals("1", new RegValueDis(true).toFatekString());
+        assertEquals("0", new RegValueDis(false).toFatekString());
     }
 
     @Test

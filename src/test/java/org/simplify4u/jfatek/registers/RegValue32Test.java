@@ -16,10 +16,10 @@
 
 package org.simplify4u.jfatek.registers;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.simplify4u.jfatek.registers.DataReg.DR;
-import static org.testng.Assert.assertEquals;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Slawomir Jaranowski.
@@ -29,49 +29,49 @@ public class RegValue32Test {
     @Test
     public void testUnSign() throws Exception {
 
-        assertEquals(new RegValue32(0).longValueUnsigned(), 0);
-        assertEquals(new RegValue32(1).longValueUnsigned(), 1);
-        assertEquals(new RegValue32(0x80000000L).longValueUnsigned(), 0x80000000L);
-        assertEquals(new RegValue32(0xffffffffL).longValueUnsigned(), 0xffffffffL);
-        assertEquals(new RegValue32(-1).longValueUnsigned(), 0xffffffffL);
+        assertEquals(0, new RegValue32(0).longValueUnsigned());
+        assertEquals(1, new RegValue32(1).longValueUnsigned());
+        assertEquals(0x80000000L, new RegValue32(0x80000000L).longValueUnsigned());
+        assertEquals(0xffffffffL, new RegValue32(0xffffffffL).longValueUnsigned());
+        assertEquals(0xffffffffL, new RegValue32(-1).longValueUnsigned());
     }
 
     @Test
     public void testSign() throws Exception {
 
-        assertEquals(new RegValue32(0).longValue(), 0);
-        assertEquals(new RegValue32(1).longValue(), 1);
-        assertEquals(new RegValue32(-1).longValue(), -1);
-        assertEquals(new RegValue32(0x80000000L).longValue(), -(1L << 31));
-        assertEquals(new RegValue32(0xffffffffL).longValue(), -1);
+        assertEquals(0, new RegValue32(0).longValue());
+        assertEquals(1, new RegValue32(1).longValue());
+        assertEquals(-1, new RegValue32(-1).longValue());
+        assertEquals(-(1L << 31), new RegValue32(0x80000000L).longValue());
+        assertEquals(-1, new RegValue32(0xffffffffL).longValue());
     }
 
     @Test
     public void testToFatekString() throws Exception {
 
-        assertEquals(new RegValue32(0).toFatekString(), "00000000");
-        assertEquals(new RegValue32(-1).toFatekString(), "FFFFFFFF");
+        assertEquals("00000000", new RegValue32(0).toFatekString());
+        assertEquals("FFFFFFFF", new RegValue32(-1).toFatekString());
 
         // float tests
-        assertEquals(RegValue.getForReg(DR(1), 0.5f).toFatekString(), "3F000000");
-        assertEquals(RegValue.getForReg(DR(1), -500.125f).toFatekString(), "C3FA1000");
+        assertEquals("3F000000", RegValue.getForReg(DR(1), 0.5f).toFatekString());
+        assertEquals("C3FA1000", RegValue.getForReg(DR(1), -500.125f).toFatekString());
     }
 
     @Test
     public void testFloatValue() throws Exception {
 
         // examples from Fatek manual
-        assertEquals(new RegValue32(0x3F800000L).floatValue(), 1.0f);
-        assertEquals(new RegValue32(0x3F000000L).floatValue(), 0.5f);
-        assertEquals(new RegValue32(0xC3FA1000L).floatValue(), -500.125f);
+        assertEquals(1.0f, new RegValue32(0x3F800000L).floatValue());
+        assertEquals(0.5f, new RegValue32(0x3F000000L).floatValue());
+        assertEquals(-500.125f, new RegValue32(0xC3FA1000L).floatValue());
     }
 
     @Test
     public void testValueForFloat() throws Exception {
 
         // examples from Fatek manual
-        assertEquals(RegValue.getForReg(DR(1), 1.0f).floatValue(), 1.0f);
-        assertEquals(RegValue.getForReg(DR(1), 0.5f).floatValue(), 0.5f);
-        assertEquals(RegValue.getForReg(DR(1), -500.125f).floatValue(), -500.125f);
+        assertEquals(1.0f, RegValue.getForReg(DR(1), 1.0f).floatValue());
+        assertEquals(0.5f, RegValue.getForReg(DR(1), 0.5f).floatValue());
+        assertEquals(-500.125f, RegValue.getForReg(DR(1), -500.125f).floatValue());
     }
 }

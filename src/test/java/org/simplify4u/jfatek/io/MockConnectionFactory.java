@@ -23,7 +23,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Slawomir Jaranowski.
@@ -76,7 +76,7 @@ public class MockConnectionFactory implements FatekConnectionFactory {
                     out2Test.append(s.substring(0, s.length() - 2));
                 }
             }
-            assertEquals(out2Test.toString(), outExpected, "Out to PLC");
+            assertEquals(outExpected, out2Test.toString(), "Out to PLC");
             outputStream = null;
         }
 

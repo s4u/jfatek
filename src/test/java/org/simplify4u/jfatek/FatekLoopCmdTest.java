@@ -16,18 +16,21 @@
 
 package org.simplify4u.jfatek;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.LoopConnectionFactory;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekLoopCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         FatekPLC.registerConnectionFactory(new LoopConnectionFactory());
         FatekPLC.registerConnectionFactory(new MockConnectionFactory());
     }
@@ -48,19 +51,27 @@ public class FatekLoopCmdTest {
         }
     }
 
-    @Test(expectedExceptions = FatekException.class, expectedExceptionsMessageRegExp = "Response not equals")
+    @Test
     public void testMessageNotEqual() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014E0ABCDEFG&plcInData=014E0GFEDCBA")) {
-            new FatekLoopCmd(fatekPLC, "ABCDEFG").send();
+
+            FatekException exception = assertThrows(FatekException.class,
+                    () -> new FatekLoopCmd(fatekPLC, "ABCDEFG").send());
+
+            assertEquals("Response not equals", exception.getMessage());
         }
     }
 
-    @Test(expectedExceptions = FatekException.class, expectedExceptionsMessageRegExp = "Invalid response length")
+    @Test
     public void testMessageResLength() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014E0ABCDEFG&plcInData=014E0ABC")) {
-            new FatekLoopCmd(fatekPLC, "ABCDEFG").send();
+
+            FatekException exception = assertThrows(FatekException.class,
+                    () -> new FatekLoopCmd(fatekPLC, "ABCDEFG").send());
+
+            assertEquals("Invalid response length", exception.getMessage());
         }
     }
 

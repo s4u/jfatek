@@ -19,22 +19,23 @@ package org.simplify4u.jfatek;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.simplify4u.jfatek.registers.DisReg.C;
 import static org.simplify4u.jfatek.registers.DisReg.S;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekReadDiscreteCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         FatekPLC.registerConnectionFactory(new MockConnectionFactory());
     }
 
@@ -49,8 +50,8 @@ public class FatekReadDiscreteCmdTest {
 
             assertNotNull(values);
 
-            assertEquals(values.size(), 3, "values size");
-            assertEquals(values.toArray(new Boolean[3]), new Boolean[]{true, false, true});
+            assertEquals(3, values.size(), "values size");
+            assertArrayEquals(new Boolean[]{true, false, true}, values.toArray(new Boolean[3]));
         }
     }
 
@@ -76,8 +77,8 @@ public class FatekReadDiscreteCmdTest {
 
             assertNotNull(values);
 
-            assertEquals(values.size(), 256, "values size");
-            assertEquals(values, tList);
+            assertEquals(256, values.size(), "values size");
+            assertEquals(tList, values);
         }
     }
 }

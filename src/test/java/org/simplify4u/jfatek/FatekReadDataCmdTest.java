@@ -18,25 +18,25 @@ package org.simplify4u.jfatek;
 
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.simplify4u.jfatek.registers.DataReg.D;
 import static org.simplify4u.jfatek.registers.DataReg.DD;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
-import org.simplify4u.jfatek.registers.RegValue;
 import org.simplify4u.jfatek.registers.RegValue16;
 import org.simplify4u.jfatek.registers.RegValue32;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
+import org.simplify4u.jfatek.registers.RegValue;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekReadDataCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         FatekPLC.registerConnectionFactory(new MockConnectionFactory());
     }
 
@@ -50,7 +50,7 @@ public class FatekReadDataCmdTest {
             System.out.println(list.get(0).intValueUnsigned());
 
             assertNotNull(list);
-            assertEquals(list.toArray(), RegValue16.asArray(0x10A5, 0x7FC4, 0x0001));
+            assertArrayEquals(RegValue16.asArray(0x10A5, 0x7FC4, 0x0001), list.toArray());
         }
     }
 
@@ -62,7 +62,7 @@ public class FatekReadDataCmdTest {
             List<RegValue> list = new FatekReadDataCmd(fatekPLC, DD(12), 3).send();
 
             assertNotNull(list);
-            assertEquals(list.toArray(), RegValue32.asArray(0x10A510A5L, 0x7FC47FC4L, 0x00010001L));
+            assertArrayEquals(RegValue32.asArray(0x10A510A5L, 0x7FC47FC4L, 0x00010001L), list.toArray());
         }
     }
 }

@@ -20,25 +20,26 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.simplify4u.jfatek.registers.DataReg.DR;
 import static org.simplify4u.jfatek.registers.DataReg.DWM;
 import static org.simplify4u.jfatek.registers.DataReg.R;
 import static org.simplify4u.jfatek.registers.DisReg.Y;
-import static org.testng.Assert.assertEquals;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
 import org.simplify4u.jfatek.registers.Reg;
 import org.simplify4u.jfatek.registers.RegValue;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekReadMixDataCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         FatekPLC.registerConnectionFactory(new MockConnectionFactory());
     }
 
@@ -52,10 +53,10 @@ public class FatekReadMixDataCmdTest {
             map = new FatekReadMixDataCmd(fatekPLC, R(1), Y(9), DWM(0)).send();
         }
 
-        assertEquals(map.size(), 3);
-        assertEquals(map.get(R(1)).intValueUnsigned(), 0x5c34);
-        assertEquals(map.get(Y(9)).boolValue(), true);
-        assertEquals(map.get(DWM(0)).longValueUnsigned(), 0x003547BAL);
+        assertEquals(3, map.size());
+        assertEquals(0x5c34, map.get(R(1)).intValueUnsigned());
+        assertTrue(map.get(Y(9)).boolValue());
+        assertEquals(0x003547BAL, map.get(DWM(0)).longValueUnsigned());
     }
 
     @Test
@@ -96,7 +97,7 @@ public class FatekReadMixDataCmdTest {
         }
 
         for (int i = 0; i < regs.size(); i++) {
-            assertEquals(result.get(regs.get(i)).intValue(), i);
+            assertEquals(i, result.get(regs.get(i)).intValue());
         }
     }
 }

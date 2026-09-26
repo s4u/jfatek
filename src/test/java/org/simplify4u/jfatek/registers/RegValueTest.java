@@ -16,42 +16,46 @@
 
 package org.simplify4u.jfatek.registers;
 
+import java.util.stream.Stream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.simplify4u.jfatek.registers.DataReg.DR;
 import static org.simplify4u.jfatek.registers.DataReg.R;
 import static org.simplify4u.jfatek.registers.DisReg.M;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
 
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 public class RegValueTest {
 
-    @DataProvider(name = "regsClass")
-    public Object[][] provideData() {
+    public static Stream<Arguments> regsClass() {
 
-        return new Object[][]{
-                {M(1), RegValueDis.class, true},
-                {R(1), RegValue16.class, false},
-                {DR(1), RegValue32.class, false},
-        };
+        return Stream.of(
+                Arguments.of(M(1), RegValueDis.class, true),
+                Arguments.of(R(1), RegValue16.class, false),
+                Arguments.of(DR(1), RegValue32.class, false)
+        );
     }
 
-    @Test(dataProvider = "regsClass")
+    @ParameterizedTest
+    @MethodSource("regsClass")
     public void testForRegBool(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
 
         RegValue regValue = RegValue.getForReg(reg, true);
-        assertEquals(regValue.getClass(), regValueClass);
+        assertEquals(regValueClass, regValue.getClass());
         assertTrue(regValue.boolValue(), "boolValue");
-        assertEquals(regValue.isDiscrete(), isDiscrete);
+        assertEquals(isDiscrete, regValue.isDiscrete());
     }
 
-    @Test(dataProvider = "regsClass")
+    @ParameterizedTest
+    @MethodSource("regsClass")
     public void testForRegLong(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
 
         RegValue regValue = RegValue.getForReg(reg, 123);
-        assertEquals(regValue.getClass(), regValueClass);
+        assertEquals(regValueClass, regValue.getClass());
         assertTrue(regValue.boolValue(), "boolValue");
-        assertEquals(regValue.isDiscrete(), isDiscrete);
+        assertEquals(isDiscrete, regValue.isDiscrete());
     }
 }

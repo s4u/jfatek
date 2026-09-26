@@ -25,22 +25,22 @@ import static org.simplify4u.jfatek.registers.DataReg.WY;
 import static org.simplify4u.jfatek.registers.DisReg.X;
 import static org.simplify4u.jfatek.registers.DisReg.Y;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
 import org.simplify4u.jfatek.registers.Reg;
-import org.simplify4u.jfatek.registers.RegValue;
 import org.simplify4u.jfatek.registers.RegValue16;
 import org.simplify4u.jfatek.registers.RegValue32;
+import org.simplify4u.jfatek.registers.RegValue;
 import org.simplify4u.jfatek.registers.RegValueDis;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekWriteMixDataCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         FatekPLC.registerConnectionFactory(new MockConnectionFactory());
     }
 

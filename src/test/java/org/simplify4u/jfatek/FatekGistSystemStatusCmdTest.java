@@ -16,21 +16,21 @@
 
 package org.simplify4u.jfatek;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
 public class FatekGistSystemStatusCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    @BeforeAll
+    public static void setup() {
         FatekPLC.registerConnectionFactory(new MockConnectionFactory());
     }
 
@@ -48,9 +48,9 @@ public class FatekGistSystemStatusCmdTest {
             assertTrue(cmdSystemStatus.isSetId(), "SystemStatus.isSetId");
             assertFalse(cmdSystemStatus.isEmergencyStop(), "SystemStatus.isEmergencyStop");
 
-            assertEquals(cmdSystemStatus.getStatus1(), 0x29, "SystemStatus.getStatus1");
-            assertEquals(cmdSystemStatus.getStatus2(), 0xaa, "SystemStatus.getStatus2");
-            assertEquals(cmdSystemStatus.getStatus3(), 0xbb, "SystemStatus.getStatus3");
+            assertEquals(0x29, cmdSystemStatus.getStatus1(), "SystemStatus.getStatus1");
+            assertEquals(0xaa, cmdSystemStatus.getStatus2(), "SystemStatus.getStatus2");
+            assertEquals(0xbb, cmdSystemStatus.getStatus3(), "SystemStatus.getStatus3");
         }
 
 
