@@ -64,13 +64,13 @@ class FatekConfigTest {
     }
 
     @Test
-    void testGetScheme() throws Exception {
+    void testGetScheme() {
 
         assertEquals("test", fatekConfig.getScheme());
     }
 
     @Test
-    void testGetHost() throws Exception {
+    void testGetHost() {
 
         assertEquals("test", fatekConfig.getHost());
     }

@@ -73,7 +73,7 @@ class RegValue16Test {
     }
 
     @Test
-    void testHashCode() throws Exception {
+    void testHashCode() {
 
         RegValue val00 = new RegValue16(0);
         RegValue val01 = new RegValue16(0);

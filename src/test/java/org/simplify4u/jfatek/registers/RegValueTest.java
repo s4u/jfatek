@@ -41,7 +41,7 @@ class RegValueTest {
 
     @ParameterizedTest
     @MethodSource("regsClass")
-    void testForRegBool(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
+    void testForRegBool(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) {
 
         RegValue regValue = RegValue.getForReg(reg, true);
         assertEquals(regValueClass, regValue.getClass());
@@ -51,7 +51,7 @@ class RegValueTest {
 
     @ParameterizedTest
     @MethodSource("regsClass")
-    void testForRegLong(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) throws Exception {
+    void testForRegLong(Reg reg, Class<? extends RegValue> regValueClass, boolean isDiscrete) {
 
         RegValue regValue = RegValue.getForReg(reg, 123);
         assertEquals(regValueClass, regValue.getClass());
