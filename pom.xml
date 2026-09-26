@@ -19,7 +19,7 @@
     <parent>
         <groupId>org.simplify4u</groupId>
         <artifactId>parent</artifactId>
-        <version>2.20.1</version>
+        <version>3.0.1</version>
         <relativePath />
     </parent>
 
@@ -124,7 +124,7 @@
             <plugin>
                 <groupId>org.simplify4u.plugins</groupId>
                 <artifactId>pgpverify-maven-plugin</artifactId>
-                <version>1.17.0</version>
+                <version>1.19.1</version>
                 <executions>
                     <execution>
                         <goals>
@@ -142,7 +142,7 @@
                     <dependency>
                         <groupId>org.simplify4u</groupId>
                         <artifactId>pgp-keys-map</artifactId>
-                        <version>2023.11.23</version>
+                        <version>2026.01.20</version>
                     </dependency>
                 </dependencies>
             </plugin>
