@@ -38,9 +38,11 @@ import org.simplify4u.jfatek.registers.RegValue;
  */
 public class FatekReadMixDataCmdTest {
 
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
     @BeforeAll
     public static void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
@@ -48,10 +50,12 @@ public class FatekReadMixDataCmdTest {
 
         Map<Reg, RegValue> map;
         try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1"
-                + "&plcOutData=014803R00001Y0009DWM0000&plcInData=014805C341003547BA")) {
+                + "&plcInData=014805C341003547BA")) {
 
             map = new FatekReadMixDataCmd(fatekPLC, R(1), Y(9), DWM(0)).send();
         }
+
+        assertEquals("014803R00001Y0009DWM0000", MOCK.getSentData());
 
         assertEquals(3, map.size());
         assertEquals(0x5c34, map.get(R(1)).intValueUnsigned());
@@ -92,9 +96,11 @@ public class FatekReadMixDataCmdTest {
 
         Map<Reg, RegValue> result;
 
-        try (FatekPLC fatekPLC = new FatekPLC(String.format("test://test?plcId=1&plcOutData=%s&&plcInData=%s", outRegs, inRegs))) {
+        try (FatekPLC fatekPLC = new FatekPLC(String.format("test://test?plcId=1&plcInData=%s", inRegs))) {
             result = new FatekReadMixDataCmd(fatekPLC, regs).send();
         }
+
+        assertEquals(outRegs.toString(), MOCK.getSentData());
 
         for (int i = 0; i < regs.size(); i++) {
             assertEquals(i, result.get(regs.get(i)).intValue());

@@ -16,6 +16,8 @@
 
 package org.simplify4u.jfatek;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
@@ -25,20 +27,26 @@ import org.simplify4u.jfatek.io.MockConnectionFactory;
  */
 public class FatekControlCmdTest {
 
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
     @BeforeAll
     public static void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
     public void testCmd() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=01411&plcInData=01410")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01410")) {
             new FatekControlCmd(fatekPLC, true).send();
         }
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=01410&plcInData=01410")) {
+        assertEquals("01411", MOCK.getSentData());
+
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01410")) {
             new FatekControlCmd(fatekPLC, false).send();
         }
+
+        assertEquals("01410", MOCK.getSentData());
     }
 }

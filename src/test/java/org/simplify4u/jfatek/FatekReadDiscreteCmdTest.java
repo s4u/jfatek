@@ -34,9 +34,11 @@ import org.simplify4u.jfatek.io.MockConnectionFactory;
  */
 public class FatekReadDiscreteCmdTest {
 
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
     @BeforeAll
     public static void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
@@ -44,7 +46,7 @@ public class FatekReadDiscreteCmdTest {
 
         List<Boolean> values;
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014403S1000&plcInData=01440101")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01440101")) {
 
             values = new FatekReadDiscreteCmd(fatekPLC, S(1000), 3).send();
 
@@ -53,6 +55,8 @@ public class FatekReadDiscreteCmdTest {
             assertEquals(3, values.size(), "values size");
             assertArrayEquals(new Boolean[]{true, false, true}, values.toArray(new Boolean[3]));
         }
+
+        assertEquals("014403S1000", MOCK.getSentData());
     }
 
     @Test
@@ -61,7 +65,7 @@ public class FatekReadDiscreteCmdTest {
         StringBuilder tStr = new StringBuilder();
         List<Boolean> tList = new ArrayList<>(256);
 
-        tStr.append("test://test?plcId=1&plcOutData=014400C1000&plcInData=01440");
+        tStr.append("test://test?plcId=1&plcInData=01440");
         for (int i = 0; i < 256; i++) {
             if (i % 2 == 0) {
                 tStr.append(0);
@@ -80,6 +84,8 @@ public class FatekReadDiscreteCmdTest {
             assertEquals(256, values.size(), "values size");
             assertEquals(tList, values);
         }
+
+        assertEquals("014400C1000", MOCK.getSentData());
     }
 }
 

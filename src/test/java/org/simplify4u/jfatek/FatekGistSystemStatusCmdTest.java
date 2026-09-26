@@ -29,15 +29,17 @@ import org.simplify4u.jfatek.io.MockConnectionFactory;
  */
 public class FatekGistSystemStatusCmdTest {
 
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
     @BeforeAll
     public static void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
     public void testCmd() throws Exception {
         try (FatekPLC fatekPLC = new FatekPLC(
-                String.format("test://test?plcId=1&plcOutData=0140&plcInData=01400%02X%02X%02X", 0x29, 0xaa, 0xbb))) {
+                String.format("test://test?plcId=1&plcInData=01400%02X%02X%02X", 0x29, 0xaa, 0xbb))) {
 
             FatekGistSystemStatus cmdSystemStatus = new FatekGistSystemStatusCmd(fatekPLC).send();
 
@@ -52,6 +54,8 @@ public class FatekGistSystemStatusCmdTest {
             assertEquals(0xaa, cmdSystemStatus.getStatus2(), "SystemStatus.getStatus2");
             assertEquals(0xbb, cmdSystemStatus.getStatus3(), "SystemStatus.getStatus3");
         }
+
+        assertEquals("0140", MOCK.getSentData());
 
 
     }

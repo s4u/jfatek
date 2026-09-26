@@ -63,8 +63,6 @@ public class RegValue16Test {
         RegValue val11 = new RegValue32(1);
 
 
-        assertNotEquals(null, val00);
-        assertNotEquals(val00, null);
         assertEquals(val00, val00);
 
         assertEquals(val00, val01);

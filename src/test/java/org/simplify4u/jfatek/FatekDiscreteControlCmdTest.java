@@ -16,6 +16,7 @@
 
 package org.simplify4u.jfatek;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.simplify4u.jfatek.registers.DisReg.M;
 
 import org.junit.jupiter.api.BeforeAll;
@@ -28,28 +29,38 @@ import org.simplify4u.jfatek.registers.DisRunCode;
  */
 public class FatekDiscreteControlCmdTest {
 
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
     @BeforeAll
     public static void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
     public void testCmd() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=01421M0123&plcInData=01420")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01420")) {
             new FatekDiscreteControlCmd(fatekPLC, M(123), DisRunCode.Disable).send();
         }
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=01422M0123&plcInData=01420")) {
+        assertEquals("01421M0123", MOCK.getSentData());
+
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01420")) {
             new FatekDiscreteControlCmd(fatekPLC, M(123), DisRunCode.Enable).send();
         }
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=01423M0123&plcInData=01420")) {
+        assertEquals("01422M0123", MOCK.getSentData());
+
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01420")) {
             new FatekDiscreteControlCmd(fatekPLC, M(123), DisRunCode.Set).send();
         }
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=01424M0123&plcInData=01420")) {
+        assertEquals("01423M0123", MOCK.getSentData());
+
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01420")) {
             new FatekDiscreteControlCmd(fatekPLC, M(123), DisRunCode.Reset).send();
         }
+
+        assertEquals("01424M0123", MOCK.getSentData());
     }
 }

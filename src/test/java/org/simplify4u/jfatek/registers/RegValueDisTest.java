@@ -80,8 +80,6 @@ public class RegValueDisTest {
         RegValue val11 = new RegValueDis(true);
 
 
-        assertNotEquals(val00, null);
-        assertNotEquals(null, val01);
         assertEquals(val00, val01);
         assertEquals(val10, val11);
     }

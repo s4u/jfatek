@@ -23,14 +23,21 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
 /**
  * @author Slawomir Jaranowski.
  */
 public class MockConnectionFactory implements FatekConnectionFactory {
 
     private static final String SCHEMA_NAME = "TEST";
+
+    private String sentData;
+
+    /**
+     * Data sent to PLC by the last closed connection, with the framing characters and CRC stripped.
+     */
+    public String getSentData() {
+        return sentData;
+    }
 
     private class MockConnection extends FatekConnection {
 
@@ -64,7 +71,6 @@ public class MockConnectionFactory implements FatekConnectionFactory {
         protected void closeConnection() throws IOException {
 
             String outActual = outputStream.toString("ASCII");
-            String outExpected = getParam("plcOutData").get();
 
             // first remove all start char
             outActual = outActual.replaceAll("\\x02", "");
@@ -76,7 +82,7 @@ public class MockConnectionFactory implements FatekConnectionFactory {
                     out2Test.append(s.substring(0, s.length() - 2));
                 }
             }
-            assertEquals(outExpected, out2Test.toString(), "Out to PLC");
+            sentData = out2Test.toString();
             outputStream = null;
         }
 

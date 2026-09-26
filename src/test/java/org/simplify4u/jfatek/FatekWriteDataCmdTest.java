@@ -33,72 +33,84 @@ import org.simplify4u.jfatek.registers.RegValue32;
  */
 public class FatekWriteDataCmdTest {
 
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
     @BeforeAll
     public static void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
     public void testCmdValue16() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014702F00012AAAA5555&plcInData=01470")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01470")) {
             new FatekWriteDataCmd(fatekPLC, F(12), RegValue16.asArray(0xaaaa, 0x5555)).send();
         }
+
+        assertEquals("014702F00012AAAA5555", MOCK.getSentData());
     }
 
     @Test
     public void testCmdLongValues16() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014702F00012AAAA5555&plcInData=01470")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01470")) {
             new FatekWriteDataCmd(fatekPLC, F(12), 0xaaaa, 0x5555).send();
         }
+
+        assertEquals("014702F00012AAAA5555", MOCK.getSentData());
     }
 
     @Test
     public void testCmdAddValues16() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014702F00012AAAA5555&plcInData=01470")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01470")) {
             FatekWriteDataCmd fatekCmd = new FatekWriteDataCmd(fatekPLC, F(12));
             fatekCmd.addValue(new RegValue16(0xaaaa));
             fatekCmd.addValue(new RegValue16(0x5555));
             fatekCmd.send();
         }
+
+        assertEquals("014702F00012AAAA5555", MOCK.getSentData());
     }
 
     @Test
     public void testCmdAddLongValues16() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014702F00012AAAA5555&plcInData=01470")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01470")) {
             FatekWriteDataCmd fatekCmd = new FatekWriteDataCmd(fatekPLC, F(12));
             fatekCmd.addValue(0xaaaa);
             fatekCmd.addValue(0x5555);
             fatekCmd.send();
         }
+
+        assertEquals("014702F00012AAAA5555", MOCK.getSentData());
     }
 
     @Test
     public void testCmdValues32() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014702DWX0012AAAAAAAA55555555"
-                + "&plcInData=01470")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01470")) {
             new FatekWriteDataCmd(fatekPLC, DWX(12), RegValue32.asArray(0xaaaaaaaaL, 0x55555555L)).send();
         }
+
+        assertEquals("014702DWX0012AAAAAAAA55555555", MOCK.getSentData());
     }
 
     @Test
     public void testCmdLongValues32() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014702DWX0012AAAAAAAA55555555"
-                + "&plcInData=01470")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01470")) {
             new FatekWriteDataCmd(fatekPLC, DWX(12), 0xaaaaaaaaL, 0x55555555L).send();
         }
+
+        assertEquals("014702DWX0012AAAAAAAA55555555", MOCK.getSentData());
     }
 
 
     @Test
     public void testCmdWrongValueType() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=&plcInData=01470")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01470")) {
 
             FatekException exception = assertThrows(FatekException.class,
                     () -> new FatekWriteDataCmd(fatekPLC, WX(12), RegValue32.asArray(0xaaaa, 0x5555)).send());
