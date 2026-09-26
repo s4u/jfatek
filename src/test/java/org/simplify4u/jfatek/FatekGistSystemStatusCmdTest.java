@@ -16,28 +16,30 @@
 
 package org.simplify4u.jfatek;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekGistSystemStatusCmdTest {
+class FatekGistSystemStatusCmdTest {
 
-    @BeforeClass
-    public void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
+    @BeforeAll
+    static void setup() {
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd() throws Exception {
+    void testCmd() throws Exception {
         try (FatekPLC fatekPLC = new FatekPLC(
-                String.format("test://test?plcId=1&plcOutData=0140&plcInData=01400%02X%02X%02X", 0x29, 0xaa, 0xbb))) {
+                String.format("test://test?plcId=1&plcInData=01400%02X%02X%02X", 0x29, 0xaa, 0xbb))) {
 
             FatekGistSystemStatus cmdSystemStatus = new FatekGistSystemStatusCmd(fatekPLC).send();
 
@@ -48,10 +50,12 @@ public class FatekGistSystemStatusCmdTest {
             assertTrue(cmdSystemStatus.isSetId(), "SystemStatus.isSetId");
             assertFalse(cmdSystemStatus.isEmergencyStop(), "SystemStatus.isEmergencyStop");
 
-            assertEquals(cmdSystemStatus.getStatus1(), 0x29, "SystemStatus.getStatus1");
-            assertEquals(cmdSystemStatus.getStatus2(), 0xaa, "SystemStatus.getStatus2");
-            assertEquals(cmdSystemStatus.getStatus3(), 0xbb, "SystemStatus.getStatus3");
+            assertEquals(0x29, cmdSystemStatus.getStatus1(), "SystemStatus.getStatus1");
+            assertEquals(0xaa, cmdSystemStatus.getStatus2(), "SystemStatus.getStatus2");
+            assertEquals(0xbb, cmdSystemStatus.getStatus3(), "SystemStatus.getStatus3");
         }
+
+        assertEquals("0140", MOCK.getSentData());
 
 
     }

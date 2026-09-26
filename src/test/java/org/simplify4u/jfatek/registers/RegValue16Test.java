@@ -16,45 +16,45 @@
 
 package org.simplify4u.jfatek.registers;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public class RegValue16Test {
+class RegValue16Test {
 
     @Test
-    public void testUnSign() throws Exception {
+    void testUnSign() throws Exception {
 
-        assertEquals(new RegValue16(0).intValueUnsigned(), 0);
-        assertEquals(new RegValue16(1).intValueUnsigned(), 1);
-        assertEquals(new RegValue16(0x8000).intValueUnsigned(), 0x8000);
-        assertEquals(new RegValue16(0xffff).intValueUnsigned(), 0xffff);
-        assertEquals(new RegValue16(-1).intValueUnsigned(), 0xffff);
+        assertEquals(0, new RegValue16(0).intValueUnsigned());
+        assertEquals(1, new RegValue16(1).intValueUnsigned());
+        assertEquals(0x8000, new RegValue16(0x8000).intValueUnsigned());
+        assertEquals(0xffff, new RegValue16(0xffff).intValueUnsigned());
+        assertEquals(0xffff, new RegValue16(-1).intValueUnsigned());
     }
 
     @Test
-    public void testSign() throws Exception {
+    void testSign() throws Exception {
 
-        assertEquals(new RegValue16(0).intValue(), 0);
-        assertEquals(new RegValue16(1).intValue(), 1);
-        assertEquals(new RegValue16(-1).intValue(), -1);
-        assertEquals(new RegValue16(0x8000).intValue(), -(1 << 15));
-        assertEquals(new RegValue16(0xffff).intValue(), -1);
+        assertEquals(0, new RegValue16(0).intValue());
+        assertEquals(1, new RegValue16(1).intValue());
+        assertEquals(-1, new RegValue16(-1).intValue());
+        assertEquals(-(1 << 15), new RegValue16(0x8000).intValue());
+        assertEquals(-1, new RegValue16(0xffff).intValue());
     }
 
     @Test
-    public void testToFatekString() throws Exception {
+    void testToFatekString() throws Exception {
 
-        assertEquals(new RegValue16(0).toFatekString(), "0000");
-        assertEquals(new RegValue16(-1).toFatekString(), "FFFF");
+        assertEquals("0000", new RegValue16(0).toFatekString());
+        assertEquals("FFFF", new RegValue16(-1).toFatekString());
     }
 
     @Test
-    public void testEquals() throws Exception {
+    void testEquals() throws Exception {
 
         RegValue val00 = new RegValue16(0);
         RegValue val01 = new RegValue16(0);
@@ -63,8 +63,6 @@ public class RegValue16Test {
         RegValue val11 = new RegValue32(1);
 
 
-        assertNotEquals(null, val00);
-        assertNotEquals(val00, null);
         assertEquals(val00, val00);
 
         assertEquals(val00, val01);
@@ -75,7 +73,7 @@ public class RegValue16Test {
     }
 
     @Test
-    public void testHashCode() throws Exception {
+    void testHashCode() {
 
         RegValue val00 = new RegValue16(0);
         RegValue val01 = new RegValue16(0);

@@ -16,61 +16,65 @@
 
 package org.simplify4u.jfatek.registers;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertFalse;
-import static org.testng.Assert.assertNotEquals;
-import static org.testng.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public class RegValueDisTest {
+class RegValueDisTest {
 
     @Test
-    public void testBoolValue() {
+    void testBoolValue() {
         assertTrue(new RegValueDis(true).boolValue());
         assertFalse(new RegValueDis(false).boolValue());
     }
 
     @Test
-    public void testIntValue() {
-        assertEquals(new RegValueDis(true).intValue(), 1);
-        assertEquals(new RegValueDis(false).intValue(), 0);
+    void testIntValue() {
+        assertEquals(1, new RegValueDis(true).intValue());
+        assertEquals(0, new RegValueDis(false).intValue());
     }
 
     @Test
-    public void testIntValueUnsigned() {
-        assertEquals(new RegValueDis(true).intValueUnsigned(), 1);
-        assertEquals(new RegValueDis(false).intValueUnsigned(), 0);
+    void testIntValueUnsigned() {
+        assertEquals(1, new RegValueDis(true).intValueUnsigned());
+        assertEquals(0, new RegValueDis(false).intValueUnsigned());
     }
 
     @Test
-    public void testLongValue() {
-        assertEquals(new RegValueDis(true).longValue(), 1);
-        assertEquals(new RegValueDis(false).longValue(), 0);
+    void testLongValue() {
+        assertEquals(1, new RegValueDis(true).longValue());
+        assertEquals(0, new RegValueDis(false).longValue());
     }
 
     @Test
-    public void testLongValueUnsigned() {
-        assertEquals(new RegValueDis(true).longValueUnsigned(), 1);
-        assertEquals(new RegValueDis(false).longValueUnsigned(), 0);
-    }
-
-    @Test(expectedExceptions = UnsupportedOperationException.class)
-    public void testFload() {
-        assertEquals(new RegValueDis(true).floatValue(), 1.0);
+    void testLongValueUnsigned() {
+        assertEquals(1, new RegValueDis(true).longValueUnsigned());
+        assertEquals(0, new RegValueDis(false).longValueUnsigned());
     }
 
     @Test
-    public void testToFatekString() {
-        assertEquals(new RegValueDis(true).toFatekString(), "1");
-        assertEquals(new RegValueDis(false).toFatekString(), "0");
+    void testFload() {
+
+        RegValueDis regValueDis = new RegValueDis(true);
+
+        assertThrows(UnsupportedOperationException.class, regValueDis::floatValue);
     }
 
     @Test
-    public void testEquals() {
+    void testToFatekString() {
+        assertEquals("1", new RegValueDis(true).toFatekString());
+        assertEquals("0", new RegValueDis(false).toFatekString());
+    }
+
+    @Test
+    void testEquals() {
 
         RegValue val00 = new RegValueDis(false);
         RegValue val01 = new RegValueDis(false);
@@ -79,14 +83,12 @@ public class RegValueDisTest {
         RegValue val11 = new RegValueDis(true);
 
 
-        assertNotEquals(val00, null);
-        assertNotEquals(null, val01);
         assertEquals(val00, val01);
         assertEquals(val10, val11);
     }
 
     @Test
-    public void testHashCode() {
+    void testHashCode() {
 
         RegValue val00 = new RegValueDis(false);
         RegValue val01 = new RegValueDis(false);

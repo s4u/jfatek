@@ -19,48 +19,53 @@ package org.simplify4u.jfatek;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.simplify4u.jfatek.registers.DisReg.C;
 import static org.simplify4u.jfatek.registers.DisReg.S;
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekReadDiscreteCmdTest {
+class FatekReadDiscreteCmdTest {
 
-    @BeforeClass
-    public void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
+    @BeforeAll
+    static void setup() {
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd1() throws Exception {
+    void testCmd1() throws Exception {
 
         List<Boolean> values;
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014403S1000&plcInData=01440101")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01440101")) {
 
             values = new FatekReadDiscreteCmd(fatekPLC, S(1000), 3).send();
 
             assertNotNull(values);
 
-            assertEquals(values.size(), 3, "values size");
-            assertEquals(values.toArray(new Boolean[3]), new Boolean[]{true, false, true});
+            assertEquals(3, values.size(), "values size");
+            assertArrayEquals(new Boolean[]{true, false, true}, values.toArray(new Boolean[3]));
         }
+
+        assertEquals("014403S1000", MOCK.getSentData());
     }
 
     @Test
-    public void testCmd2() throws Exception {
+    void testCmd2() throws Exception {
 
         StringBuilder tStr = new StringBuilder();
         List<Boolean> tList = new ArrayList<>(256);
 
-        tStr.append("test://test?plcId=1&plcOutData=014400C1000&plcInData=01440");
+        tStr.append("test://test?plcId=1&plcInData=01440");
         for (int i = 0; i < 256; i++) {
             if (i % 2 == 0) {
                 tStr.append(0);
@@ -76,9 +81,11 @@ public class FatekReadDiscreteCmdTest {
 
             assertNotNull(values);
 
-            assertEquals(values.size(), 256, "values size");
-            assertEquals(values, tList);
+            assertEquals(256, values.size(), "values size");
+            assertEquals(tList, values);
         }
+
+        assertEquals("014400C1000", MOCK.getSentData());
     }
 }
 

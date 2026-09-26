@@ -19,37 +19,38 @@ package org.simplify4u.jfatek;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.simplify4u.jfatek.registers.DataReg.DF;
 import static org.simplify4u.jfatek.registers.DataReg.R;
 import static org.simplify4u.jfatek.registers.DataReg.WY;
 import static org.simplify4u.jfatek.registers.DisReg.X;
 import static org.simplify4u.jfatek.registers.DisReg.Y;
 
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
 import org.simplify4u.jfatek.registers.Reg;
 import org.simplify4u.jfatek.registers.RegValue;
 import org.simplify4u.jfatek.registers.RegValue16;
 import org.simplify4u.jfatek.registers.RegValue32;
 import org.simplify4u.jfatek.registers.RegValueDis;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekWriteMixDataCmdTest {
+class FatekWriteMixDataCmdTest {
 
-    @BeforeClass
-    public void setup() {
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
+    @BeforeAll
+    static void setup() {
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testCmd() throws Exception {
+    void testCmd() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1"
-                + "&plcOutData=014904Y00001Y00010WY00085555DF00002000000FF"
-                + "&plcInData=01490")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01490")) {
 
             Map<Reg, RegValue> map = new LinkedHashMap<>();
             map.put(Y(0), RegValueDis.TRUE);
@@ -59,14 +60,14 @@ public class FatekWriteMixDataCmdTest {
 
             new FatekWriteMixDataCmd(fatekPLC, map).send();
         }
+
+        assertEquals("014904Y00001Y00010WY00085555DF00002000000FF", MOCK.getSentData());
     }
 
     @Test
-    public void testCmdAdd() throws Exception {
+    void testCmdAdd() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1"
-                + "&plcOutData=014906Y00001Y00010WY00085555DF00002000000FFX00101R000100000"
-                + "&plcInData=01490")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01490")) {
 
             FatekWriteMixDataCmd cmd = new FatekWriteMixDataCmd(fatekPLC);
             cmd.addReg(Y(0), RegValueDis.TRUE);
@@ -77,16 +78,18 @@ public class FatekWriteMixDataCmdTest {
             cmd.addReg(R(10), false);
             cmd.send();
         }
+
+        assertEquals("014906Y00001Y00010WY00085555DF00002000000FFX00101R000100000", MOCK.getSentData());
     }
 
     @Test
-    public void testCmdArgs() throws Exception {
+    void testCmdArgs() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1"
-                + "&plcOutData=014901Y00001"
-                + "&plcInData=01490")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=01490")) {
 
             new FatekWriteMixDataCmd(fatekPLC, Y(0), RegValueDis.TRUE).send();
         }
+
+        assertEquals("014901Y00001", MOCK.getSentData());
     }
 }

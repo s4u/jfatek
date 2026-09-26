@@ -18,33 +18,34 @@ package org.simplify4u.jfatek.io;
 
 import java.io.ByteArrayInputStream;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekReaderTest {
+class FatekReaderTest {
 
 
     @Test
-    public void testReadByte() throws Exception {
+    void testReadByte() throws Exception {
 
         String input = "\0020140C7\003";
         FatekReader fatekReader = new FatekReader(new ByteArrayInputStream(input.getBytes("ASCII")));
 
         fatekReader.readNextMessage();
-        assertEquals(fatekReader.readByte(), 0x01);
-        assertEquals(fatekReader.readByte(), 0x40);
+        assertEquals(0x01, fatekReader.readByte());
+        assertEquals(0x40, fatekReader.readByte());
     }
 
-    @Test(expectedExceptions = FatekCRCException.class)
-    public void testWrongCRC() throws Exception {
+    @Test
+    void testWrongCRC() throws Exception {
 
         String input = "\0020140AA\003";
         FatekReader fatekReader = new FatekReader(new ByteArrayInputStream(input.getBytes("ASCII")));
 
-        fatekReader.readNextMessage();
+        assertThrows(FatekCRCException.class, fatekReader::readNextMessage);
     }
 }

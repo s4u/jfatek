@@ -16,51 +16,69 @@
 
 package org.simplify4u.jfatek;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.simplify4u.jfatek.io.LoopConnectionFactory;
 import org.simplify4u.jfatek.io.MockConnectionFactory;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekLoopCmdTest {
+class FatekLoopCmdTest {
 
-    @BeforeClass
-    public void setup() {
+    private static final MockConnectionFactory MOCK = new MockConnectionFactory();
+
+    @BeforeAll
+    static void setup() {
         FatekPLC.registerConnectionFactory(new LoopConnectionFactory());
-        FatekPLC.registerConnectionFactory(new MockConnectionFactory());
+        FatekPLC.registerConnectionFactory(MOCK);
     }
 
     @Test
-    public void testDefaultMsg() throws Exception {
+    void testDefaultMsg() throws Exception {
 
         try (FatekPLC fatekPLC = new FatekPLC("loop://test?plcId=1&t=1")) {
-            new FatekLoopCmd(fatekPLC).send();
+
+            // random message is sent, the command fails if the echoed response differs
+            assertDoesNotThrow(() -> new FatekLoopCmd(fatekPLC).send());
         }
     }
 
     @Test
-    public void testMessage() throws Exception {
+    void testMessage() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014E0ABCDEFG&plcInData=014E0ABCDEFG")) {
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=014E0ABCDEFG")) {
             new FatekLoopCmd(fatekPLC, "ABCDEFG").send();
+        }
+
+        assertEquals("014E0ABCDEFG", MOCK.getSentData());
+    }
+
+    @Test
+    void testMessageNotEqual() throws Exception {
+
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=014E0GFEDCBA")) {
+
+            FatekException exception = assertThrows(FatekException.class,
+                    () -> new FatekLoopCmd(fatekPLC, "ABCDEFG").send());
+
+            assertEquals("Response not equals", exception.getMessage());
         }
     }
 
-    @Test(expectedExceptions = FatekException.class, expectedExceptionsMessageRegExp = "Response not equals")
-    public void testMessageNotEqual() throws Exception {
+    @Test
+    void testMessageResLength() throws Exception {
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014E0ABCDEFG&plcInData=014E0GFEDCBA")) {
-            new FatekLoopCmd(fatekPLC, "ABCDEFG").send();
-        }
-    }
+        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcInData=014E0ABC")) {
 
-    @Test(expectedExceptions = FatekException.class, expectedExceptionsMessageRegExp = "Invalid response length")
-    public void testMessageResLength() throws Exception {
+            FatekException exception = assertThrows(FatekException.class,
+                    () -> new FatekLoopCmd(fatekPLC, "ABCDEFG").send());
 
-        try (FatekPLC fatekPLC = new FatekPLC("test://test?plcId=1&plcOutData=014E0ABCDEFG&plcInData=014E0ABC")) {
-            new FatekLoopCmd(fatekPLC, "ABCDEFG").send();
+            assertEquals("Invalid response length", exception.getMessage());
         }
     }
 

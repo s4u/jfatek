@@ -18,17 +18,17 @@ package org.simplify4u.jfatek.io;
 
 import java.io.ByteArrayOutputStream;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Slawomir Jaranowski.
  */
-public class FatekWriterTest {
+class FatekWriterTest {
 
     @Test
-    public void testWrite() throws Exception {
+    void testWrite() throws Exception {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
@@ -37,11 +37,11 @@ public class FatekWriterTest {
         writer.flush();
 
         String out = stream.toString("ASCII");
-        assertEquals(out, "\0020140C7\003");
+        assertEquals("\0020140C7\003", out);
     }
 
     @Test
-    public void testWriteByte() throws Exception {
+    void testWriteByte() throws Exception {
 
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
@@ -51,6 +51,6 @@ public class FatekWriterTest {
         writer.flush();
 
         String out = stream.toString("ASCII");
-        assertEquals(out, "\0020140C7\003");
+        assertEquals("\0020140C7\003", out);
     }
 }

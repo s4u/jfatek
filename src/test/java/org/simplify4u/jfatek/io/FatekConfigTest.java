@@ -18,93 +18,96 @@ package org.simplify4u.jfatek.io;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.stream.Stream;
 
-import static org.testng.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
 /**
  * @author Slawomir Jaranowski.
  */
 
-public class FatekConfigTest {
+class FatekConfigTest {
 
     private FatekConfig fatekConfig;
 
-    @BeforeMethod
-    public void setUp() throws Exception {
+    @BeforeEach
+    void setUp() throws Exception {
 
         fatekConfig = new FatekConfig(new URI("test://test:1234?plcId=123"));
     }
 
-    @DataProvider(name = "queryStrings", parallel = true)
-    public static Object[][] queryStrings() {
+    static Stream<Arguments> queryStrings() {
 
-        return new Object[][]{
-                {"test://test?key=value", "key", "value"},
-                {"test://test?key=va%22lue", "key", "va\"lue"},
-                {"test://test?key=va%26lue", "key", "va&lue"},
-                {"test://test?key=value&key2=value2", "key2", "value2"},
-                {"test://test?key=va%22lue&key2=va%22lue2", "key2", "va\"lue2"},
-                {"test://test?key=va%26lue&key2=va%26lue2", "key2", "va&lue2"},
-                {"test://test?key=va%26lue&key=&key2=val2", "key", ""}
-        };
+        return Stream.of(
+                Arguments.of("test://test?key=value", "key", "value"),
+                Arguments.of("test://test?key=va%22lue", "key", "va\"lue"),
+                Arguments.of("test://test?key=va%26lue", "key", "va&lue"),
+                Arguments.of("test://test?key=value&key2=value2", "key2", "value2"),
+                Arguments.of("test://test?key=va%22lue&key2=va%22lue2", "key2", "va\"lue2"),
+                Arguments.of("test://test?key=va%26lue&key2=va%26lue2", "key2", "va&lue2"),
+                Arguments.of("test://test?key=va%26lue&key=&key2=val2", "key", "")
+        );
     }
 
-    @Test(dataProvider = "queryStrings")
-    public void testParams(String testUri, String key, String value) throws Exception {
+    @ParameterizedTest
+    @MethodSource("queryStrings")
+    void testParams(String testUri, String key, String value) throws Exception {
 
         FatekConfig fc = new FatekConfig(new URI(testUri));
-        assertEquals(fc.getParam(key).get(), value);
+        assertEquals(value, fc.getParam(key).get());
     }
 
     @Test
-    public void testGetScheme() throws Exception {
+    void testGetScheme() {
 
-        assertEquals(fatekConfig.getScheme(), "test");
+        assertEquals("test", fatekConfig.getScheme());
     }
 
     @Test
-    public void testGetHost() throws Exception {
+    void testGetHost() {
 
-        assertEquals(fatekConfig.getHost(), "test");
+        assertEquals("test", fatekConfig.getHost());
     }
 
     @Test
-    public void testGetPort() throws Exception {
+    void testGetPort() throws Exception {
 
-        assertEquals(fatekConfig.getPort(9999), 1234);
+        assertEquals(1234, fatekConfig.getPort(9999));
 
         FatekConfig fatekConfig2 = new FatekConfig(new URI("test://test"));
-        assertEquals(fatekConfig2.getPort(9999), 9999);
+        assertEquals(9999, fatekConfig2.getPort(9999));
     }
 
     @Test
-    public void testGetPlcId() throws Exception {
+    void testGetPlcId() throws Exception {
 
-        assertEquals(fatekConfig.getPlcId(), 123);
+        assertEquals(123, fatekConfig.getPlcId());
 
         FatekConfig fatekConfig2 = new FatekConfig(new URI("test://test"));
-        assertEquals(fatekConfig2.getPlcId(), FatekConfig.DEFAULT_PLC_ID);
+        assertEquals(FatekConfig.DEFAULT_PLC_ID, fatekConfig2.getPlcId());
     }
 
-    @DataProvider(name = "name", parallel = true)
-    public static Object[][] name() {
+    static Stream<Arguments> name() {
 
-        return new Object[][]{
-                {"test://test1", "test1"},
-                {"test://test1/test2", "test1/test2"},
-                {"test:///test3/test4", "/test3/test4"},
-                {"test://test1/", "test1/"}
-        };
+        return Stream.of(
+                Arguments.of("test://test1", "test1"),
+                Arguments.of("test://test1/test2", "test1/test2"),
+                Arguments.of("test:///test3/test4", "/test3/test4"),
+                Arguments.of("test://test1/", "test1/")
+        );
     }
 
-    @Test(dataProvider = "name")
-    public void testGetFullName(String testUri, String name) throws URISyntaxException {
+    @ParameterizedTest
+    @MethodSource("name")
+    void testGetFullName(String testUri, String name) throws URISyntaxException {
         FatekConfig fc = new FatekConfig(new URI(testUri));
 
-        assertEquals(fc.getFullName(), name);
+        assertEquals(name, fc.getFullName());
     }
 }
